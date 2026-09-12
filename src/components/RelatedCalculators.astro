@@ -1,5 +1,5 @@
 ---
-import { getRelatedCalculators, getCategoryMetadata, type CategoryId } from '../lib/calculations/registry';
+import { CALCULATOR_REGISTRY, getCategoryMetadata, type CategoryId } from '../lib/calculations/registry';
 
 interface Props {
   currentSlug: string;
@@ -8,9 +8,24 @@ interface Props {
 }
 
 const { currentSlug, category, categoryLabel } = Astro.props;
-const relatedTools = getRelatedCalculators(currentSlug, 3);
 const categoryMeta = getCategoryMetadata(category);
 const catLabel = categoryLabel || categoryMeta?.name || 'Category';
+
+// Get ALL other calculators in the same category (excluding the active one)
+const sameCategoryTools = CALCULATOR_REGISTRY.filter(
+  (tool) => tool.category === category && tool.slug !== currentSlug
+);
+
+// Fallback: If category has fewer than 3 tools (e.g. converters), supplement with companion tools
+const displayTools = sameCategoryTools.length >= 3
+  ? sameCategoryTools
+  : [
+      ...sameCategoryTools,
+      ...CALCULATOR_REGISTRY.filter(
+        (t) => t.category !== category && t.slug !== currentSlug
+      ).slice(0, 3 - sameCategoryTools.length),
+    ];
+
 const categoryCardStyles: Record<string, { bg: string; border: string; text: string; link: string }> = {
   finance: {
     bg: 'bg-gradient-to-br from-blue-50/80 via-white to-indigo-50/50',
@@ -54,26 +69,28 @@ const categoryCardStyles: Record<string, { bg: string; border: string; text: str
 <section class="pt-8 border-t border-gray-200" aria-labelledby="related-tools-heading">
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
     <div>
+      <div class="flex items-center space-x-2">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">Category Toolkit</span>
+        <span class="text-gray-300">•</span>
+        <span class="text-[10px] font-semibold text-emerald-700">{displayTools.length} Companion Tools</span>
+      </div>
       <h2 id="related-tools-heading" class="text-base font-bold text-brand-dark tracking-tight">
-        Related Calculators
+        More {catLabel} Calculators
       </h2>
-      <p class="text-xs text-brand-muted">
-        Explore companion tools in {catLabel} and related mathematical domains.
-      </p>
     </div>
     {categoryMeta && (
       <a
         href={categoryMeta.route}
         class="text-xs font-semibold text-brand-primary hover:text-brand-accent transition inline-flex items-center space-x-1"
       >
-        <span>All {categoryMeta.shortName} Calculators</span>
+        <span>Explore Full {categoryMeta.shortName} Hub</span>
         <span>→</span>
       </a>
     )}
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-    {relatedTools.map((tool) => {
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    {displayTools.map((tool) => {
       const style = categoryCardStyles[tool.category] || categoryCardStyles.finance;
       return (
         <a
@@ -107,3 +124,4 @@ const categoryCardStyles: Record<string, { bg: string; border: string; text: str
     })}
   </div>
 </section>
+

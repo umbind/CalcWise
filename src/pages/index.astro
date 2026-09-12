@@ -17,42 +17,47 @@ const categories = [
   description="CalcWise is the decision-first calculation platform with inspectable Calculation Passports, step-by-step mathematical traces, and zero-JS performance."
   canonicalUrl="https://calcwise.webcalcapps.workers.dev/"
 >
-  <!-- Compact Hero Section -->
-  <div class="text-center max-w-2xl mx-auto pt-1 pb-5">
-    <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-surface border border-brand-primary/20 text-brand-primary mb-2 shadow-2xs">
-      <span>✨ 50 Verified High-Precision Calculators Active</span>
+  <!-- Compact Vibrant Hero Section -->
+  <div class="text-center max-w-2xl mx-auto pt-1 pb-4">
+    <div class="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold bg-gradient-to-r from-blue-50 to-emerald-50 border border-brand-primary/20 text-brand-primary mb-2 shadow-2xs">
+      <span class="text-amber-500">✨</span>
+      <span>50 Verified High-Precision Calculators Active</span>
     </div>
+
     <h1 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight leading-snug">
-      Calculate with <span class="text-brand-primary">Precision</span>. Decide with <span class="text-brand-accent">Confidence</span>.
+      Calculate with <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-blue-600">Precision</span>. Decide with <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-emerald-500">Confidence</span>.
     </h1>
-    <p class="text-xs sm:text-sm text-brand-muted mt-1.5 leading-normal max-w-xl mx-auto">
+
+    <!-- Colorful High-Intent Search Box -->
+    <div class="mt-3.5 max-w-lg mx-auto relative">
+      <div class="relative p-[1.5px] rounded-xl bg-gradient-to-r from-brand-primary/40 via-purple-500/30 to-brand-accent/40 hover:from-brand-primary hover:via-purple-500 hover:to-brand-accent transition-all shadow-2xs hover:shadow-sm">
+        <div class="relative bg-white rounded-[10px] flex items-center">
+          <span class="pl-3.5 text-base text-brand-primary">🔍</span>
+          <input
+            type="text"
+            id="tool-search"
+            placeholder="Search 50 calculators (e.g. loan, bmi, percentage, paint, age)..."
+            class="w-full pl-3 pr-4 py-2.5 bg-transparent rounded-[10px] text-xs sm:text-sm text-brand-dark placeholder-gray-400 focus:outline-none"
+          />
+          <span class="pr-3 text-[10px] text-gray-400 font-mono hidden sm:inline-block">↵ Enter</span>
+        </div>
+      </div>
+
+      <!-- Colorful Category-Coded Quick Picks -->
+      <div class="flex flex-wrap items-center justify-center gap-1.5 mt-2.5 text-[11px]">
+        <span class="text-gray-400 font-medium">Trending:</span>
+        <a href="/finance/emi-calculator" class="px-2 py-0.5 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200/70 font-medium transition">💰 EMI Loan</a>
+        <a href="/health/bmi-calculator" class="px-2 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/70 font-medium transition">❤️ BMI</a>
+        <a href="/finance/compound-interest-calculator" class="px-2 py-0.5 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200/70 font-medium transition">📈 Compound Interest</a>
+        <a href="/construction/concrete-calculator" class="px-2 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/70 font-medium transition">🏗️ Concrete</a>
+        <a href="/everyday/age-calculator" class="px-2 py-0.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/70 font-medium transition">📅 Age</a>
+      </div>
+    </div>
+
+    <!-- Supporting Normal Subtext (Credibility Anchor) -->
+    <p class="text-xs text-brand-muted mt-3 leading-normal max-w-lg mx-auto">
       Deterministic calculation engines with inspectable formulas, step-by-step traces, and verified Calculation Passports.
     </p>
-
-    <!-- Quick Live Search -->
-    <div class="mt-4 max-w-lg mx-auto relative">
-      <div class="relative">
-        <input
-          type="text"
-          id="tool-search"
-          placeholder="Search 50 calculators (e.g. loan, bmi, percentage, paint, age)..."
-          class="w-full pl-10 pr-4 py-2 bg-white border border-brand-border rounded-lg shadow-2xs text-xs sm:text-sm text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition"
-        />
-        <span class="absolute left-3.5 top-2 text-gray-400 text-sm">🔍</span>
-      </div>
-      <div class="flex flex-wrap items-center justify-center gap-1.5 mt-2 text-[11px] text-brand-muted">
-        <span class="font-medium">Quick Picks:</span>
-        <a href="/finance/emi-calculator" class="hover:text-brand-primary font-medium text-brand-primary">EMI Loan</a>
-        <span>•</span>
-        <a href="/health/bmi-calculator" class="hover:text-brand-primary font-medium text-brand-primary">BMI</a>
-        <span>•</span>
-        <a href="/finance/compound-interest-calculator" class="hover:text-brand-primary font-medium text-brand-primary">Compound Interest</a>
-        <span>•</span>
-        <a href="/construction/concrete-calculator" class="hover:text-brand-primary font-medium text-brand-primary">Concrete</a>
-        <span>•</span>
-        <a href="/everyday/age-calculator" class="hover:text-brand-primary font-medium text-brand-primary">Age</a>
-      </div>
-    </div>
   </div>
 
   <!-- Category Browse Hubs -->

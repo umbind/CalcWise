@@ -78,23 +78,28 @@ const categoryCardStyles: Record<string, { bg: string; border: string; text: str
       return (
         <a
           href={tool.route}
-          class={`p-3.5 ${style.bg} border ${style.border} rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all group flex flex-col justify-between`}
+          title={tool.description}
+          class={`px-3.5 py-2.5 ${style.bg} border ${style.border} rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all group flex items-center justify-between`}
         >
-          <div>
-            <div class="flex items-center space-x-2 mb-1.5">
-              <span class="text-base">{tool.icon}</span>
-              <span class={`font-bold text-xs ${style.text} transition truncate leading-snug`}>
+          <div class="flex items-center space-x-2.5 min-w-0 pr-2">
+            <span class="w-8 h-8 rounded-lg bg-white/80 border border-black/5 flex items-center justify-center text-base shrink-0 group-hover:scale-110 transition-transform shadow-2xs">
+              {tool.icon}
+            </span>
+            <div class="min-w-0">
+              <span class={`font-bold text-xs ${style.text} transition truncate block leading-tight`}>
                 {tool.name}
               </span>
+              <span class="text-[10px] font-mono text-slate-400 block truncate -mt-0.5">
+                ID: {tool.id}
+              </span>
             </div>
-            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-              {tool.description}
-            </p>
           </div>
-          <div class="mt-2.5 pt-2 border-t border-gray-100/80 flex items-center justify-between text-[11px]">
-            <span class="font-medium text-slate-500">{tool.categoryLabel}</span>
-            <span class={`font-bold ${style.link} group-hover:translate-x-0.5 transition-transform`}>
-              Calculate →
+          <div class="flex items-center space-x-1.5 shrink-0">
+            <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-white/80 text-slate-600 border border-slate-200">
+              {tool.riskTier}
+            </span>
+            <span class={`text-xs font-bold ${style.link} group-hover:translate-x-0.5 transition-transform`}>
+              →
             </span>
           </div>
         </a>

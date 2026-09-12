@@ -79,10 +79,12 @@ const flagshipCalculators = [
         {flagshipCalculators.map((calc) => (
           <a
             href={calc!.route}
-            class="p-4 bg-brand-surface rounded-xl border border-brand-border hover:bg-white hover:border-brand-primary transition block text-center"
+            class="px-3.5 py-2.5 bg-brand-surface rounded-xl border border-brand-border hover:bg-white hover:border-brand-primary hover:shadow-2xs transition flex items-center space-x-2.5 min-w-0"
           >
-            <span class="text-xl block mb-1">{calc!.icon}</span>
-            <span class="text-xs font-bold text-brand-dark block">{calc!.name}</span>
+            <span class="w-8 h-8 rounded-lg bg-white border border-black/5 flex items-center justify-center text-base shrink-0 shadow-2xs">
+              {calc!.icon}
+            </span>
+            <span class="text-xs font-bold text-brand-dark truncate">{calc!.name}</span>
           </a>
         ))}
       </div>

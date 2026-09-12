@@ -117,31 +117,29 @@ const collectionSchema = {
         Supported Measurement Quantities
       </h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {unitFamilies.map((family) => (
           <a
             href="/converters/unit-converter"
-            class="bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/50 border border-emerald-200/90 rounded-xl p-4 hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group"
+            title={family.examples}
+            class="bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/50 border border-emerald-200/90 rounded-xl px-3.5 py-2.5 hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-between group"
           >
-            <div>
-              <div class="flex items-center space-x-2.5 mb-2">
-                <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-base shrink-0 group-hover:scale-110 transition-transform shadow-2xs">
-                  {family.icon}
-                </span>
-                <h3 class="font-bold text-sm text-emerald-950 group-hover:text-emerald-700 transition leading-snug">
+            <div class="flex items-center space-x-2.5 min-w-0 pr-2">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-base shrink-0 group-hover:scale-110 transition-transform shadow-2xs">
+                {family.icon}
+              </span>
+              <div class="min-w-0">
+                <h3 class="font-bold text-sm text-emerald-950 group-hover:text-emerald-700 transition truncate leading-tight">
                   {family.name}
                 </h3>
+                <span class="text-[10px] font-mono text-emerald-500 block truncate -mt-0.5">
+                  {family.examples.split(',')[0]}
+                </span>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed line-clamp-2 mb-3">
-                {family.examples}
-              </p>
             </div>
-            <div class="pt-2 border-t border-emerald-100/80 text-xs font-bold text-emerald-700 group-hover:text-emerald-900 flex items-center justify-between">
-              <span class="text-[11px] font-medium text-slate-500">Exact BIPM Ratio</span>
-              <span class="inline-flex items-center">
-                Convert <span class="ml-1 group-hover:translate-x-0.5 transition-transform">→</span>
-              </span>
-            </div>
+            <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-emerald-100 text-emerald-700 border border-emerald-200 shrink-0">
+              Exact
+            </span>
           </a>
         ))}
       </div>

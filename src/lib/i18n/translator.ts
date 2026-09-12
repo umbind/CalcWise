@@ -1,48 +1,65 @@
-export function triggerPageTranslation(langCode: string) {
+export function triggerPageTranslation(langCode: string, onDone?: () => void) {
   if (typeof window === 'undefined') return;
 
   const targetCode = langCode === 'zh' ? 'zh-CN' : langCode;
 
   try {
     const host = window.location.hostname;
+    const isRootDomain = host.includes('.');
+    const rootDomain = isRootDomain ? host.split('.').slice(-2).join('.') : '';
+
     if (langCode === 'en') {
-      // Clear translation cookie across current and root domain
+      // Clear translation cookies across all domain scopes
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + host + ';';
-      if (host.includes('.')) {
-        const rootDomain = host.split('.').slice(-2).join('.');
+      if (rootDomain) {
         document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + rootDomain + ';';
       }
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + host + ';';
 
+      // Reset combo in-place without page reload if possible
       const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
       if (select) {
-        select.value = 'en';
+        select.value = '';
         select.dispatchEvent(new Event('change'));
+        if (onDone) onDone();
+        return;
       }
-      // Reload ensures pristine DOM without mutated text nodes
+      // If combo not accessible, fall back to reload
       window.location.reload();
       return;
     }
 
+    // Set cookie for target language
     const cookieVal = '/en/' + targetCode;
-      document.cookie = 'googtrans=' + cookieVal + '; path=/;';
-      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + host + ';';
-      if (host.includes('.')) {
-        const rootDomain = host.split('.').slice(-2).join('.');
-        document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=.' + rootDomain + ';';
-      }
-
-    // Try finding the Google combo dropdown
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
-    if (select) {
-      select.value = targetCode;
-      select.dispatchEvent(new Event('change'));
-    } else {
-      // If translate widget not initialized in DOM yet, reload with cookie
-      window.location.reload();
+    document.cookie = 'googtrans=' + cookieVal + '; path=/;';
+    document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + host + ';';
+    if (rootDomain) {
+      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=.' + rootDomain + ';';
     }
+
+    // Smooth polling for Google combo dropdown to translate in-place without reloading
+    let attempts = 0;
+    const checkCombo = () => {
+      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+      if (select) {
+        select.value = targetCode;
+        select.dispatchEvent(new Event('change'));
+        if (onDone) onDone();
+        return;
+      }
+      attempts++;
+      if (attempts < 12) {
+        setTimeout(checkCombo, 100);
+      } else {
+        // Fallback: reload with cookie if widget failed to mount within 1.2s
+        window.location.reload();
+      }
+    };
+
+    checkCombo();
   } catch (err) {
     console.warn('Page translation trigger warning:', err);
+    if (onDone) onDone();
   }
 }

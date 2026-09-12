@@ -9,6 +9,7 @@ interface LanguageSelectorProps {
 export default function LanguageSelector({ className = '' }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<string>('en');
+  const [isTranslating, setIsTranslating] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Initialize language from localStorage or cookies
@@ -37,9 +38,15 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
     localStorage.setItem('calcwise_lang', lang.code);
     document.documentElement.lang = lang.code;
     document.documentElement.dir = lang.dir || 'ltr';
+    setIsTranslating(true);
 
-    // Trigger full-page content translation
-    triggerPageTranslation(lang.code);
+    // Trigger full-page content translation with callback
+    triggerPageTranslation(lang.code, () => {
+      setIsTranslating(false);
+    });
+
+    // Timeout safety in case callback is delayed
+    setTimeout(() => setIsTranslating(false), 2500);
 
     // Dispatch global event for local reactive components
     window.dispatchEvent(
@@ -64,8 +71,14 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
         aria-label="Select language"
         aria-expanded={isOpen}
       >
-        <span className="text-sm">{activeOption.flag}</span>
-        <span className="hidden md:inline text-slate-700">{activeOption.code.toUpperCase()}</span>
+        {isTranslating ? (
+          <span className="inline-block w-3.5 h-3.5 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <span className="text-sm">{activeOption.flag}</span>
+        )}
+        <span className="hidden md:inline text-slate-700">
+          {isTranslating ? '...' : activeOption.code.toUpperCase()}
+        </span>
         <svg
           className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"

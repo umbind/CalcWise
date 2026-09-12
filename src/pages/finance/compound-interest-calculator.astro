@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CalculationPassport from '../../components/CalculationPassport.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 import CompoundInterestIsland from '../../features/calculators/finance/CompoundInterestIsland';
 import type { CalculationPassportData } from '../../lib/calculations/types';
 import { COMPOUND_INTEREST_FORMULA_ID, COMPOUND_INTEREST_FORMULA_VERSION } from '../../lib/calculations/compound_interest';
@@ -39,20 +41,24 @@ const passport: CalculationPassportData = {
   title="Compound Interest Calculator: Calculate Future Value & Growth"
   description="Forecast investment growth, future value, and total interest earned with customizable compounding frequency and regular monthly additions."
   breadcrumbs={[
-    { label: 'Finance', href: '/finance/emi-calculator' },
+    { label: 'Finance', href: '/finance' },
     { label: 'Compound Interest Calculator' },
   ]}
   canonicalUrl="https://calcwise.webcalcapps.workers.dev/finance/compound-interest-calculator"
 >
   <div class="max-w-4xl mx-auto">
-    <div class="mb-8">
-      <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">Finance & Investing</span>
-      <h1 class="text-xl sm:text-2xl font-bold text-brand-dark tracking-tight leading-tight">
+    <!-- Header Area -->
+    <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">Finance & Investing</span>
+        <h1 class="text-xl sm:text-2xl font-bold text-brand-dark tracking-tight leading-tight">
         Compound Interest Calculator
       </h1>
-      <p class="text-xs text-brand-muted mt-0.5 max-w-2xl leading-normal">
+        <p class="text-xs text-brand-muted mt-0.5 max-w-2xl leading-normal">
         See how your money grows over time with compound interest and recurring monthly contributions.
       </p>
+      </div>
+      <CalculatorActions toolName="Compound Interest" client:idle />
     </div>
 
     <section aria-label="Compound Interest Calculator Widget">
@@ -61,6 +67,9 @@ const passport: CalculationPassportData = {
 
     <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
       <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="compound-interest-calculator" category="finance" />
     </article>
   </div>
 </BaseLayout>

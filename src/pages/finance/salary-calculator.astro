@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CalculationPassport from '../../components/CalculationPassport.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 import SalaryIsland from '../../features/calculators/finance/SalaryIsland';
 import type { CalculationPassportData } from '../../lib/calculations/types';
 import { SALARY_FORMULA_ID, SALARY_FORMULA_VERSION } from '../../lib/calculations/salary';
@@ -36,20 +38,24 @@ const passport: CalculationPassportData = {
   title="Salary Calculator: Convert Hourly to Salary, Weekly & Monthly"
   description="Convert your wage between hourly, daily, weekly, bi-weekly, monthly, and annual earnings with customizable work hours and weeks per year."
   breadcrumbs={[
-    { label: 'Finance', href: '/finance/emi-calculator' },
+    { label: 'Finance', href: '/finance' },
     { label: 'Salary Calculator' },
   ]}
   canonicalUrl="https://calcwise.webcalcapps.workers.dev/finance/salary-calculator"
 >
   <div class="max-w-4xl mx-auto">
-    <div class="mb-8">
-      <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">Finance & Career</span>
-      <h1 class="text-xl sm:text-2xl font-bold text-brand-dark tracking-tight leading-tight">
+    <!-- Header Area -->
+    <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">Finance & Career</span>
+        <h1 class="text-xl sm:text-2xl font-bold text-brand-dark tracking-tight leading-tight">
         Salary & Wage Calculator
       </h1>
-      <p class="text-xs text-brand-muted mt-0.5 max-w-2xl leading-normal">
+        <p class="text-xs text-brand-muted mt-0.5 max-w-2xl leading-normal">
         Easily convert your pay between hourly wages, weekly paychecks, bi-weekly pay periods, monthly salary, and total annual earnings.
       </p>
+      </div>
+      <CalculatorActions toolName="Salary Paycheck" client:idle />
     </div>
 
     <section aria-label="Salary Calculator Widget">
@@ -58,6 +64,9 @@ const passport: CalculationPassportData = {
 
     <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
       <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="salary-calculator" category="finance" />
     </article>
   </div>
 </BaseLayout>

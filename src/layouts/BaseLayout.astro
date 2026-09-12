@@ -232,6 +232,45 @@ if (currentPath.startsWith('/finance')) {
 
     <!-- Modern Calculator UI & Interactive Component Styling -->
     <style is:global>
+      /* Suppress Google Translate Tooltip / Balloon / Feedback Popup & Banners */
+      #goog-gt-tt,
+      #goog-gt-vt,
+      .goog-te-balloon-frame,
+      .goog-te-banner-frame,
+      .goog-tooltip,
+      .goog-tooltip:hover,
+      .goog-text-highlight,
+      div[id^="goog-gt-"],
+      div[class*="goog-te-balloon"],
+      div[class*="VIpgJd-ZVi9od"],
+      iframe.goog-te-banner-frame,
+      iframe[class*="goog-te-banner-frame"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        clip: rect(0, 0, 0, 0) !important;
+      }
+
+      body {
+        top: 0px !important;
+        position: static !important;
+      }
+
+      .goog-text-highlight {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
       /* Modern Calculator Card Container - Proper & Sleek Sizing */
       div[class*="bg-white rounded-2xl border"] {
         padding: 1.25rem 1.5rem !important;
@@ -598,6 +637,44 @@ if (currentPath.startsWith('/finance')) {
             }
           }
         } catch (e) {}
+
+        // Dynamically destroy Google Translate tooltip balloon & feedback popup if appended
+        if (typeof window !== 'undefined' && window.MutationObserver) {
+          const observer = new MutationObserver(function(mutations) {
+            for (let i = 0; i < mutations.length; i++) {
+              const added = mutations[i].addedNodes;
+              for (let j = 0; j < added.length; j++) {
+                const node = added[j];
+                if (node.nodeType === 1) {
+                  const el = node;
+                  if (
+                    el.id === 'goog-gt-tt' ||
+                    el.id === 'goog-gt-vt' ||
+                    (el.className && typeof el.className === 'string' && (el.className.indexOf('VIpgJd') !== -1 || el.className.indexOf('goog-te-balloon') !== -1))
+                  ) {
+                    try {
+                      el.remove();
+                    } catch (err) {
+                      el.style.display = 'none';
+                    }
+                  }
+                }
+              }
+            }
+          });
+
+          const attachObserver = function() {
+            if (document.body) {
+              observer.observe(document.body, { childList: true, subtree: true });
+            }
+          };
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', attachObserver);
+          } else {
+            attachObserver();
+          }
+        }
       })();
     </script>
     <script is:inline src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

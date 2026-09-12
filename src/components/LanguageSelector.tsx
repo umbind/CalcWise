@@ -1,10 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import { SUPPORTED_LANGUAGES, type LanguageOption } from '../lib/i18n/translations';
 import { triggerPageTranslation } from '../lib/i18n/translator';
+import { getCurrency, setGlobalCurrency } from '../lib/i18n/currencies';
 
 interface LanguageSelectorProps {
   className?: string;
 }
+
+const LANGUAGE_DEFAULT_CURRENCY: Record<string, string> = {
+  hi: 'INR',
+  es: 'EUR',
+  fr: 'EUR',
+  de: 'EUR',
+  pt: 'EUR',
+  ja: 'JPY',
+  zh: 'CNY',
+  ar: 'SAR',
+  en: 'USD',
+};
 
 export default function LanguageSelector({ className = '' }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +51,14 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
     localStorage.setItem('calcwise_lang', lang.code);
     document.documentElement.lang = lang.code;
     document.documentElement.dir = lang.dir || 'ltr';
+
+    // Automatically set corresponding regional currency
+    const defaultCurrencyCode = LANGUAGE_DEFAULT_CURRENCY[lang.code];
+    if (defaultCurrencyCode) {
+      const targetCurrency = getCurrency(defaultCurrencyCode);
+      setGlobalCurrency(targetCurrency);
+    }
+
     setIsTranslating(true);
 
     // Trigger full-page content translation with callback

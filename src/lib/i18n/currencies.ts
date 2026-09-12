@@ -25,7 +25,7 @@ export const DEFAULT_CURRENCY = SUPPORTED_CURRENCIES[0];
 
 export function getCurrency(symbolOrCode: string): CurrencyOption {
   return (
-    SUPPORTED_CURRENCIES.find((c) => c.symbol === symbolOrCode || c.code === symbolOrCode) ||
+    SUPPORTED_CURRENCIES.find((c) => c.code === symbolOrCode || c.symbol === symbolOrCode) ||
     DEFAULT_CURRENCY
   );
 }

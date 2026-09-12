@@ -1,4 +1,6 @@
 ---
+import { CALCULATOR_REGISTRY } from '../lib/calculations/registry';
+
 interface Props {
   title: string;
   description: string;
@@ -7,6 +9,18 @@ interface Props {
 }
 
 const { title, description, breadcrumbs = [], canonicalUrl } = Astro.props;
+
+const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const currentPath = Astro.url.pathname;
+
+const navCategories = [
+  { id: 'finance', name: 'Finance & Money', icon: '💰', count: CALCULATOR_REGISTRY.filter(c => c.category === 'finance').length },
+  { id: 'health', name: 'Health & Fitness', icon: '❤️', count: CALCULATOR_REGISTRY.filter(c => c.category === 'health').length },
+  { id: 'math', name: 'Math & Algebra', icon: '➗', count: CALCULATOR_REGISTRY.filter(c => c.category === 'math').length },
+  { id: 'construction', name: 'Construction & Materials', icon: '🏗️', count: CALCULATOR_REGISTRY.filter(c => c.category === 'construction').length },
+  { id: 'everyday', name: 'Everyday & Calendar', icon: '📅', count: CALCULATOR_REGISTRY.filter(c => c.category === 'everyday').length },
+  { id: 'converters', name: 'Conversions & Units', icon: '⇄', count: CALCULATOR_REGISTRY.filter(c => c.category === 'converters').length },
+];
 ---
 
 <!doctype html>
@@ -147,6 +161,40 @@ const { title, description, breadcrumbs = [], canonicalUrl } = Astro.props;
           </div>
         </div>
       </div>
+
+      <!-- Mini Category Navigation Strip (Shown on all pages except Homepage) -->
+      {!isHomePage && (
+        <div class="no-print mb-6 -mt-2">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400">All Categories</span>
+            <a href="/" class="text-[11px] text-brand-primary hover:underline flex items-center gap-1 font-medium">
+              <span>View All 50 Tools</span>
+              <span>→</span>
+            </a>
+          </div>
+          <div class="flex overflow-x-auto gap-2 pb-1 sm:grid sm:grid-cols-3 lg:grid-cols-6 no-scrollbar">
+            {navCategories.map((cat) => {
+              const isActive = currentPath.startsWith(`/${cat.id}`);
+              return (
+                <a
+                  href={`/${cat.id}`}
+                  class={`flex items-center space-x-2 px-3 py-2 rounded-xl border text-left transition shrink-0 sm:shrink ${
+                    isActive
+                      ? 'bg-blue-50/80 border-brand-primary text-brand-primary font-semibold shadow-2xs ring-1 ring-brand-primary/20'
+                      : 'bg-white border-brand-border text-brand-dark hover:border-brand-primary/40 hover:bg-gray-50/80 shadow-2xs'
+                  }`}
+                >
+                  <span class="text-base">{cat.icon}</span>
+                  <div class="min-w-0">
+                    <div class="text-xs font-bold truncate leading-tight">{cat.name}</div>
+                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">{cat.count} Tools</div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <slot />
 

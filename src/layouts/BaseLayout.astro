@@ -2,6 +2,7 @@
 import { CALCULATOR_REGISTRY } from '../lib/calculations/registry';
 import GlobalSearch from '../components/GlobalSearch';
 import LanguageSelector from '../components/LanguageSelector';
+import CurrencySelector from '../components/CurrencySelector';
 
 interface Props {
   title: string;
@@ -309,6 +310,24 @@ if (currentPath.startsWith('/finance')) {
         border-color: #CBD5E1 !important;
         transform: translateY(-1px);
       }
+
+      /* Clean translation styles - suppress external google toolbar artifacts */
+      .goog-te-banner-frame, .goog-te-banner-frame.skiptranslate, iframe.skiptranslate {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+      }
+      body {
+        top: 0px !important;
+      }
+      .goog-tooltip, .goog-tooltip:hover {
+        display: none !important;
+      }
+      .goog-text-highlight {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-brand-surface text-brand-dark font-sans flex flex-col antialiased">
@@ -346,11 +365,12 @@ if (currentPath.startsWith('/finance')) {
           <GlobalSearch client:load className="w-full" />
         </div>
 
-        <!-- Right Controls: Language Selector + Verified Math Engine Badge -->
-        <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+        <!-- Right Controls: Language Selector + Currency Selector + Verified Math Engine Badge -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
           <LanguageSelector client:load />
+          <CurrencySelector client:load />
 
-          <span class="hidden md:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="hidden xl:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
             Verified Math Engine
           </span>
@@ -520,8 +540,19 @@ if (currentPath.startsWith('/finance')) {
       </div>
     </footer>
 
-    <!-- Multi-Language Sync & Preference Script -->
+    <!-- Multi-Language Sync & Full-Page Translation Engine -->
+    <div id="google_translate_element" style="display:none"></div>
     <script is:inline>
+      function googleTranslateElementInit() {
+        if (window.google && window.google.translate) {
+          new window.google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,es,fr,de,ar,pt,zh-CN,ja',
+            autoDisplay: false
+          }, 'google_translate_element');
+        }
+      }
+
       (function() {
         try {
           const savedLang = localStorage.getItem('calcwise_lang');
@@ -534,5 +565,6 @@ if (currentPath.startsWith('/finance')) {
         } catch (e) {}
       })();
     </script>
+    <script is:inline src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </body>
 </html>

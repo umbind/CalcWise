@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateMortgage } from '../../../lib/calculations/mortgage';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function MortgageIsland() {
   const [homePrice, setHomePrice] = useState<string>('400000');
@@ -10,6 +11,7 @@ export default function MortgageIsland() {
   const [homeInsurance, setHomeInsurance] = useState<string>('1200');
   const [hoa, setHoa] = useState<string>('0');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const priceId = useId();
   const downId = useId();
@@ -24,6 +26,7 @@ export default function MortgageIsland() {
     annualPropertyTax: propertyTax,
     annualHomeInsurance: homeInsurance,
     monthlyHoa: hoa,
+    currencySymbol: currency,
   });
 
   return (
@@ -33,7 +36,7 @@ export default function MortgageIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={priceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Home Purchase Price ($)
+              Home Purchase Price ({currency})
             </label>
             <input
               id={priceId}
@@ -48,7 +51,7 @@ export default function MortgageIsland() {
           <div>
             <div className="flex justify-between items-center mb-1">
               <label htmlFor={downId} className="block text-sm font-semibold text-brand-dark">
-                Down Payment ($)
+                Down Payment ({currency})
               </label>
               {outcome.value && (
                 <span className="text-xs font-bold text-brand-primary">
@@ -104,7 +107,7 @@ export default function MortgageIsland() {
             </span>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">Tax ($/yr)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">Tax ({currency}/yr)</label>
                 <input
                   type="number"
                   value={propertyTax}
@@ -113,7 +116,7 @@ export default function MortgageIsland() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">Ins. ($/yr)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">Ins. ({currency}/yr)</label>
                 <input
                   type="number"
                   value={homeInsurance}
@@ -122,7 +125,7 @@ export default function MortgageIsland() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">HOA ($/mo)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">HOA ({currency}/mo)</label>
                 <input
                   type="number"
                   value={hoa}

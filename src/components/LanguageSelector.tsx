@@ -1,22 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SUPPORTED_LANGUAGES, type LanguageOption } from '../lib/i18n/translations';
+import { triggerPageTranslation } from '../lib/i18n/translator';
+import { getCurrency, setGlobalCurrency } from '../lib/i18n/currencies';
 
 interface LanguageSelectorProps {
   className?: string;
 }
+
+const LANGUAGE_DEFAULT_CURRENCY: Record<string, string> = {
+  hi: '₹',
+  es: '€',
+  fr: '€',
+  de: '€',
+  pt: '€',
+  ja: '¥',
+  zh: '¥',
+  ar: '﷼',
+  en: '$',
+};
 
 export default function LanguageSelector({ className = '' }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<string>('en');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Initialize language from localStorage or browser
+  // Initialize language from localStorage or cookies
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('calcwise_lang');
       if (saved && SUPPORTED_LANGUAGES.some((l) => l.code === saved)) {
         setCurrentLang(saved);
-        applyLanguage(saved);
       }
     }
   }, []);
@@ -32,23 +45,28 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const applyLanguage = (code: string) => {
-    const langObj = SUPPORTED_LANGUAGES.find((l) => l.code === code) || SUPPORTED_LANGUAGES[0];
-    document.documentElement.lang = langObj.code;
-    document.documentElement.dir = langObj.dir || 'ltr';
-    localStorage.setItem('calcwise_lang', code);
-
-    // Dispatch global event for other components
-    window.dispatchEvent(
-      new CustomEvent('calcwise_language_changed', {
-        detail: { lang: code, langObj },
-      })
-    );
-  };
-
   const handleSelect = (lang: LanguageOption) => {
     setCurrentLang(lang.code);
-    applyLanguage(lang.code);
+    localStorage.setItem('calcwise_lang', lang.code);
+    document.documentElement.lang = lang.code;
+    document.documentElement.dir = lang.dir || 'ltr';
+
+    // Auto-sync currency if user hasn't explicitly locked one
+    const defaultCurrSymbol = LANGUAGE_DEFAULT_CURRENCY[lang.code];
+    if (defaultCurrSymbol) {
+      setGlobalCurrency(getCurrency(defaultCurrSymbol));
+    }
+
+    // Trigger full-page content translation
+    triggerPageTranslation(lang.code);
+
+    // Dispatch global event for local reactive components
+    window.dispatchEvent(
+      new CustomEvent('calcwise_language_changed', {
+        detail: { lang: lang.code, langObj: lang },
+      })
+    );
+
     setIsOpen(false);
   };
 

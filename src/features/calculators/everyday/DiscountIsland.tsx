@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateDiscount } from '../../../lib/calculations/discount';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function DiscountIsland() {
   const [originalPrice, setOriginalPrice] = useState<string>('100');
@@ -7,6 +8,7 @@ export default function DiscountIsland() {
   const [additionalDiscountPercentage, setAdditionalDiscountPercentage] = useState<string>('10');
   const [salesTaxRate, setSalesTaxRate] = useState<string>('8');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const priceId = useId();
   const d1Id = useId();
@@ -18,6 +20,7 @@ export default function DiscountIsland() {
     discountPercentage,
     additionalDiscountPercentage,
     salesTaxRate,
+    currencySymbol: currency,
   });
 
   return (
@@ -27,7 +30,7 @@ export default function DiscountIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={priceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Original Retail Price ($)
+              Original Retail Price ({currency})
             </label>
             <input
               id={priceId}

@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateTip } from '../../../lib/calculations/tip';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function TipIsland() {
   const [bill, setBill] = useState<string>('75.00');
@@ -7,6 +8,7 @@ export default function TipIsland() {
   const [people, setPeople] = useState<string>('2');
   const [roundUp, setRoundUp] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const billId = useId();
   const peopleId = useId();
@@ -16,6 +18,7 @@ export default function TipIsland() {
     tipPercentage: tipPct,
     numberOfPeople: people,
     roundUpToNearestDollar: roundUp,
+    currencySymbol: currency,
   });
 
   return (
@@ -24,10 +27,10 @@ export default function TipIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={billId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Bill Amount ($)
+              Bill Amount ({currency})
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-2.5 text-brand-muted font-bold text-sm">$</span>
+              <span className="absolute left-3.5 top-2.5 text-brand-muted font-bold text-sm">{currency}</span>
               <input
                 id={billId}
                 type="number"

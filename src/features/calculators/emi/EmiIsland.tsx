@@ -1,11 +1,12 @@
 import { useState, useId } from 'react';
 import { calculateEmi } from '../../../lib/calculations/emi';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function EmiIsland() {
   const [principal, setPrincipal] = useState<string>('250000');
   const [annualRate, setAnnualRate] = useState<string>('7.5');
   const [tenureYears, setTenureYears] = useState<string>('15');
-  const [currency] = useState<string>('$');
+  const { symbol: currency } = useCurrency('$');
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
 

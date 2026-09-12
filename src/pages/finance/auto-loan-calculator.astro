@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import AutoLoanIsland from '../../features/calculators/finance/AutoLoanIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { AUTO_LOAN_FORMULA_ID, AUTO_LOAN_FORMULA_VERSION } from '../../lib/calculations/auto_loan';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'auto-loan-calculator',
+  calculatorName: 'Auto Loan & Financing Payment Calculator',
+  formulaId: AUTO_LOAN_FORMULA_ID,
+  formulaVersion: AUTO_LOAN_FORMULA_VERSION,
+  methodology:
+    'Computes monthly vehicle loan installments, sales taxes, net trade-in equity, and total ownership costs using standard reducing-balance amortization with arbitrary decimal precision.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Consumer Advice on Car Loans and Financing',
+      authority: 'Federal Trade Commission (FTC)',
+      url: 'https://consumer.ftc.gov/articles/financing-or-leasing-car',
+    },
+    {
+      title: 'Auto Loan Shopping Sheet and APR Guidelines',
+      authority: 'Consumer Financial Protection Bureau (CFPB)',
+      url: 'https://www.consumerfinance.gov/consumer-tools/auto-loans/',
+    },
+  ],
+  assumptions: [
+    'Interest is compounded monthly across a fixed term length.',
+    'Trade-in credit reduces the taxable sales basis where legally recognized by state jurisdiction.',
+    'Excludes registration, title fees, destination charges, or dealer documentation fees.',
+  ],
+  limitations: [
+    'Actual dealer financing terms and APR depend on borrower credit score and lender approval.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for informational estimation purposes only. Verify final vehicle pricing, financing rates, and dealer fees with your auto dealership or financing institution.',
+};
+---
+
+<BaseLayout
+  title="Auto Loan Calculator: Monthly Payment, Tax & Total Cost"
+  description="Calculate monthly car loan payments, trade-in equity, sales taxes, and total vehicle purchase costs with verified decimal precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'Auto Loan Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/auto-loan-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Personal Finance & Borrowing</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Auto Loan Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate your monthly vehicle financing payment, factoring in vehicle price, trade-in equity, sales tax, and interest rate.
+        </p>
+      </div>
+      <CalculatorActions toolName="Auto Loan" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Auto Loan Calculator Widget">
+      <AutoLoanIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Your Auto Financing Costs</h2>
+        <p class="text-brand-muted mb-4">
+          A car loan payment comprises the principal loan amount, interest, and state sales taxes amortized across the chosen term. Longer loan terms (e.g. 72 or 84 months) lower the monthly payment but significantly increase the cumulative interest paid over the life of the vehicle.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Financed = Price + Tax - Down Payment - (Trade-in - Amount Owed)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="auto-loan-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

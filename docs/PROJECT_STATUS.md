@@ -1,0 +1,102 @@
+# CalcWise Project Status
+
+**Current Phase:** Step 12 Complete (Production Launch, Edge Deployment & Operational Readiness Verified)  
+**Repository State:** 58 Canonical Static Routes Verified (100% Green Vitest Tests, 0 Build Errors, 0 Warnings)  
+**Platform Status:** Complete & Production Launch Ready  
+**Last Updated:** September 2026
+
+## Progress Tracker
+- [x] Node.js LTS (v24.19.0) and pnpm (12.4.1) verified and installed.
+- [x] Canonical documentation (`CALCWISE_MASTER.md`, `AGENTS.md`, `DEPLOYMENT.md`) installed.
+- [x] Antigravity-native rules (`.agents/rules/`) and skills (`.agents/skills/`) established.
+- [x] Web stack scaffolding: Astro 5.4 + TypeScript (strict) + Tailwind CSS + Zod + decimal.js + Vitest.
+- [x] Universal calculator engine & contracts (`CalculationOutcome`, `CalculationPassport`, `CalculationTrace`).
+- [x] **Finance Category (12 Calculators):**
+  - [x] EMI / Loan Calculator (`/finance/emi-calculator/`)
+  - [x] Compound Interest Calculator (`/finance/compound-interest-calculator/`)
+  - [x] Simple Interest Calculator (`/finance/simple-interest-calculator/`)
+  - [x] Mortgage Payment Calculator (`/finance/mortgage-calculator/`)
+  - [x] Salary & Wage Converter (`/finance/salary-calculator/`)
+  - [x] Auto Loan Calculator (`/finance/auto-loan-calculator/`)
+  - [x] Loan Refinance Calculator (`/finance/refinance-calculator/`)
+  - [x] 401(k) Retirement Savings Calculator (`/finance/401k-calculator/`)
+  - [x] ROI (Return on Investment) Calculator (`/finance/roi-calculator/`)
+  - [x] Credit Card Payoff Calculator (`/finance/credit-card-payoff-calculator/`)
+  - [x] Certificate of Deposit (CD) Calculator (`/finance/cd-calculator/`)
+  - [x] Inflation & Purchasing Power Calculator (`/finance/inflation-calculator/`)
+- [x] **Health & Fitness Category (10 Calculators):**
+  - [x] Adult BMI Calculator (`/health/bmi-calculator/`)
+  - [x] Basal Metabolic Rate (BMR) Calculator (`/health/bmr-calculator/`)
+  - [x] Daily Calorie & TDEE Calculator (`/health/calorie-calculator/`)
+  - [x] Daily Water Intake Calculator (`/health/water-intake-calculator/`)
+  - [x] US Navy Body Fat Calculator (`/health/body-fat-calculator/`)
+  - [x] Macronutrient Split Calculator (`/health/macro-calculator/`)
+  - [x] Running Pace & Finish Time Calculator (`/health/pace-calculator/`)
+  - [x] Ideal Body Weight (IBW) Calculator (`/health/ideal-weight-calculator/`)
+  - [x] Target Heart Rate Training Zone Calculator (`/health/target-heart-rate-calculator/`)
+  - [x] Pregnancy Due Date & Gestational Age Calculator (`/health/pregnancy-due-date-calculator/`)
+- [x] **Math & Algebra Category (10 Calculators):**
+  - [x] Percentage Calculator (`/math/percentage-calculator/`)
+  - [x] Mean, Median & Mode Calculator (`/math/average-calculator/`)
+  - [x] Fraction Operations Calculator (`/math/fraction-calculator/`)
+  - [x] Scientific & Function Calculator (`/math/scientific-calculator/`)
+  - [x] Quadratic Equation Solver (`/math/quadratic-calculator/`)
+  - [x] Ratio & Proportion Solver (`/math/ratio-calculator/`)
+  - [x] Permutations & Combinations Calculator (`/math/permutation-combination-calculator/`)
+  - [x] Standard Deviation & Variance Calculator (`/math/standard-deviation-calculator/`)
+  - [x] Exponent & Power Calculator (`/math/exponent-calculator/`)
+  - [x] Logarithm (Log & Ln) Calculator (`/math/logarithm-calculator/`)
+- [x] **Construction & DIY Category (8 Calculators):**
+  - [x] Concrete Volume Calculator (`/construction/concrete-calculator/`)
+  - [x] Square Footage & Area Calculator (`/construction/square-footage-calculator/`)
+  - [x] Interior Wall Paint Calculator (`/construction/paint-calculator/`)
+  - [x] Flooring & Tile Quantity Calculator (`/construction/flooring-calculator/`)
+  - [x] Mulch & Topsoil Volume Calculator (`/construction/mulch-calculator/`)
+  - [x] Roofing Shingle & Pitch Calculator (`/construction/roofing-calculator/`)
+  - [x] Drywall Sheet & Mud Calculator (`/construction/drywall-calculator/`)
+  - [x] Gravel & Crushed Stone Tonnage Calculator (`/construction/gravel-calculator/`)
+- [x] **Everyday & Lifestyle Category (8 Calculators):**
+  - [x] Tip & Bill Splitter (`/everyday/tip-calculator/`)
+  - [x] Chronological Age Calculator (`/everyday/age-calculator/`)
+  - [x] Date Difference & Calendar Calculator (`/everyday/date-difference-calculator/`)
+  - [x] Discount & Sales Tax Calculator (`/everyday/discount-calculator/`)
+  - [x] Fuel Cost & Road Trip Calculator (`/everyday/fuel-cost-calculator/`)
+  - [x] Time Duration & Work Hours Calculator (`/everyday/time-duration-calculator/`)
+  - [x] Electricity Usage & Appliance Cost Calculator (`/everyday/electricity-calculator/`)
+  - [x] Recipe Multiplier & Portion Scaler (`/everyday/recipe-scaler-calculator/`)
+- [x] **Measurement & FX Converters (2 Calculators):**
+  - [x] Universal Unit Converter (`/converters/unit-converter/`)
+  - [x] Global Currency Converter (`/converters/currency-converter/`)
+- [x] **Category Hub Landing Pages (6 Canonical Hubs):**
+  - [x] Personal Finance Hub (`/finance/`)
+  - [x] Health & Metabolic Screening Hub (`/health/`)
+  - [x] Math, Algebra & Statistics Hub (`/math/`)
+  - [x] Construction & Materials Hub (`/construction/`)
+  - [x] Everyday Utilities Hub (`/everyday/`)
+  - [x] Measurement Converters Hub (`/converters/`)
+- [x] **Global Discovery Hub & Internal Linking:**
+  - [x] Homepage (`/`) with 6 Category Hub cards and instant search registry
+  - [x] Header and Footer Sitewide Nav with 6 Category Hub links
+  - [x] Dynamic `RelatedCalculators.astro` companion recommendation component
+  - [x] Category FAQs with Schema.org JSON-LD `FAQPage` and `CollectionPage` structured data
+- [x] **Hardening, Print Stylesheets & Security (Step 10):**
+  - [x] Print & PDF media stylesheet (`@media print`): distraction-free layout with print-only header/footer and page-break isolation.
+  - [x] Calculator Actions toolbar (`CalculatorActions.tsx`): 1-click clipboard link sharing and PDF print triggers.
+  - [x] Accessibility (WCAG 2.2 AA): `aria-live="polite"` dynamic calculation updates, accessible external source links (`aria-label`), and 2px high-contrast focus rings.
+  - [x] Security headers: `<meta http-equiv="X-Content-Type-Options" content="nosniff" />` and `<meta name="referrer" content="strict-origin-when-cross-origin" />`.
+  - [x] OpenGraph & Twitter Cards: rich social graph preview metadata configured sitewide.
+  - [x] Discovery & Crawl: canonical `robots.txt` and `sitemap.xml` generated for all 57 routes.
+- [x] **Catalog Expansion (Step 11):**
+  - [x] Expanded catalog to 50 calculators across 6 categories.
+  - [x] 100% decoupled pure calculation engines in `src/lib/calculations/`.
+  - [x] Arbitrary-precision math with `decimal.js` and `BigInt` factorials.
+  - [x] 50 test files with 154 unit and golden dataset tests passing (100% green).
+- [x] **Production Launch & Operational Readiness (Step 12 Complete):**
+  - [x] Custom branded 404 Error Recovery page (`src/pages/404.astro`) with category navigation and flagship recommendations.
+  - [x] Edge caching & security configuration: `public/_headers` (immutable cache for `/_astro/*`, no-cache for HTML, strict CSP/security headers).
+  - [x] Canonical routing & redirects: `public/_redirects` for trailing-slash normalization and keyword shortcuts.
+  - [x] Cloudflare Pages native configuration: `wrangler.toml` targeting `dist/`.
+  - [x] User trust & discrepancy reporting: `FeedbackModal.tsx` wired into `CalculatorActions.tsx` with client-side audit logs.
+  - [x] Zero-cookie telemetry: `src/lib/analytics/events.ts` dispatcher for calculation runs, exports, shares, and feedback.
+  - [x] Production Deployment Runbook (`docs/DEPLOYMENT.md`) covering Cloudflare Pages, Vercel, Netlify, and Docker/Nginx.
+  - [x] Production build generated 58 static routes in ~3.7s with 0 errors, 0 warnings, 1 hint across 218 files.

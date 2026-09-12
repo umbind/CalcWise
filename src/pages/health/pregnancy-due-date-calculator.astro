@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import PregnancyDueDateIsland from '../../features/calculators/health/PregnancyDueDateIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { PREGNANCY_FORMULA_ID, PREGNANCY_FORMULA_VERSION } from '../../lib/calculations/pregnancy_due_date';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'pregnancy-due-date-calculator',
+  calculatorName: 'Pregnancy Due Date & Gestational Age Calculator',
+  formulaId: PREGNANCY_FORMULA_ID,
+  formulaVersion: PREGNANCY_FORMULA_VERSION,
+  methodology:
+    'Applies standard Naegele’s rule (LMP + 280 days) adjusted for individual menstrual cycle length variations, mapping current gestational age in weeks and days across clinical trimesters.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Methods for Estimating the Due Date (Committee Opinion No. 700)',
+      authority: 'American College of Obstetricians and Gynecologists (ACOG)',
+      url: 'https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date',
+    },
+    {
+      title: 'Prenatal Care and Gestational Age Assessment Standards',
+      authority: 'National Institute of Child Health and Human Development (NICHD)',
+      url: 'https://www.nichd.nih.gov/',
+    },
+  ],
+  assumptions: [
+    'Assumes standard luteal phase duration with ovulation occurring approximately 14 days before the next expected menses.',
+    'Full term human pregnancy is conventionally modeled at 280 gestational days (40 completed weeks) from the onset of the LMP.',
+  ],
+  limitations: [
+    'First-trimester crown-rump length (CRL) ultrasound remains the clinical gold standard for establishing definitive gestational dating if menstrual dates are uncertain.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Obstetric Standards',
+  disclaimer:
+    'This calculator provides estimated gestational timelines. Only about 4% of infants are born on their exact predicted delivery date. Review official ultrasound dating with your obstetrician or certified midwife.',
+};
+---
+
+<BaseLayout
+  title="Pregnancy Due Date Calculator: Naegele’s Rule & Milestones"
+  description="Calculate your estimated due date (EDD), current gestational age in weeks and days, and trimester milestones based on your last period."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Pregnancy Due Date Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/pregnancy-due-date-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Maternal & Fetal Health</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Pregnancy Due Date Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Estimate your baby’s delivery date, track your current gestational week, and view developmental trimester milestones.
+        </p>
+      </div>
+      <CalculatorActions toolName="Pregnancy Due Date" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Pregnancy Due Date Calculator Widget">
+      <PregnancyDueDateIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">How Naegele’s Rule Calculates Due Dates</h2>
+        <p class="text-brand-muted mb-4">
+          Formulated by German obstetrician Franz Naegele, this clinical rule estimates the date of delivery by adding 280 days (40 weeks) to the first day of your last normal menstrual period (LMP). If your average menstrual cycle differs from the textbook 28 days, adjustments reflect the shift in ovulation timing.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Due Date = First Day of LMP + 280 Days + (Cycle Length - 28 Days)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="pregnancy-due-date-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

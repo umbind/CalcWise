@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import GravelIsland from '../../features/calculators/construction/GravelIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { GRAVEL_FORMULA_ID, GRAVEL_FORMULA_VERSION } from '../../lib/calculations/gravel';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'gravel-calculator',
+  calculatorName: 'Gravel, Aggregate, Crushed Stone & Sand Tonnage Calculator',
+  formulaId: GRAVEL_FORMULA_ID,
+  formulaVersion: GRAVEL_FORMULA_VERSION,
+  methodology:
+    'Computes bulk volume in cubic yards and converts to commercial quarry billing weights (US short tons and metric tonnes) based on material compaction density factors (2,600 to 3,000 lbs/cu yd).',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Aggregate Handbook and Quarry Operations Guide',
+      authority: 'National Stone, Sand & Gravel Association (NSSGA)',
+      url: 'https://www.nssga.org/',
+    },
+    {
+      title: 'Standard Specifications for Crushed Aggregate Base Courses',
+      authority: 'Federal Highway Administration (FHWA)',
+      url: 'https://www.fhwa.dot.gov/',
+    },
+  ],
+  assumptions: [
+    'One US short ton equals exactly 2,000 pounds; one metric tonne equals 1,000 kg (2,204.62 lbs).',
+    'Crushed stone #57 driveway gravel averages approximately 2,700 lbs per loose cubic yard (1.35 tons/yd³).',
+  ],
+  limitations: [
+    'Heavy roller mechanical compaction can decrease loose in-place thickness by 10% to 15%. Moisture content can slightly alter quarry scale weights.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Construction Standards',
+  disclaimer:
+    'This calculator provides weight and volume estimates for quarry purchases and truck deliveries. Confirm axle load weight limits and delivery access with your regional quarry supplier.',
+};
+---
+
+<BaseLayout
+  title="Gravel Calculator: Tons, Cubic Yards & Truck Loads"
+  description="Calculate gravel, crushed stone, pea gravel, and sand needed in tons, cubic yards, and dump truck loads with verified aggregate density."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Gravel Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/gravel-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Civil Works & Driveways</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Gravel & Aggregate Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the cubic yards and tonnage of gravel, crushed rock, decomposed granite, or sand needed for driveways, pads, and pathways.
+        </p>
+      </div>
+      <CalculatorActions toolName="Gravel & Aggregate" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Gravel and Aggregate Calculator Widget">
+      <GravelIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Cubic Yards vs. Tonnage</h2>
+        <p class="text-brand-muted mb-4">
+          While you calculate a project's physical dimensions in cubic feet or cubic yards ($L \times W \times D$), commercial quarries and bulk stone suppliers sell gravel by weight in <strong>tons</strong>. Because different stone aggregates have different densities, multiplying the cubic volume by the material's bulk density (typically 1.3 to 1.5 tons per cubic yard) yields the exact tonnage to order.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Cubic Yards = (Length ft × Width ft × Depth ft) ÷ 27 ; Tons = (Cubic Yards × Density lbs/yd³) ÷ 2,000</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="gravel-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

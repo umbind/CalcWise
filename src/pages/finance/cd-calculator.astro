@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import CdIsland from '../../features/calculators/finance/CdIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CD_FORMULA_ID, CD_FORMULA_VERSION } from '../../lib/calculations/cd';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'cd-calculator',
+  calculatorName: 'Certificate of Deposit (CD) Calculator',
+  formulaId: CD_FORMULA_ID,
+  formulaVersion: CD_FORMULA_VERSION,
+  methodology:
+    'Computes compound interest earnings, maturity value, and Annual Percentage Yield (APY) for fixed-rate certificates of deposit with daily, monthly, or annual compounding frequency.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Certificates of Deposit (CDs): How They Work and FDIC Insurance',
+      authority: 'Federal Deposit Insurance Corporation (FDIC)',
+      url: 'https://www.fdic.gov/resources/consumers/consumer-news/2023-05.html',
+    },
+    {
+      title: 'Truth in Savings Act (Regulation DD) - APY Calculation Guidelines',
+      authority: 'Consumer Financial Protection Bureau (CFPB)',
+      url: 'https://www.consumerfinance.gov/rules-policy/regulations/1030/',
+    },
+  ],
+  assumptions: [
+    'Interest rate remains fixed throughout the specified term duration.',
+    'All accrued interest is retained in the account until maturity without early withdrawals.',
+    'Daily compounding models a 365-day conventional financial calendar.',
+  ],
+  limitations: [
+    'Does not account for early withdrawal penalties or federal/state income taxes owed on annual interest earnings.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for informational estimation purposes only. Check with your issuing bank or credit union for official APY disclosures, early withdrawal penalties, and compounding schedules.',
+};
+---
+
+<BaseLayout
+  title="CD Calculator: Certificate of Deposit Earnings & APY"
+  description="Calculate your Certificate of Deposit (CD) returns, maturity balance, total interest earned, and effective APY with verified compound precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'CD Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/cd-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Savings & Fixed Income</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Certificate of Deposit (CD) Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the growth of your fixed-income savings, compare compounding intervals, and determine your effective Annual Percentage Yield (APY).
+        </p>
+      </div>
+      <CalculatorActions toolName="CD" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Certificate of Deposit Calculator Widget">
+      <CdIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding CD Interest & APY</h2>
+        <p class="text-brand-muted mb-4">
+          A Certificate of Deposit is a low-risk, insured savings instrument that locks up a lump-sum deposit for a predetermined term in exchange for a guaranteed interest rate. Compounding frequency (daily vs. monthly) increases the Annual Percentage Yield (APY) relative to the nominal interest rate.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Maturity Balance = Deposit × (1 + Rate / CompoundingPeriods)^(Periods × Years)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="cd-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

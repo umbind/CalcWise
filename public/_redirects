@@ -1,0 +1,17 @@
+# Cloudflare Pages Redirects
+
+# Canonical Trailing Slash Normalization for Category Hubs
+/finance         /finance/         301
+/health          /health/          301
+/math            /math/            301
+/construction    /construction/    301
+/everyday        /everyday/        301
+/converters      /converters/      301
+
+# Common Aliases & Shortcuts
+/loan-calculator             /finance/emi-calculator/               301
+/mortgage                    /finance/mortgage-calculator/          301
+/bmi                         /health/bmi-calculator/                301
+/percentage                  /math/percentage-calculator/           301
+/convert                     /converters/unit-converter/            301
+/fx                          /converters/currency-converter/        301

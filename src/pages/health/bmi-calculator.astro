@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import BmiIsland from '../../features/calculators/bmi/BmiIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { BMI_FORMULA_ID, BMI_FORMULA_VERSION } from '../../lib/calculations/bmi';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'bmi-calculator',
+  calculatorName: 'Adult BMI Calculator (WHO Standards)',
+  formulaId: BMI_FORMULA_ID,
+  formulaVersion: BMI_FORMULA_VERSION,
+  methodology:
+    'Applies the Quetelet Body Mass Index formula (mass in kg divided by height in meters squared) against standard World Health Organization (WHO) adult weight category classifications.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Body Mass Index - BMI Classification Guidelines',
+      authority: 'World Health Organization (WHO)',
+      url: 'https://www.who.int/data/gho/data/themes/theme-details/GHO/body-mass-index-(bmi)',
+    },
+    {
+      title: 'About Adult BMI & Clinical Limitations',
+      authority: 'Centers for Disease Control and Prevention (CDC)',
+      url: 'https://www.cdc.gov/bmi/adult-calculator/index.html',
+    },
+  ],
+  assumptions: [
+    'Calculated for non-pregnant adults aged 20 years and older.',
+    'Assumes standard adult bone structure and average body composition.',
+  ],
+  limitations: [
+    'Does not differentiate between muscle mass, bone density, and adipose fat tissue.',
+    'Athletes, bodybuilders, elderly individuals, and pregnant women should consult clinical healthcare providers.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against WHO & CDC Public Health Metrics',
+  disclaimer:
+    'Risk Tier T2 Notice: This calculator is intended strictly for population-level health screening and informational purposes. It does not provide medical diagnosis, treatment recommendations, or individualized healthcare advice.',
+};
+---
+
+<BaseLayout
+  title="BMI Calculator: Accurate Adult Body Mass Index & Healthy Weight Range"
+  description="Free, accurate adult BMI calculator with metric and imperial units, WHO classifications, healthy weight ranges, and transparent methodology."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'BMI Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/bmi-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Health & Wellness</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Adult BMI Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Check your Body Mass Index (BMI) using World Health Organization (WHO) standards, view your recommended healthy weight range, and inspect calculation formulas.
+        </p>
+      </div>
+      <CalculatorActions toolName="Adult BMI" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="BMI Calculator Widget">
+      <BmiIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <!-- WHO Reference Table -->
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">WHO Adult BMI Classifications</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-100 text-brand-dark border-b border-gray-200">
+                <th class="py-2.5 px-3 font-bold">Classification</th>
+                <th class="py-2.5 px-3 font-bold">BMI Range (kg/m²)</th>
+                <th class="py-2.5 px-3 font-bold">Health Risk Assessment</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-2 px-3 font-medium text-amber-700">Underweight</td>
+                <td class="py-2 px-3">&lt; 18.5</td>
+                <td class="py-2 px-3 text-brand-muted">Increased risk of nutritional deficiency</td>
+              </tr>
+              <tr class="bg-emerald-50/50">
+                <td class="py-2 px-3 font-semibold text-emerald-800">Normal Weight</td>
+                <td class="py-2 px-3 font-bold text-emerald-800">18.5 – 24.9</td>
+                <td class="py-2 px-3 text-emerald-700">Lowest risk of cardiovascular & metabolic issues</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-medium text-amber-800">Overweight</td>
+                <td class="py-2 px-3">25.0 – 29.9</td>
+                <td class="py-2 px-3 text-brand-muted">Moderate increase in cardiovascular risk</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-red-700">Obese (Class I & II)</td>
+                <td class="py-2 px-3">30.0 – 39.9</td>
+                <td class="py-2 px-3 text-brand-muted">Substantially increased health risk</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-bold text-red-900">Severe Obesity (Class III)</td>
+                <td class="py-2 px-3">&ge; 40.0</td>
+                <td class="py-2 px-3 text-brand-muted">High clinical concern; consultation advised</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="bmi-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

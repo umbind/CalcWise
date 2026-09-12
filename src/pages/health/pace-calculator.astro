@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import PaceIsland from '../../features/calculators/health/PaceIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { PACE_FORMULA_ID, PACE_FORMULA_VERSION } from '../../lib/calculations/pace';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'pace-calculator',
+  calculatorName: 'Running Pace & Race Split Calculator',
+  formulaId: PACE_FORMULA_ID,
+  formulaVersion: PACE_FORMULA_VERSION,
+  methodology:
+    'Computes sustained running and walking velocities in minutes per mile, minutes per kilometer, miles per hour, and kilometers per hour with multi-event distance splits.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'USA Track & Field Running Distance and Pace Standards',
+      authority: 'USA Track & Field (USATF)',
+      url: 'https://www.usatf.org/',
+    },
+    {
+      title: 'World Athletics Rules and Distance Running Guidelines',
+      authority: 'World Athletics',
+      url: 'https://worldathletics.org/',
+    },
+  ],
+  assumptions: [
+    'Assumes an even, steady pacing strategy throughout the entire duration of the activity.',
+    'Conversion constant: 1 international mile equals exactly 1.609344 kilometers.',
+  ],
+  limitations: [
+    'Does not account for terrain elevation changes, wind resistance, cardiac drift, or fatigue degradation in longer races.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Sports Science Standards',
+  disclaimer:
+    'This calculator is for athletic training and pacing guidance. Consult a medical doctor prior to beginning intensive distance running or strenuous marathon training programs.',
+};
+---
+
+<BaseLayout
+  title="Running Pace Calculator: Miles, Km & Race Splits"
+  description="Calculate your running pace per mile and per kilometer, speed in mph/kph, and race splits for 5K, 10K, Half Marathon, and Marathon."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Pace Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/pace-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Athletics & Endurance</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Running Pace Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Find your required running pace, speed, and split times for common race distances from 5K to full marathon.
+        </p>
+      </div>
+      <CalculatorActions toolName="Running Pace" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Running Pace Calculator Widget">
+      <PaceIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Race Pacing Strategy</h2>
+        <p class="text-brand-muted mb-4">
+          Pace is the inverse of speed, representing the time required to cover a fixed unit of distance. Maintaining an even pace (even splits) conserves glycogen stores and minimizes early lactic accumulation during endurance running.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Pace (Time/Distance) = Total Duration in Seconds ÷ Total Distance Units</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="pace-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

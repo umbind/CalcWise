@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RatioIsland from '../../features/calculators/math/RatioIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { RATIO_FORMULA_ID, RATIO_FORMULA_VERSION } from '../../lib/calculations/ratio';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'ratio-calculator',
+  calculatorName: 'Ratio & Proportion Unknown Variable Solver',
+  formulaId: RATIO_FORMULA_ID,
+  formulaVersion: RATIO_FORMULA_VERSION,
+  methodology:
+    'Solves for any missing term in the equality of two ratios A : B = C : D using algebraic cross-multiplication (A × D = B × C), reduces integer ratios using the Euclidean greatest common divisor algorithm, and evaluates floating-point decimal equivalents.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Proportions and Cross-Products Standards',
+      authority: 'National Council of Teachers of Mathematics (NCTM)',
+      url: 'https://www.nctm.org/',
+    },
+    {
+      title: 'Euclidean Algorithm for Greatest Common Divisor',
+      authority: 'Wolfram MathWorld',
+      url: 'https://mathworld.wolfram.com/EuclideanAlgorithm.html',
+    },
+  ],
+  assumptions: [
+    'Denominator values B and D must be non-zero.',
+    'Proportions assume linear proportional relationships between variables.',
+  ],
+  limitations: [
+    'Applies to direct geometric and arithmetic proportions with 4 terms.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Mathematical Standards',
+  disclaimer:
+    'This calculator is designed for academic, engineering, culinary, and design scaling applications with verified arithmetic accuracy.',
+};
+---
+
+<BaseLayout
+  title="Ratio Calculator: Solve Proportions & Simplify Ratios"
+  description="Solve for unknown variables in proportions A : B = C : D, simplify ratios to lowest terms using GCD, and compute decimal equivalents with verified precision."
+  breadcrumbs={[
+    { label: 'Math', href: '/math' },
+    { label: 'Ratio Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/ratio-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Arithmetic & Pre-Algebra</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Ratio & Proportion Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Solve for any missing term in an equality of ratios, simplify integer ratios to lowest terms, and scale quantities proportionally.
+        </p>
+      </div>
+      <CalculatorActions toolName="Ratio & Proportion" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Ratio Calculator Widget">
+      <RatioIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding the Cross-Product Property</h2>
+        <p class="text-brand-muted mb-4">
+          A proportion states that two ratios are equal: $A / B = C / D$. By the fundamental property of proportions, the product of the extremes ($A \times D$) equals the product of the means ($B \times C$). This enables direct algebraic solution for any unknown fourth value.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>A × D = B × C  ⟹  A = (B × C) / D,  D = (B × C) / A</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="ratio-calculator" category="math" />
+    </article>
+  </div>
+</BaseLayout>

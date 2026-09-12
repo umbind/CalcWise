@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import FlooringIsland from '../../features/calculators/construction/FlooringIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { FLOORING_FORMULA_ID, FLOORING_FORMULA_VERSION } from '../../lib/calculations/flooring';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'flooring-calculator',
+  calculatorName: 'Flooring, Tile & Hardwood Box Coverage Calculator',
+  formulaId: FLOORING_FORMULA_ID,
+  formulaVersion: FLOORING_FORMULA_VERSION,
+  methodology:
+    'Computes net planar surface area (length × width), applies industry-standard scrap/waste allowances (5% to 20% based on installation geometry), and rounds up to whole retail carton quantities.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Hardwood Flooring Installation Guidelines and Waste Factors',
+      authority: 'National Wood Flooring Association (NWFA)',
+      url: 'https://www.nwfa.org/',
+    },
+    {
+      title: 'Tile Council of North America Installation Handbook (TCNA)',
+      authority: 'Tile Council of North America (TCNA)',
+      url: 'https://www.tcnatile.com/',
+    },
+  ],
+  assumptions: [
+    'Room is assumed approximately rectangular; complex rooms should be partitioned into composite sub-rectangles.',
+    'Material can only be purchased in whole unopened carton boxes.',
+  ],
+  limitations: [
+    'Diagonal, herringbone, or chevron patterns require higher waste margins (15% to 20%) compared to straight plank installation (10%).',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Construction Standards',
+  disclaimer:
+    'This calculator is for estimation and purchasing planning. Measure accurately on-site and confirm carton box square footage with your flooring retailer before placing non-refundable orders.',
+};
+---
+
+<BaseLayout
+  title="Flooring Calculator: Sq Footage, Waste & Boxes to Buy"
+  description="Calculate square footage, scrap waste allowances, box quantities, and material costs for hardwood, laminate, vinyl plank, and tile flooring."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Flooring Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/flooring-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Interior Finishing & DIY</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Flooring Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the square footage of your space, account for installation waste, and find exactly how many boxes of flooring to purchase.
+        </p>
+      </div>
+      <CalculatorActions toolName="Flooring" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Flooring Calculator Widget">
+      <FlooringIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Why Accounting for Waste is Essential</h2>
+        <p class="text-brand-muted mb-4">
+          Every flooring project produces off-cuts at walls, staggered seam end-pieces, and doorway trims. Professional trade standards mandate adding a minimum of 10% waste for straight running bond plank layouts, and 15% to 20% for diagonal, herringbone, or irregular multi-corner architectures.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Total Area = Length × Width × (1 + Waste%); Boxes = Ceiling(Total Area / Box Coverage)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="flooring-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

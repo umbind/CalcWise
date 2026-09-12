@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import EmiIsland from '../../features/calculators/emi/EmiIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { EMI_FORMULA_ID, EMI_FORMULA_VERSION } from '../../lib/calculations/emi';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'emi-calculator',
+  calculatorName: 'EMI / Loan Payment Calculator',
+  formulaId: EMI_FORMULA_ID,
+  formulaVersion: EMI_FORMULA_VERSION,
+  methodology:
+    'Computes equal monthly installments (EMI) using the standard reducing-balance amortization formula with arbitrary-precision decimal mathematics to prevent currency rounding drift.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Principles of Real Estate Finance & Mortgage Amortization',
+      authority: 'Federal Reserve Bank Consumer Guidance',
+      url: 'https://www.consumerfinance.gov/consumer-tools/mortgages/',
+    },
+    {
+      title: 'Consumer Credit Disclosure & Annual Percentage Rate (APR) Guidelines',
+      authority: 'Consumer Financial Protection Bureau (CFPB)',
+      url: 'https://www.consumerfinance.gov/',
+    },
+  ],
+  assumptions: [
+    'Interest is compounded monthly on a standard reducing balance schedule.',
+    'Repayment occurs on equal periodic monthly dates.',
+    'Does not include upfront loan origination fees, closing costs, or property taxes.',
+  ],
+  limitations: [
+    'Fixed interest rate is assumed over the entire term. Adjustable-rate mortgages (ARMs) will vary.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified by CalcWise Financial Modeling Standards',
+  disclaimer:
+    'This calculator is for informational and educational estimation purposes only. It does not constitute formal loan approval or financial advice. Consult your lending institution for official loan terms.',
+};
+---
+
+<BaseLayout
+  title="EMI & Loan Payment Calculator: Amortization Schedule & Total Interest"
+  description="Calculate monthly EMI payments, total interest, and complete month-by-month loan amortization schedules with arbitrary decimal precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'EMI Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/emi-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Finance & Borrowing</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          EMI & Loan Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Estimate your equal monthly installment (EMI), interest costs, and view a detailed amortization schedule for home, auto, or personal loans.
+        </p>
+      </div>
+      <CalculatorActions toolName="EMI Loan" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="EMI Calculator Widget">
+      <EmiIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">How Reducing-Balance EMI Works</h2>
+        <p class="text-brand-muted mb-4">
+          Under the standard reducing-balance method, interest is calculated each month only on the remaining loan principal. As you pay down the principal over time, the interest portion of each monthly payment decreases, and the principal portion increases.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>EMI = [P × r × (1 + r)^n] ÷ [(1 + r)^n - 1]</code>
+        </div>
+        <p class="text-xs text-brand-muted mt-2">
+          Where <strong>P</strong> = Principal, <strong>r</strong> = Monthly Interest Rate (Annual Rate ÷ 1200), and <strong>n</strong> = Tenure in Months.
+        </p>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="emi-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

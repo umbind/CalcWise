@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import IdealWeightIsland from '../../features/calculators/health/IdealWeightIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { IDEAL_WEIGHT_FORMULA_ID, IDEAL_WEIGHT_FORMULA_VERSION } from '../../lib/calculations/ideal_weight';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'ideal-weight-calculator',
+  calculatorName: 'Ideal Body Weight (IBW) Multi-Formula Calculator',
+  formulaId: IDEAL_WEIGHT_FORMULA_ID,
+  formulaVersion: IDEAL_WEIGHT_FORMULA_VERSION,
+  methodology:
+    'Evaluates four recognized clinical pharmacological equations (Devine, Robinson, Miller, and Hamwi) alongside the World Health Organization (WHO) healthy BMI interval (18.5 - 24.9 kg/m²).',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Devine Formula for Pharmacokinetics and Clinical Drug Dosing',
+      authority: 'American Journal of Health-System Pharmacy',
+      url: 'https://academic.oup.com/ajhp',
+    },
+    {
+      title: 'Body Mass Index and Healthy Weight Guidelines',
+      authority: 'World Health Organization (WHO)',
+      url: 'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+    },
+  ],
+  assumptions: [
+    'Calculations apply to biologically mature adults over the height of 5 feet (60 inches / 152.4 cm).',
+    'Clinical equations represent statistical lean averages developed for intravenous drug clearance normalization.',
+  ],
+  limitations: [
+    'Does not differentiate between high skeletal muscle hypertrophy (e.g. power athletes) and elevated adipose tissue.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Clinical Standards',
+  disclaimer:
+    'This calculator is for informational reference only. Ideal body weight differs across bone structures, ethnic backgrounds, and athletic phenotypes. Discuss healthy target weight ranges with your physician.',
+};
+---
+
+<BaseLayout
+  title="Ideal Weight Calculator: Devine, Robinson & BMI Range"
+  description="Calculate your ideal body weight using Devine, Robinson, Miller, and Hamwi clinical formulas, plus the WHO healthy BMI weight range."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Ideal Weight Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/ideal-weight-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Anthropometry & Health</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Ideal Weight Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Compare recognized clinical formulas and find your recommended body weight range based on height and biological sex.
+        </p>
+      </div>
+      <CalculatorActions toolName="Ideal Weight" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Ideal Weight Calculator Widget">
+      <IdealWeightIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Clinical IBW Formulas</h2>
+        <p class="text-brand-muted mb-4">
+          The Devine formula is the most widely adopted standard in hospital pharmacokinetics to adjust drug dosages (such as theophylline and aminoglycosides). Developed in 1974, it establishes a baseline weight for a 5-foot frame and adds incremental weight per additional inch of height.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Devine (Male) = 50 kg + 2.3 kg × (Height in Inches - 60)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="ideal-weight-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

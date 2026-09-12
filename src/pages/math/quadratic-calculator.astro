@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import QuadraticIsland from '../../features/calculators/math/QuadraticIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { QUADRATIC_FORMULA_ID, QUADRATIC_FORMULA_VERSION } from '../../lib/calculations/quadratic';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'quadratic-calculator',
+  calculatorName: 'Quadratic Equation Solver & Discriminant Calculator',
+  formulaId: QUADRATIC_FORMULA_ID,
+  formulaVersion: QUADRATIC_FORMULA_VERSION,
+  methodology:
+    'Evaluates the quadratic equation ax² + bx + c = 0 using the quadratic formula x = (-b ± √(b² - 4ac)) / (2a), with discriminant classification, complex conjugate root arithmetic, and parabolic vertex geometry.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Quadratic Equations and Functions: Theoretical Foundation',
+      authority: 'National Council of Teachers of Mathematics (NCTM)',
+      url: 'https://www.nctm.org/',
+    },
+    {
+      title: 'Algebra and Trigonometry Standards: Quadratic Formula',
+      authority: 'OpenStax / Rice University',
+      url: 'https://openstax.org/details/books/algebra-and-trigonometry',
+    },
+  ],
+  assumptions: [
+    'Coefficient a must be non-zero for a valid second-degree polynomial.',
+    'Complex solutions are represented in standard a + bi format.',
+  ],
+  limitations: [
+    'Applies to standard single-variable polynomial equations up to degree 2.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Mathematical Standards',
+  disclaimer:
+    'This calculator is designed for academic, scientific, and engineering purposes with rigorous mathematical verification.',
+};
+---
+
+<BaseLayout
+  title="Quadratic Formula Calculator: Roots, Discriminant & Vertex"
+  description="Solve quadratic equations ax² + bx + c = 0 with step-by-step discriminant analysis, real and complex roots, and parabola vertex coordinates."
+  breadcrumbs={[
+    { label: 'Math', href: '/math' },
+    { label: 'Quadratic Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/quadratic-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Algebra & Polynomials</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Quadratic Formula Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Solve any quadratic equation, determine real or complex roots, inspect the discriminant, and find the parabola's vertex.
+        </p>
+      </div>
+      <CalculatorActions toolName="Quadratic Formula" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Quadratic Formula Calculator Widget">
+      <QuadraticIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding the Discriminant (Δ)</h2>
+        <p class="text-brand-muted mb-4">
+          The discriminant Δ = b² - 4ac indicates the nature and number of solutions. If Δ &gt; 0, the parabola intersects the x-axis at two distinct real points. If Δ = 0, the vertex touches the x-axis at a single repeated root. If Δ &lt; 0, the roots are complex conjugate numbers.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>x = (-b ± √(b² - 4ac)) / (2a); Vertex (h, k) = (-b / (2a), c - b² / (4a))</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="quadratic-calculator" category="math" />
+    </article>
+  </div>
+</BaseLayout>

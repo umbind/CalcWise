@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import CreditCardPayoffIsland from '../../features/calculators/finance/CreditCardPayoffIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CC_PAYOFF_FORMULA_ID, CC_PAYOFF_FORMULA_VERSION } from '../../lib/calculations/credit_card_payoff';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'credit-card-payoff-calculator',
+  calculatorName: 'Credit Card Payoff Calculator',
+  formulaId: CC_PAYOFF_FORMULA_ID,
+  formulaVersion: CC_PAYOFF_FORMULA_VERSION,
+  methodology:
+    'Simulates month-by-month credit card amortization and calculates required payments to eliminate revolving debt balances under fixed monthly contributions or target debt-free timelines.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Credit Card Repayment Guidelines and Minimum Payment Disclosures',
+      authority: 'Consumer Financial Protection Bureau (CFPB)',
+      url: 'https://www.consumerfinance.gov/consumer-tools/credit-cards/',
+    },
+    {
+      title: 'Managing Debt and Avoiding Credit Traps',
+      authority: 'Federal Trade Commission (FTC)',
+      url: 'https://consumer.ftc.gov/articles/coping-debt',
+    },
+  ],
+  assumptions: [
+    'Interest is compounded monthly based on the annual percentage rate (APR / 12).',
+    'No new charges, annual card fees, late fees, or penalty interest rates are incurred.',
+    'Payments are applied to interest first, with the remainder reducing the principal balance.',
+  ],
+  limitations: [
+    'Variable interest rates may fluctuate with index rate changes (e.g. prime rate) during the payoff period.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for estimation and debt planning purposes only. Review your monthly billing statements for exact card terms, interest calculations, and minimum payment requirements.',
+};
+---
+
+<BaseLayout
+  title="Credit Card Payoff Calculator: Months to Debt-Free & Interest"
+  description="Calculate how quickly you can pay off credit card debt, discover total interest costs, or find the monthly payment needed to be debt-free by a target date."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'Credit Card Payoff Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/credit-card-payoff-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Debt Management & Payoff</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Credit Card Payoff Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Find out when you will be debt-free and how much interest you can save by adjusting your monthly payments.
+        </p>
+      </div>
+      <CalculatorActions toolName="Credit Card Payoff" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Credit Card Payoff Calculator Widget">
+      <CreditCardPayoffIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Why Paying More Than the Minimum Matters</h2>
+        <p class="text-brand-muted mb-4">
+          Credit card issuers often set minimum monthly payments between 1% and 3% of the outstanding balance. Paying only the minimum can extend repayment over decades and multiply the original debt amount through compounding finance charges. Modest increases in monthly payments drastically reduce both the payoff timeline and cumulative interest.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Monthly Interest = Balance × (APR / 12); Principal Reduction = Payment - Monthly Interest</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="credit-card-payoff-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

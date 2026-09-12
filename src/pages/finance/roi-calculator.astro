@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RoiIsland from '../../features/calculators/finance/RoiIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { ROI_FORMULA_ID, ROI_FORMULA_VERSION } from '../../lib/calculations/roi';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'roi-calculator',
+  calculatorName: 'Return on Investment (ROI) Calculator',
+  formulaId: ROI_FORMULA_ID,
+  formulaVersion: ROI_FORMULA_VERSION,
+  methodology:
+    'Calculates overall net percentage return and annualized compound annual growth rate (CAGR) on invested capital using arbitrary decimal precision.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Financial Ratios and Return on Investment Analysis',
+      authority: 'U.S. Small Business Administration (SBA)',
+      url: 'https://www.sba.gov/business-guide/manage-your-business/manage-your-finances',
+    },
+    {
+      title: 'Compound Annual Growth Rate (CAGR) Formula Standards',
+      authority: 'Corporate Finance Institute (CFI)',
+      url: 'https://corporatefinanceinstitute.com/resources/valuation/cagr-formula/',
+    },
+  ],
+  assumptions: [
+    'Net profit is calculated as the final portfolio or asset valuation minus the original cost basis.',
+    'Annualized ROI assumes continuous geometric compounding over the exact multi-year holding duration.',
+    'Taxes, broker commissions, and maintenance fees are omitted unless pre-deducted from final value.',
+  ],
+  limitations: [
+    'Does not account for intermittent cash flows, dividends received mid-holding period, or inflation adjustment (see IRR or Inflation Calculator for those specifics).',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for educational and analytical purposes only. Past investment returns do not guarantee future performance.',
+};
+---
+
+<BaseLayout
+  title="ROI Calculator: Return on Investment & Annualized CAGR"
+  description="Calculate your Return on Investment (ROI) percentage, total net profit, and compound annualized return (CAGR) with verified precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'ROI Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/roi-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Investing & Portfolio</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Return on Investment (ROI) Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Measure the profitability and compound annual growth rate of any investment, real estate asset, or business venture.
+        </p>
+      </div>
+      <CalculatorActions toolName="ROI" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="ROI Calculator Widget">
+      <RoiIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding ROI vs. Annualized Return (CAGR)</h2>
+        <p class="text-brand-muted mb-4">
+          Simple ROI measures the cumulative percentage gain or loss regardless of how long the capital was committed. Annualized ROI (CAGR) standardizes that return to an annual basis, enabling accurate comparison between investments held for different lengths of time.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>ROI = ((Final Value - Initial Capital) / Initial Capital) × 100%</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="roi-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

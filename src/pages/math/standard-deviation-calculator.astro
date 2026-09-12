@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import StandardDeviationIsland from '../../features/calculators/math/StandardDeviationIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { SD_FORMULA_ID, SD_FORMULA_VERSION } from '../../lib/calculations/standard_deviation';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'standard-deviation-calculator',
+  calculatorName: 'Standard Deviation & Variance Descriptive Statistics Calculator',
+  formulaId: SD_FORMULA_ID,
+  formulaVersion: SD_FORMULA_VERSION,
+  methodology:
+    'Computes Bessel-corrected sample standard deviation s = √(Σ(x - x̄)² / (n - 1)), population standard deviation σ = √(Σ(x - μ)² / N), sample variance, population variance, mean, and median from arbitrary numerical datasets.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Descriptive Statistics and Measures of Dispersion',
+      authority: 'National Institute of Standards and Technology (NIST / SEMATECH e-Handbook)',
+      url: 'https://www.itl.nist.gov/div898/handbook/eda/section3/eda359.htm',
+    },
+    {
+      title: 'Bessel’s Correction for Unbiased Sample Variance',
+      authority: 'American Statistical Association (ASA)',
+      url: 'https://www.amstat.org/',
+    },
+  ],
+  assumptions: [
+    'Sample standard deviation applies Bessel’s correction dividing by (n - 1) to eliminate downward bias in sample variance estimation.',
+    'Population standard deviation assumes the provided dataset represents the complete census of observations.',
+  ],
+  limitations: [
+    'Applies to real univariate numerical arrays.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Statistical Standards',
+  disclaimer:
+    'This calculator is designed for statistical analysis, empirical scientific research, quality assurance, and econometric evaluation with verified numerical stability.',
+};
+---
+
+<BaseLayout
+  title="Standard Deviation Calculator: Sample (s) & Population (σ)"
+  description="Calculate sample and population standard deviation, variance, mean, sum of squares, and median with verified statistical precision."
+  breadcrumbs={[
+    { label: 'Math', href: '/math' },
+    { label: 'Standard Deviation Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/standard-deviation-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Statistics & Probability</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Standard Deviation Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate sample and population standard deviation, variance, mean, and sum of squares for any list of numbers.
+        </p>
+      </div>
+      <CalculatorActions toolName="Standard Deviation" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Standard Deviation Calculator Widget">
+      <StandardDeviationIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Sample (s) vs. Population (σ) Standard Deviation</h2>
+        <p class="text-brand-muted mb-4">
+          Standard deviation quantifies the dispersion of data points around their arithmetic mean. Use <strong>sample standard deviation (s)</strong> with $(n - 1)$ in the denominator whenever your dataset represents a sample drawn from a larger population (Bessel's correction). Use <strong>population standard deviation ($\sigma$)</strong> with $N$ in the denominator only when you have measured every single member of the target population.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>s = √(Σ(x - x̄)² / (n - 1)) ;  σ = √(Σ(x - μ)² / N)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="standard-deviation-calculator" category="math" />
+    </article>
+  </div>
+</BaseLayout>

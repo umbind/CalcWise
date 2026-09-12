@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import BmrIsland from '../../features/calculators/health/BmrIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { BMR_FORMULA_ID, BMR_FORMULA_VERSION } from '../../lib/calculations/bmr';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'bmr-calculator',
+  calculatorName: 'BMR (Basal Metabolic Rate) Calculator',
+  formulaId: BMR_FORMULA_ID,
+  formulaVersion: BMR_FORMULA_VERSION,
+  methodology:
+    'Computes resting basal metabolic rate using the Mifflin-St Jeor equation, supported by clinical studies as the most accurate predictor of resting human energy expenditure.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'A New Predictive Equation for Resting Energy Expenditure in Healthy Individuals',
+      authority: 'American Journal of Clinical Nutrition (AJCN)',
+      url: 'https://academic.oup.com/ajcn/article-abstract/51/2/241/4695104',
+    },
+  ],
+  assumptions: [
+    'Calculates baseline metabolic energy expenditure at complete physiological rest.',
+    'Assumes average human lean body mass distribution for biological sex.',
+  ],
+  limitations: [
+    'Does not directly measure body fat percentage. Individuals with exceptional muscle mass may have higher real BMR.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against Clinical Nutrition Guidelines',
+  disclaimer:
+    'Risk Tier T2 Notice: BMR estimations provide baseline nutritional energy guidance. Consult a registered dietitian or physician for specialized metabolic medical diets.',
+};
+---
+
+<BaseLayout
+  title="BMR Calculator: Calculate Basal Metabolic Rate (Mifflin-St Jeor)"
+  description="Calculate your Basal Metabolic Rate (BMR) with the Mifflin-St Jeor formula and find out how many calories your body burns at rest."
+  breadcrumbs={[
+    { label: 'Health', href: '/health/bmi-calculator' },
+    { label: 'BMR Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/bmr-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Health & Metabolism</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        BMR Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Find out your Basal Metabolic Rate (BMR)—the exact baseline number of calories your body burns every day just staying alive at rest.
+      </p>
+    </div>
+
+    <section aria-label="BMR Calculator Widget">
+      <BmrIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

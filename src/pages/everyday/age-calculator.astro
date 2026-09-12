@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import AgeIsland from '../../features/calculators/everyday/AgeIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { AGE_FORMULA_ID, AGE_FORMULA_VERSION } from '../../lib/calculations/age';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'age-calculator',
+  calculatorName: 'Exact Chronological Age & Birthday Calculator',
+  formulaId: AGE_FORMULA_ID,
+  formulaVersion: AGE_FORMULA_VERSION,
+  methodology:
+    'Computes exact chronological age by decomposing elapsed Gregorian calendar periods into years, months, and days with month-end borrowing logic, and calculating total days, weeks, and hours elapsed.',
+  riskTier: 'T0',
+  sources: [
+    {
+      title: 'ISO 8601 Date and Time Representation Standards',
+      authority: 'International Organization for Standardization (ISO)',
+      url: 'https://www.iso.org/iso-8601-date-and-time-format.html',
+    },
+  ],
+  assumptions: [
+    'Calendar arithmetic accounts for varying month lengths (28, 29, 30, 31 days) and Gregorian leap years.',
+  ],
+  limitations: [
+    'Assumes standard UTC midnight boundary for birth date without specific hour of birth specified.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against Gregorian Calendar Astronomical Standards',
+};
+---
+
+<BaseLayout
+  title="Age Calculator: Calculate Exact Age in Years, Months & Days"
+  description="Calculate your exact chronological age in years, months, and days, total elapsed hours and minutes, and countdown to your next birthday."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/' },
+    { label: 'Age Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/age-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Everyday & Life</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Exact Age Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Find out your exact age down to the day, see your total elapsed days and hours, and get an exact countdown to your next birthday.
+      </p>
+    </div>
+
+    <section aria-label="Age Calculator Widget">
+      <AgeIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

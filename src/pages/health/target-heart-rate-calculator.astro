@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import TargetHeartRateIsland from '../../features/calculators/health/TargetHeartRateIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { TARGET_HR_FORMULA_ID, TARGET_HR_FORMULA_VERSION } from '../../lib/calculations/target_heart_rate';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'target-heart-rate-calculator',
+  calculatorName: 'Target Heart Rate & Training Zones Calculator',
+  formulaId: TARGET_HR_FORMULA_ID,
+  formulaVersion: TARGET_HR_FORMULA_VERSION,
+  methodology:
+    'Evaluates Tanaka age-predicted maximum heart rate (208 - 0.7 × age) and computes five structured cardiovascular intensity training zones using the Karvonen Heart Rate Reserve (HRR) equation.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Age-predicted maximal heart rate revisited (Tanaka Formula)',
+      authority: 'Journal of the American College of Cardiology (JACC)',
+      url: 'https://www.jacc.org/doi/10.1016/S0735-1097%2800%2901054-8',
+    },
+    {
+      title: 'Exercise Intensity and Target Heart Rate Zones',
+      authority: 'American Heart Association (AHA)',
+      url: 'https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates',
+    },
+  ],
+  assumptions: [
+    'Resting heart rate represents morning baseline in a fully rested, non-caffeinated state.',
+    'Training zones correspond to standardized physiological thresholds (aerobic base, tempo, lactate threshold, and VO2 max).',
+  ],
+  limitations: [
+    'Beta-blockers, anti-arrhythmic medications, or thyroid conditions significantly alter cardiac chronotropic responses, rendering age-predicted equations non-applicable.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Sports Medicine Standards',
+  disclaimer:
+    'This calculator is for athletic guidance and conditioning optimization. Individuals with known cardiac symptoms, cardiovascular histories, or hypertension should undergo a supervised clinical exercise stress test before high-intensity exertion.',
+};
+---
+
+<BaseLayout
+  title="Target Heart Rate Calculator: 5 Training Zones & Karvonen"
+  description="Calculate your maximum heart rate and 5 cardiovascular training zones using the Tanaka equation and Karvonen Heart Rate Reserve formula."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Target Heart Rate Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/target-heart-rate-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Cardiovascular Fitness</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Target Heart Rate Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Find your personalized heart rate training zones for fat burning, aerobic endurance, tempo, and peak VO2 max intervals.
+        </p>
+      </div>
+      <CalculatorActions toolName="Target Heart Rate" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Target Heart Rate Calculator Widget">
+      <TargetHeartRateIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Tanaka Formula vs. Traditional 220 - Age</h2>
+        <p class="text-brand-muted mb-4">
+          While the traditional Fox formula (220 - age) remains widespread, modern exercise cardiology favors the Tanaka formula (208 - 0.7 × age). Extensive meta-analyses show that Tanaka reduces systematic overestimation of max heart rate in younger adults and underestimation in older athletes.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Karvonen Target BPM = Resting HR + Intensity% × (Max HR - Resting HR)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="target-heart-rate-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

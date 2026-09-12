@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RecipeScalerIsland from '../../features/calculators/everyday/RecipeScalerIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { RECIPE_SCALER_FORMULA_ID, RECIPE_SCALER_FORMULA_VERSION } from '../../lib/calculations/recipe_scaler';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'recipe-scaler-calculator',
+  calculatorName: 'Recipe Yield, Portion & Ingredient Scaler',
+  formulaId: RECIPE_SCALER_FORMULA_ID,
+  formulaVersion: RECIPE_SCALER_FORMULA_VERSION,
+  methodology:
+    'Parses whole numbers, decimals, and mixed fractions (e.g. 1 1/2 cups), multiplies by linear yield scaling ratio S = Desired / Original, and rounds quantities to culinary fractional increments.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Culinary Math and Recipe Conversion Standards',
+      authority: 'Culinary Institute of America (CIA)',
+      url: 'https://www.ciachef.edu/',
+    },
+    {
+      title: 'Food Composition and Kitchen Measurement Tables',
+      authority: 'U.S. Department of Agriculture (USDA FoodData Central)',
+      url: 'https://fdc.nal.usda.gov/',
+    },
+  ],
+  assumptions: [
+    'Applies uniform linear scaling to all volumetric and weight ingredient quantities.',
+    'Common culinary fractions (1/8, 1/4, 1/3, 1/2, 2/3, 3/4) are formatted for kitchen usability.',
+  ],
+  limitations: [
+    'Chemical leaveners (baking soda, baking powder), pungent spices, alcohol, and cooking evaporation rates may require non-linear adjustments when scaling recipes by more than 4x.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Culinary Standards',
+  disclaimer:
+    'This calculator scales ingredient quantities proportionally. Always exercise culinary judgment with potent seasonings, yeast fermentation times, and baking pan dimensions.',
+};
+---
+
+<BaseLayout
+  title="Recipe Scaler: Scale Ingredients, Servings & Portions"
+  description="Scale recipes up or down to any number of servings or yield with automatic fraction parsing (cups, tsp, tbsp) and verified culinary precision."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/everyday' },
+    { label: 'Recipe Scaler' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/recipe-scaler-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Cooking & Kitchen Math</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Recipe Scaler & Serving Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Easily multiply or divide recipe ingredient amounts to match your desired party size or crowd yield.
+        </p>
+      </div>
+      <CalculatorActions toolName="Recipe Scaler" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Recipe Scaler Calculator Widget">
+      <RecipeScalerIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Tips for Scaling Large Batch Recipes</h2>
+        <p class="text-brand-muted mb-4">
+          When scaling a recipe by $2\times$ or $3\times$, direct mathematical multiplication works reliably for core flours, liquids, and meats. However, when scaling up by $4\times$ or more, reduce salt, hot peppers, and intense aromatics by 10% to 15% and taste as you go. For baking, ensure pan depth and oven surface area match the expanded volume to maintain even heat transfer.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Scale Multiplier = Desired Servings ÷ Original Servings ; Scaled Ingredient = Amount × Multiplier</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="recipe-scaler-calculator" category="everyday" />
+    </article>
+  </div>
+</BaseLayout>

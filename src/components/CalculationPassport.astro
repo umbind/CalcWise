@@ -1,0 +1,95 @@
+---
+import type { CalculationPassportData } from '../lib/calculations/types';
+
+interface Props {
+  passport: CalculationPassportData;
+}
+
+const { passport } = Astro.props;
+
+const riskTierBadge = {
+  T0: { label: 'Tier 0: Low Risk (Standard Math)', class: 'bg-gray-100 text-gray-700 border-gray-300' },
+  T1: { label: 'Tier 1: Practical Estimate', class: 'bg-blue-50 text-blue-700 border-blue-200' },
+  T2: { label: 'Tier 2: High Impact Screening', class: 'bg-amber-50 text-amber-800 border-amber-300' },
+  T3: { label: 'Tier 3: Regulated / Safety-Critical', class: 'bg-red-50 text-red-700 border-red-300' },
+}[passport.riskTier];
+---
+
+<section
+  class="mt-12 bg-white rounded-xl border border-brand-border p-6 shadow-sm break-inside-avoid"
+  aria-labelledby="passport-heading"
+>
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+    <div>
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-brand-primary text-white text-xs font-bold">✓</span>
+        <h2 id="passport-heading" class="text-base font-bold text-brand-dark">Calculation Passport</h2>
+      </div>
+      <p class="text-xs text-brand-muted mt-0.5">
+        Formula ID: <code class="font-mono text-brand-primary font-semibold">{passport.formulaId}</code> (v{passport.formulaVersion})
+      </p>
+    </div>
+
+    <div>
+      <span class={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${riskTierBadge.class}`}>
+        {riskTierBadge.label}
+      </span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 text-xs">
+    <div>
+      <h3 class="font-bold text-brand-dark text-xs uppercase tracking-wider mb-2">Methodology & Sources</h3>
+      <p class="text-brand-muted mb-3 leading-relaxed">{passport.methodology}</p>
+      
+      <ul class="space-y-1.5" aria-label="Authoritative Sources">
+        {passport.sources.map((src) => (
+          <li class="flex items-start space-x-1.5">
+            <span class="text-brand-primary font-bold">↳</span>
+            <div>
+              <span class="font-medium text-brand-dark">{src.title}</span>
+              <span class="text-gray-400"> ({src.authority})</span>
+              {src.url && (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${src.title} on ${src.authority} (opens in a new tab)`}
+                  class="ml-1 text-brand-accent hover:underline inline-flex items-center"
+                >
+                  Source Link ↗
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-bold text-brand-dark text-xs uppercase tracking-wider mb-2">Assumptions & Governance</h3>
+      <ul class="list-disc pl-4 space-y-1 text-brand-muted mb-3">
+        {passport.assumptions.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+
+      <div class="bg-brand-surface rounded-lg p-3 border border-gray-200">
+        <div class="flex justify-between text-brand-dark font-medium mb-1">
+          <span>Reviewer Status:</span>
+          <span class="text-emerald-700 font-semibold">{passport.reviewerStatus}</span>
+        </div>
+        <div class="flex justify-between text-brand-muted">
+          <span>Last Audited:</span>
+          <span>{passport.lastReviewed}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {passport.disclaimer && (
+    <div class="mt-4 pt-4 border-t border-gray-100 text-xs text-brand-muted bg-amber-50/50 p-3 rounded-lg border border-amber-200/60">
+      <strong class="font-semibold text-amber-900">Disclaimer & Scope Notice:</strong> {passport.disclaimer}
+    </div>
+  )}
+</section>

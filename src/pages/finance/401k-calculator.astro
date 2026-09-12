@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import Retirement401kIsland from '../../features/calculators/finance/Retirement401kIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { RETIREMENT_401K_FORMULA_ID, RETIREMENT_401K_FORMULA_VERSION } from '../../lib/calculations/retirement_401k';
+
+const passport: CalculationPassportData = {
+  calculatorId: '401k-calculator',
+  calculatorName: '401(k) & Retirement Savings Calculator',
+  formulaId: RETIREMENT_401K_FORMULA_ID,
+  formulaVersion: RETIREMENT_401K_FORMULA_VERSION,
+  methodology:
+    'Simulates multi-year retirement asset accumulation with annual compounding, employee elective deferrals, employer matching contributions, salary growth, and sustainable 4% safe withdrawal retirement income modeling.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Retirement Plans FAQs regarding 401(k) Plans',
+      authority: 'Internal Revenue Service (IRS)',
+      url: 'https://www.irs.gov/retirement-plans/401k-plans',
+    },
+    {
+      title: 'Retirement Savings and Safe Withdrawal Guidelines (Trinity Study)',
+      authority: 'Journal of the American Association of Individual Investors (AAII)',
+      url: 'https://www.aaii.com/journal/article/retirement-savings-choosing-a-withdrawal-rate-that-is-sustainable',
+    },
+  ],
+  assumptions: [
+    'Annual compounding occurs with mid-year contribution averaging.',
+    'Employer match is calculated up to the specified percentage cap of annual salary.',
+    'Estimated monthly retirement income applies the standard 4% annual safe withdrawal rule divided by 12.',
+    'Excludes statutory annual IRS contribution limits and catch-up provisions.',
+  ],
+  limitations: [
+    'Market volatility, dividend yields, fund expense ratios, and inflation adjustments are not individually modeled in this deterministic projection.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for educational and long-term planning purposes only. Investment returns fluctuate and are not guaranteed. Consult a certified financial planner or tax advisor for individualized retirement advice.',
+};
+---
+
+<BaseLayout
+  title="401(k) Calculator: Project Retirement Balance & Match"
+  description="Estimate your 401(k) retirement balance, employer match gains, cumulative investment growth, and monthly retirement income with verified precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: '401(k) Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/401k-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Retirement & Investing</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          401(k) Retirement Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Project how your savings, employer matching contributions, and compound investment growth build your retirement nest egg over time.
+        </p>
+      </div>
+      <CalculatorActions toolName="401(k) Retirement" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="401(k) Retirement Calculator Widget">
+      <Retirement401kIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Maximizing Your 401(k) Advantage</h2>
+        <p class="text-brand-muted mb-4">
+          A 401(k) plan offers tax-advantaged compound interest. Taking full advantage of employer matching contributions is essentially an immediate guaranteed return on your retirement savings. Over a multi-decade career, compound earnings typically dwarf the raw dollars contributed.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Annual Additions = (Salary × Contrib%) + Min(Contrib%, MatchCap%) × Match% × Salary</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="401k-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

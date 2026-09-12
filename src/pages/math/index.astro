@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCategoryMetadata, getCalculatorsByCategory } from '../../lib/calculations/registry';
+
+const category = getCategoryMetadata('math');
+if (!category) throw new Error('Category metadata for math not found');
+
+const calculators = getCalculatorsByCategory('math');
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: category.faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${category.name} - CalcWise`,
+  description: category.description,
+  url: `https://calcwise.com${category.route}/`,
+  hasPart: calculators.map((calc) => ({
+    '@type': 'WebApplication',
+    name: calc.name,
+    url: `https://calcwise.com${calc.route}/`,
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'All',
+  })),
+};
+---
+
+<BaseLayout
+  title={`${category.name}: Percentage, Fraction, Statistics & Scientific Tools`}
+  description={category.description}
+  breadcrumbs={[{ label: category.shortName }]}
+  canonicalUrl={`https://calcwise.com${category.route}/`}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+
+  <div class="max-w-5xl mx-auto space-y-12">
+    <!-- Category Hero Header -->
+    <header class="text-center sm:text-left border-b border-gray-200 pb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        <div class="flex items-center space-x-3 justify-center sm:justify-start">
+          <span class="text-4xl p-2.5 bg-white border border-brand-border rounded-2xl shadow-2xs">
+            {category.icon}
+          </span>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
+              Category Hub
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
+              {category.name}
+            </h1>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 self-center sm:self-auto">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
+            {calculators.length} Mathematical Engines
+          </span>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
+            Tier T0 Deterministic
+          </span>
+        </div>
+      </div>
+
+      <p class="text-base text-brand-muted leading-relaxed max-w-3xl">
+        {category.description}
+      </p>
+    </header>
+
+    <!-- Calculator Grid -->
+    <section aria-labelledby="tools-list-heading">
+      <div class="flex justify-between items-baseline mb-6">
+        <h2 id="tools-list-heading" class="text-xl font-bold text-brand-dark tracking-tight">
+          Axiomatic & Statistical Calculators
+        </h2>
+        <span class="text-xs text-brand-muted font-medium">Exact Fraction & AST Parsing</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {calculators.map((calc) => (
+          <a
+            href={calc.route}
+            class="bg-white border border-brand-border rounded-2xl p-6 hover:border-brand-primary hover:shadow-sm transition flex flex-col justify-between group"
+          >
+            <div>
+              <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center space-x-3">
+                  <span class="text-2xl p-2 bg-brand-surface rounded-xl border border-gray-100 group-hover:scale-105 transition-transform">
+                    {calc.icon}
+                  </span>
+                  <div>
+                    <h3 class="font-bold text-base text-brand-dark group-hover:text-brand-primary transition">
+                      {calc.name}
+                    </h3>
+                    <span class="text-[11px] font-mono text-gray-400">
+                      ID: {calc.id}
+                    </span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-brand-surface text-brand-primary border border-brand-primary/20">
+                  {calc.riskTier}
+                </span>
+              </div>
+
+              <p class="text-xs text-brand-muted leading-relaxed line-clamp-3 mb-4">
+                {calc.description}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-brand-primary">
+              <span>View step-by-step trace</span>
+              <span class="group-hover:translate-x-1 transition-transform">Calculate Now →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Mathematical Principles & Standards -->
+    <section class="bg-white rounded-2xl border border-brand-border p-6 sm:p-8 space-y-6 shadow-2xs">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
+          Mathematical Governance & Traceability
+        </span>
+        <h2 class="text-xl font-black text-brand-dark tracking-tight mt-1">
+          Exact Fractional Arithmetic & Sandboxed AST Parsing
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-brand-dark leading-relaxed">
+        <div class="space-y-3">
+          <h3 class="font-bold text-sm text-brand-dark">Exact Euclid GCD Fraction Reductions</h3>
+          <p class="text-brand-muted">
+            Rather than converting rational numbers into binary floating-point representations (which introduce repeating decimal rounding errors such as 1/3 ≈ 0.33333333333), CalcWise computes exact common denominators and reduces fractions to lowest terms using the Euclidean Greatest Common Divisor (GCD) algorithm.
+          </p>
+          <div class="bg-brand-surface p-3 rounded-lg border border-gray-200 font-mono text-[11px] text-brand-primary">
+            a/b ± c/d = (a·d ± b·c) / (b·d) → reduced via GCD(num, den)
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-bold text-sm text-brand-dark">Sandboxed Expression Evaluation</h3>
+          <p class="text-brand-muted">
+            The Scientific Calculator processes algebraic expressions through a dedicated lexical scanner and recursive-descent parser, enforcing strict PEMDAS operator precedence. We never use arbitrary JavaScript <code>eval()</code>.
+          </p>
+          <div class="p-3.5 bg-brand-surface rounded-xl border border-gray-200">
+            <span class="font-semibold text-brand-dark block mb-1">Governing Standards:</span>
+            <span class="text-brand-muted text-[11px] block">{category.standardsBody}</span>
+            <span class="text-[11px] text-brand-muted mt-1 block">{category.standardsSummary}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category FAQs -->
+    <section class="space-y-4" aria-labelledby="category-faq-heading">
+      <h2 id="category-faq-heading" class="text-xl font-bold text-brand-dark tracking-tight">
+        Frequently Asked Questions
+      </h2>
+
+      <div class="space-y-3">
+        {category.faqs.map((faq) => (
+          <div class="bg-white border border-brand-border rounded-xl p-5 shadow-2xs">
+            <h3 class="font-bold text-sm text-brand-dark mb-2">
+              {faq.question}
+            </h3>
+            <p class="text-xs text-brand-muted leading-relaxed">
+              {faq.answer}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Cross-Category Navigation -->
+    <nav class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <span class="font-semibold text-brand-muted">Explore Other Calculation Disciplines:</span>
+      <div class="flex flex-wrap gap-2">
+        <a href="/finance" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          💰 Finance & Loans
+        </a>
+        <a href="/converters" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          ⇄ Unit Converters
+        </a>
+        <a href="/construction" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          🏗️ Construction
+        </a>
+        <a href="/everyday" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          📅 Everyday
+        </a>
+      </div>
+    </nav>
+  </div>
+</BaseLayout>

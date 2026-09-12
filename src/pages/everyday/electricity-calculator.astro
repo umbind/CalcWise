@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import ElectricityIsland from '../../features/calculators/everyday/ElectricityIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { ELECTRICITY_FORMULA_ID, ELECTRICITY_FORMULA_VERSION } from '../../lib/calculations/electricity';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'electricity-calculator',
+  calculatorName: 'Electricity Cost & Appliance Energy Consumption Calculator',
+  formulaId: ELECTRICITY_FORMULA_ID,
+  formulaVersion: ELECTRICITY_FORMULA_VERSION,
+  methodology:
+    'Computes kilowatt-hour (kWh) electrical energy consumption (Watts × Hours / 1,000) and applies residential retail electric utility rates per kWh across daily, monthly, and annual billing horizons.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Estimating Appliance and Home Electronic Energy Use',
+      authority: 'U.S. Department of Energy (Energy.gov)',
+      url: 'https://www.energy.gov/energysaver/estimating-appliance-and-home-electronic-energy-use',
+    },
+    {
+      title: 'Average Retail Price of Electricity to Ultimate Customers',
+      authority: 'U.S. Energy Information Administration (EIA)',
+      url: 'https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_5_6_a',
+    },
+  ],
+  assumptions: [
+    'Appliance is modeled as drawing its continuous rated nameplate wattage during operational hours.',
+    'Average monthly calendar period uses 30.4167 days.',
+  ],
+  limitations: [
+    'Thermostatically cycling appliances (e.g. refrigerators, heat pumps) do not run continuously at peak nameplate wattage; their duty cycle is typically 30% to 50%.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Energy Standards',
+  disclaimer:
+    'This calculator is for home energy auditing and budgeting. Electric bills include fixed meter base charges, transmission fees, and tiered or time-of-use (TOU) rates that vary by electric utility.',
+};
+---
+
+<BaseLayout
+  title="Electricity Calculator: Appliance kWh & Energy Cost"
+  description="Calculate how much electricity your appliances use and what they cost to run per day, month, and year with verified kilowatt-hour precision."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/everyday' },
+    { label: 'Electricity Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/electricity-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Utilities & Home Energy</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Electricity Cost Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the electricity consumption (kWh) and power bill cost for any home appliance, heater, or electronic device.
+        </p>
+      </div>
+      <CalculatorActions toolName="Electricity Cost" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Electricity Cost Calculator Widget">
+      <ElectricityIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Kilowatt-Hours (kWh)</h2>
+        <p class="text-brand-muted mb-4">
+          Electric utilities bill for energy in kilowatt-hours (kWh). One kilowatt-hour represents 1,000 Watts of power consumed continuously for one hour. For example, a 1,500-Watt space heater running for 8 hours uses 1.5 kW × 8 hours = 12 kWh of electrical energy per day.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Daily kWh = (Watts × Daily Hours) / 1,000 ; Cost = Daily kWh × Electric Rate ($/kWh)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="electricity-calculator" category="everyday" />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import CalorieIsland from '../../features/calculators/health/CalorieIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CALORIE_FORMULA_ID, CALORIE_FORMULA_VERSION } from '../../lib/calculations/calorie';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'calorie-calculator',
+  calculatorName: 'Daily Calorie & TDEE Calculator',
+  formulaId: CALORIE_FORMULA_ID,
+  formulaVersion: CALORIE_FORMULA_VERSION,
+  methodology:
+    'Derives Total Daily Energy Expenditure (TDEE) by scaling baseline Mifflin-St Jeor BMR by empirically validated Physical Activity Level (PAL) coefficients, calculating structured 250 kcal and 500 kcal daily energy balance targets with a 1,200 kcal clinical safety floor.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Human Energy Requirements: Report of a Joint FAO/WHO/UNU Expert Consultation',
+      authority: 'Food and Agriculture Organization / World Health Organization',
+      url: 'https://www.fao.org/3/y5686e/y5686e00.htm',
+    },
+    {
+      title: 'Dietary Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids',
+      authority: 'National Academies of Sciences, Engineering, and Medicine',
+      url: 'https://www.nationalacademies.org/',
+    },
+  ],
+  assumptions: [
+    '1 lb of body fat represents approximately 3,500 kcal of stored chemical energy.',
+    'A 500 kcal/day deficit corresponds to approximately 1 lb of fat loss per week.',
+  ],
+  limitations: [
+    'Metabolic adaptation can decrease actual energy expenditure over extended severe deficits.',
+    'Activity level categories are self-reported estimates.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against FAO/WHO/UNU Human Energy Standards',
+  disclaimer:
+    'Risk Tier T2 Notice: Energy balance estimates are guidelines. Extreme calorie restriction below 1,200 kcal/day should only be conducted under licensed physician or clinical dietitian supervision.',
+};
+---
+
+<BaseLayout
+  title="Calorie & TDEE Calculator: Daily Calorie Needs for Weight Loss & Gain"
+  description="Calculate your Total Daily Energy Expenditure (TDEE) and exact daily calorie targets for weight loss, maintenance, or muscle gain with the Mifflin-St Jeor formula."
+  breadcrumbs={[
+    { label: 'Health', href: '/health/bmi-calculator' },
+    { label: 'Calorie Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/calorie-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Health & Nutrition</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Calorie & TDEE Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Determine your Total Daily Energy Expenditure (TDEE) and customized daily calorie intake targets for fat loss, maintenance, or lean muscle gain.
+      </p>
+    </div>
+
+    <section aria-label="Calorie Calculator Widget">
+      <CalorieIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

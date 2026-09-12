@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import PaintIsland from '../../features/calculators/construction/PaintIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { PAINT_FORMULA_ID, PAINT_FORMULA_VERSION } from '../../lib/calculations/paint';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'paint-calculator',
+  calculatorName: 'Architectural Paint Quantity Calculator',
+  formulaId: PAINT_FORMULA_ID,
+  formulaVersion: PAINT_FORMULA_VERSION,
+  methodology:
+    'Calculates net paintable wall surface area by taking room perimeter times ceiling height, deducting standard openings (21 sq ft per door, 15 sq ft per window), and dividing total coated area by standard 350 sq ft/gallon coverage.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Painting and Decorating Contractors of America (PDCA) Standard Estimating Procedures',
+      authority: 'Painting Contractors Association (PCA)',
+      url: 'https://www.pcapainted.org/',
+    },
+  ],
+  assumptions: [
+    'One standard gallon covers approximately 350 square feet on smooth prepared drywall.',
+    'Standard residential door = 21 sq ft; standard residential window = 15 sq ft.',
+  ],
+  limitations: [
+    'Rough masonry, bare stucco, or heavy textured drywall will absorb more paint (~250-300 sq ft/gal).',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against PCA Estimating Standards',
+};
+---
+
+<BaseLayout
+  title="Paint Calculator: How Many Gallons of Paint Do I Need?"
+  description="Estimate how many gallons or liters of paint you need for any room with automatic window and door deductions and multiple coat options."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction/concrete-calculator' },
+    { label: 'Paint Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/paint-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Construction & DIY</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Paint Quantity Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Find out exactly how many gallons or cans of paint you need for your walls, factoring in ceiling height, doors, windows, and number of coats.
+      </p>
+    </div>
+
+    <section aria-label="Paint Calculator Widget">
+      <PaintIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,221 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCategoryMetadata, getCalculatorsByCategory } from '../../lib/calculations/registry';
+
+const category = getCategoryMetadata('converters');
+if (!category) throw new Error('Category metadata for converters not found');
+
+const calculators = getCalculatorsByCategory('converters');
+
+const unitFamilies = [
+  { name: 'Length & Distance', icon: '📏', examples: 'Meters, Feet, Inches, Kilometers, Miles, Yards' },
+  { name: 'Mass & Weight', icon: '⚖️', examples: 'Kilograms, Grams, Pounds, Ounces, Metric Tonnes' },
+  { name: 'Temperature', icon: '🌡️', examples: 'Celsius (°C), Fahrenheit (°F), Kelvin (K)' },
+  { name: 'Volume & Capacity', icon: '🧪', examples: 'Liters, Milliliters, Gallons, Quarts, Fluid Ounces' },
+  { name: 'Speed & Velocity', icon: '⚡', examples: 'm/s, km/h, mph, Knots' },
+  { name: 'Digital Storage', icon: '💾', examples: 'Bytes, KB, MB, GB, TB, PB (1024 base)' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: category.faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${category.name} - CalcWise`,
+  description: category.description,
+  url: `https://calcwise.com${category.route}/`,
+  hasPart: calculators.map((calc) => ({
+    '@type': 'WebApplication',
+    name: calc.name,
+    url: `https://calcwise.com${calc.route}/`,
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'All',
+  })),
+};
+---
+
+<BaseLayout
+  title={`${category.name}: Length, Weight, Temp & Volume`}
+  description={category.description}
+  breadcrumbs={[{ label: category.shortName }]}
+  canonicalUrl={`https://calcwise.com${category.route}/`}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+
+  <div class="max-w-5xl mx-auto space-y-12">
+    <!-- Category Hero Header -->
+    <header class="text-center sm:text-left border-b border-gray-200 pb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        <div class="flex items-center space-x-3 justify-center sm:justify-start">
+          <span class="text-4xl p-2.5 bg-white border border-brand-border rounded-2xl shadow-2xs">
+            {category.icon}
+          </span>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
+              Category Hub
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
+              {category.name}
+            </h1>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 self-center sm:self-auto">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
+            6 Unit Families Active
+          </span>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
+            Tier T0 Exact SI
+          </span>
+        </div>
+      </div>
+
+      <p class="text-base text-brand-muted leading-relaxed max-w-3xl">
+        {category.description}
+      </p>
+    </header>
+
+    <!-- Primary Tool Callout -->
+    <section class="bg-white border-2 border-brand-primary/20 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      <div class="space-y-2 max-w-xl">
+        <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-surface text-brand-primary border border-brand-primary/20">
+          <span>★ Featured Flagship Tool</span>
+        </div>
+        <h2 class="text-2xl font-black text-brand-dark tracking-tight">
+          Universal Unit Converter
+        </h2>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          Switch between Metric, Imperial, and US Customary systems instantly with exact mathematical factors, swap functionality, and step-by-step conversion explanations.
+        </p>
+      </div>
+
+      <a
+        href="/converters/unit-converter"
+        class="inline-flex items-center justify-center px-6 py-3.5 bg-brand-primary text-white font-bold text-sm rounded-xl hover:bg-brand-accent transition shadow-sm hover:shadow self-start sm:self-center"
+      >
+        <span>Open Unit Converter</span>
+        <span class="ml-2">→</span>
+      </a>
+    </section>
+
+    <!-- Unit Families Grid -->
+    <section aria-labelledby="unit-families-heading">
+      <h2 id="unit-families-heading" class="text-xl font-bold text-brand-dark tracking-tight mb-4">
+        Supported Measurement Quantities
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {unitFamilies.map((family) => (
+          <a
+            href="/converters/unit-converter"
+            class="bg-white border border-brand-border rounded-xl p-5 hover:border-brand-primary hover:shadow-2xs transition group"
+          >
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="text-2xl p-1.5 bg-brand-surface rounded-lg">{family.icon}</span>
+              <h3 class="font-bold text-sm text-brand-dark group-hover:text-brand-primary transition">
+                {family.name}
+              </h3>
+            </div>
+            <p class="text-xs text-brand-muted leading-relaxed">
+              {family.examples}
+            </p>
+            <div class="mt-3 pt-2 border-t border-gray-100 text-[11px] font-semibold text-brand-primary flex items-center justify-between">
+              <span>Convert units</span>
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Metrological Standards & Conversion Factors -->
+    <section class="bg-white rounded-2xl border border-brand-border p-6 sm:p-8 space-y-6 shadow-2xs">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
+          Metrology & SI Standards Governance
+        </span>
+        <h2 class="text-xl font-black text-brand-dark tracking-tight mt-1">
+          Exact Constants & Reversible Affine Symmetry
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-brand-dark leading-relaxed">
+        <div class="space-y-3">
+          <h3 class="font-bold text-sm text-brand-dark">Exact Legal SI Definitions</h3>
+          <p class="text-brand-muted">
+            Rather than relying on rounded approximations (such as 1 inch ≈ 2.5 cm or 1 lb ≈ 0.45 kg), CalcWise encodes the exact legal metrological standards defined by the BIPM and NIST:
+          </p>
+          <ul class="list-disc pl-4 space-y-1 text-brand-muted text-[11px]">
+            <li>1 International Inch = 0.0254 meters (exact)</li>
+            <li>1 Avoirdupois Pound = 0.45359237 kilograms (exact)</li>
+            <li>1 US Liquid Gallon = 231 cubic inches = 3.785411784 liters (exact)</li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-bold text-sm text-brand-dark">Affine Temperature Invariants</h3>
+          <p class="text-brand-muted">
+            Temperature scales possess displaced zero coordinates and cannot be converted through simple scalar ratios. CalcWise applies exact affine coordinate transformations to ensure 100% round-trip symmetry between Fahrenheit, Celsius, and Kelvin without offset drift.
+          </p>
+          <div class="p-3.5 bg-brand-surface rounded-xl border border-gray-200">
+            <span class="font-semibold text-brand-dark block mb-1">Metrology Authorities:</span>
+            <span class="text-brand-muted text-[11px] block">{category.standardsBody}</span>
+            <span class="text-[11px] text-brand-muted mt-1 block">{category.standardsSummary}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category FAQs -->
+    <section class="space-y-4" aria-labelledby="category-faq-heading">
+      <h2 id="category-faq-heading" class="text-xl font-bold text-brand-dark tracking-tight">
+        Frequently Asked Questions
+      </h2>
+
+      <div class="space-y-3">
+        {category.faqs.map((faq) => (
+          <div class="bg-white border border-brand-border rounded-xl p-5 shadow-2xs">
+            <h3 class="font-bold text-sm text-brand-dark mb-2">
+              {faq.question}
+            </h3>
+            <p class="text-xs text-brand-muted leading-relaxed">
+              {faq.answer}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Cross-Category Navigation -->
+    <nav class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <span class="font-semibold text-brand-muted">Explore Other Calculation Disciplines:</span>
+      <div class="flex flex-wrap gap-2">
+        <a href="/math" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          ➗ Math & Algebra
+        </a>
+        <a href="/construction" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          🏗️ Construction
+        </a>
+        <a href="/finance" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          💰 Finance & Loans
+        </a>
+        <a href="/everyday" class="px-3 py-1.5 bg-white border border-brand-border rounded-lg font-medium hover:border-brand-primary hover:text-brand-primary transition">
+          📅 Everyday
+        </a>
+      </div>
+    </nav>
+  </div>
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RoofingIsland from '../../features/calculators/construction/RoofingIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { ROOFING_FORMULA_ID, ROOFING_FORMULA_VERSION } from '../../lib/calculations/roofing';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'roofing-calculator',
+  calculatorName: 'Roofing Squares, Shingles & Pitch Calculator',
+  formulaId: ROOFING_FORMULA_ID,
+  formulaVersion: ROOFING_FORMULA_VERSION,
+  methodology:
+    'Projects building horizontal footprint area into sloped 3D surface area using pitch slope multiplier M = √(1 + (Pitch / 12)²), converts to standard trade roofing squares (100 sq ft = 1 square), and evaluates shingle bundles (3 bundles per square).',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Roofing Materials and Measurement Standards',
+      authority: 'National Roofing Contractors Association (NRCA)',
+      url: 'https://www.nrca.net/',
+    },
+    {
+      title: 'Asphalt Shingle Installation and Estimating Guidelines',
+      authority: 'Asphalt Roofing Manufacturers Association (ARMA)',
+      url: 'https://www.asphaltroofing.org/',
+    },
+  ],
+  assumptions: [
+    'One roofing square is defined as exactly 100 square feet of finished roof surface.',
+    'Standard architectural shingles require 3 bundles per roofing square.',
+  ],
+  limitations: [
+    'Complex roof lines with multiple hips, valleys, gables, and dormers should use a higher 15% to 20% waste margin.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Construction Standards',
+  disclaimer:
+    'This calculator is for estimation and purchasing planning. Verify exact rafter lengths, overhang allowances, and local building code underlayment requirements before ordering.',
+};
+---
+
+<BaseLayout
+  title="Roofing Calculator: Squares, Bundles & Pitch Slope"
+  description="Calculate roof surface area, roofing squares, shingle bundles, and underlayment rolls based on building footprint and pitch with verified precision."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Roofing Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/roofing-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Exterior Construction & Roofing</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Roofing Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate your roof's true surface area, convert to roofing squares, and determine the exact number of shingle bundles to order.
+        </p>
+      </div>
+      <CalculatorActions toolName="Roofing" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Roofing Calculator Widget">
+      <RoofingIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Roofing Squares & Pitch Multipliers</h2>
+        <p class="text-brand-muted mb-4">
+          Roofers measure roof areas in <strong>squares</strong>, where 1 square equals 100 square feet. Because roofs are pitched, the actual surface area is greater than the building's flat horizontal footprint. The pitch multiplier (secant of the roof angle) calculates this exact 3D surface area.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Multiplier = √(1 + (Rise / 12)²) ;  Squares = (Footprint × Multiplier × (1 + Waste%)) ÷ 100</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="roofing-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

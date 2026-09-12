@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import PercentageIsland from '../../features/calculators/percentage/PercentageIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { PERCENTAGE_FORMULA_ID, PERCENTAGE_FORMULA_VERSION } from '../../lib/calculations/percentage';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'percentage-calculator',
+  calculatorName: 'Percentage Calculator',
+  formulaId: PERCENTAGE_FORMULA_ID,
+  formulaVersion: PERCENTAGE_FORMULA_VERSION,
+  methodology:
+    'Computes percentage proportion, relative percentage change, and percentage increase/decrease using deterministic arbitrary-precision arithmetic without rounding drift.',
+  riskTier: 'T0',
+  sources: [
+    {
+      title: 'NIST Guide to SI Units and Ratio Arithmetic',
+      authority: 'National Institute of Standards and Technology',
+      url: 'https://www.nist.gov/pml/special-publication-811',
+    },
+  ],
+  assumptions: [
+    'Base values must be non-zero for division and ratio operations.',
+    'Percentage change is defined symmetrically relative to the initial starting value.',
+  ],
+  limitations: [
+    'Does not account for compound compounding schedules (refer to EMI or Compound Interest calculators).',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified by CalcWise Engineering',
+};
+---
+
+<BaseLayout
+  title="Percentage Calculator: Free, Instant & Step-by-Step"
+  description="Calculate percentages, percentage differences, and percentage increases or decreases with step-by-step mathematical proofs and inspectable formulas."
+  breadcrumbs={[
+    { label: 'Math', href: '/math' },
+    { label: 'Percentage Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/percentage-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Math & Arithmetic</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Percentage Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Compute percentages of values, find percentage ratios, or measure relative increases and decreases with instant calculation traces.
+        </p>
+      </div>
+      <CalculatorActions toolName="Percentage" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Percentage Calculator Widget">
+      <PercentageIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Formulas and Methodologies</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-brand-surface p-4 rounded-lg border border-gray-200">
+            <strong class="text-brand-primary block text-sm mb-1">Percentage of a Number</strong>
+            <code>Result = (P ÷ 100) × Base</code>
+            <p class="mt-2 text-brand-muted">Converts the percentage to a decimal fraction and multiplies by the total base quantity.</p>
+          </div>
+          <div class="bg-brand-surface p-4 rounded-lg border border-gray-200">
+            <strong class="text-brand-primary block text-sm mb-1">Percentage Change</strong>
+            <code>Change (%) = [(Final - Initial) ÷ Initial] × 100</code>
+            <p class="mt-2 text-brand-muted">Measures the relative change from the original baseline value to the final value.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Worked Example</h2>
+        <p class="text-brand-muted mb-2">
+          <strong>Problem:</strong> An item originally costing $120 is discounted by 25%. What is the final price?
+        </p>
+        <ol class="list-decimal pl-5 space-y-1 text-brand-muted text-xs">
+          <li>Calculate the discount multiplier: <code>1 - (25 ÷ 100) = 0.75</code></li>
+          <li>Multiply by original price: <code>$120 × 0.75 = $90.00</code></li>
+          <li>Total savings is $30.00, and final price is $90.00.</li>
+        </ol>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="percentage-calculator" category="math" />
+    </article>
+  </div>
+</BaseLayout>

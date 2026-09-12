@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import DrywallIsland from '../../features/calculators/construction/DrywallIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { DRYWALL_FORMULA_ID, DRYWALL_FORMULA_VERSION } from '../../lib/calculations/drywall';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'drywall-calculator',
+  calculatorName: 'Drywall Sheets, Mud, Tape & Screws Estimator',
+  formulaId: DRYWALL_FORMULA_ID,
+  formulaVersion: DRYWALL_FORMULA_VERSION,
+  methodology:
+    'Calculates interior envelope wall and ceiling surface square footage, subtracts door/window rough openings, factors in 10% cutting scrap, and computes 4x8 or 4x12 sheet panels alongside joint compound pails, screws, and paper joint tape.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Drywall Finishing and Installation Specifications (GA-216)',
+      authority: 'Gypsum Association (GA)',
+      url: 'https://gypsum.org/',
+    },
+    {
+      title: 'Standard Specification for Application and Finishing of Gypsum Board (ASTM C840)',
+      authority: 'ASTM International',
+      url: 'https://www.astm.org/c0840-20.html',
+    },
+  ],
+  assumptions: [
+    'Wall studs are spaced 16 inches on-center requiring approximately 32 screws per 4x8 sheet.',
+    'Rough door openings subtract approximately 20 square feet each; standard window openings subtract 15-20 square feet.',
+  ],
+  limitations: [
+    'Does not account for corner beads, moisture-resistant (greenboard) vs standard drywall zoning, or level 5 skim coating mud volumes.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Construction Standards',
+  disclaimer:
+    'This calculator provides material estimates based on standard trade conventions. Measure wall irregularities and verify local fire code gypsum thickness (1/2" vs 5/8" Type X) with your building inspector.',
+};
+---
+
+<BaseLayout
+  title="Drywall Calculator: Sheets, Joint Compound, Screws & Tape"
+  description="Calculate drywall sheets (4x8 or 4x12), joint compound mud gallons, screws, and tape needed for walls and ceilings with verified precision."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Drywall Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/drywall-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Interior Walls & Framing</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Drywall Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the number of drywall sheets, gallons of joint compound mud, screws, and rolls of tape needed for your room remodel.
+        </p>
+      </div>
+      <CalculatorActions toolName="Drywall" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Drywall Calculator Widget">
+      <DrywallIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Choosing Between 4x8 and 4x12 Drywall Sheets</h2>
+        <p class="text-brand-muted mb-4">
+          Standard <strong>4' × 8' sheets</strong> (32 sq ft) are easier to transport and handle for DIYers and solo drywallers. Professional tapers often prefer <strong>4' × 12' sheets</strong> (48 sq ft) for larger rooms because they eliminate up to 25% of the vertical taped joints, yielding flatter walls and faster finishing times.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Sheets = Ceiling((Wall Area + Ceiling Area) × (1 + Waste%) / Sheet Sq Ft)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="drywall-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

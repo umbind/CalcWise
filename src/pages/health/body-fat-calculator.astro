@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import BodyFatIsland from '../../features/calculators/health/BodyFatIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { BODY_FAT_FORMULA_ID, BODY_FAT_FORMULA_VERSION } from '../../lib/calculations/body_fat';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'body-fat-calculator',
+  calculatorName: 'U.S. Navy Body Fat & Composition Calculator',
+  formulaId: BODY_FAT_FORMULA_ID,
+  formulaVersion: BODY_FAT_FORMULA_VERSION,
+  methodology:
+    'Applies the official U.S. Department of Defense / Hodgdon-Beckett anthropometric circumference method to estimate body density, paired with the Siri equation for percentage body fat.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Physical Readiness Program: Body Composition Assessment Standards',
+      authority: 'U.S. Department of the Navy (OPNAVINST 6110.1J)',
+      url: 'https://www.med.navy.mil/',
+    },
+    {
+      title: 'Classification of Body Fat Percentage by Fitness Level',
+      authority: 'American Council on Exercise (ACE)',
+      url: 'https://www.acefitness.org/resources/everyone/blog/112/what-are-the-guidelines-for-percentage-of-body-fat-loss/',
+    },
+  ],
+  assumptions: [
+    'Circumference measurements are taken snug against the skin without compressing soft tissue.',
+    'Waist is measured at the navel for males and narrowest point for females.',
+    'Hips are measured at the widest posterior protrusion for females.',
+  ],
+  limitations: [
+    'Tape measurement methods have an estimated standard error of ~3.5% compared to hydrostatic weighing or dual-energy X-ray absorptiometry (DEXA) scans.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Clinical Standards',
+  disclaimer:
+    'This calculator is for fitness and educational purposes only. It is not intended for clinical diagnosis of obesity or metabolic diseases. Consult a healthcare professional or sports scientist for medical evaluations.',
+};
+---
+
+<BaseLayout
+  title="Body Fat Calculator: U.S. Navy Tape Method"
+  description="Estimate your body fat percentage, lean body mass, and fat mass using the official U.S. Navy circumference method with verified precision."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Body Fat Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/body-fat-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Body Composition & Fitness</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Body Fat Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate your body fat percentage and partition total body weight into lean mass and adipose tissue using the military tape method.
+        </p>
+      </div>
+      <CalculatorActions toolName="Body Fat" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Body Fat Calculator Widget">
+      <BodyFatIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">How the U.S. Navy Method Works</h2>
+        <p class="text-brand-muted mb-4">
+          Developed by Hodgdon and Beckett at the Naval Health Research Center, this method correlates neck, waist, and hip circumferences with overall body density. When evaluated alongside total height, it provides a reliable field estimate without specialized radiographic equipment.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Density = 1.0324 - 0.19077 × log10(Waist - Neck) + 0.15456 × log10(Height)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="body-fat-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

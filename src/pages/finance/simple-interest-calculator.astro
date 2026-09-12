@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import SimpleInterestIsland from '../../features/calculators/finance/SimpleInterestIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { SIMPLE_INTEREST_FORMULA_ID, SIMPLE_INTEREST_FORMULA_VERSION } from '../../lib/calculations/simple_interest';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'simple-interest-calculator',
+  calculatorName: 'Simple Interest Calculator',
+  formulaId: SIMPLE_INTEREST_FORMULA_ID,
+  formulaVersion: SIMPLE_INTEREST_FORMULA_VERSION,
+  methodology:
+    'Computes non-compounding linear interest on principal using the standard formula I = (P × R × T) / 100 with exact decimal arithmetic.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Elementary Financial Mathematics: Simple vs Compound Interest',
+      authority: 'Federal Reserve Bank Educational Resources',
+      url: 'https://www.stlouisfed.org/education',
+    },
+  ],
+  assumptions: [
+    'Interest is non-compounding and accrues in direct linear proportion to time.',
+  ],
+  limitations: [
+    'Most long-term consumer bank savings and modern loans compound periodically; refer to the Compound Interest or EMI calculator for compounding schedules.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified by CalcWise Financial Modeling Standards',
+};
+---
+
+<BaseLayout
+  title="Simple Interest Calculator: Calculate Interest (P × R × T)"
+  description="Quickly calculate linear simple interest and total repayment amounts with step-by-step mathematical formulas."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance/emi-calculator' },
+    { label: 'Simple Interest Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/simple-interest-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Finance & Basic Loans</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Simple Interest Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Find the interest earned or owed over time on short-term loans, bonds, or promissory notes without compounding.
+      </p>
+    </div>
+
+    <section aria-label="Simple Interest Calculator Widget">
+      <SimpleInterestIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

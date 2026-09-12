@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import ScientificIsland from '../../features/calculators/math/ScientificIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { SCIENTIFIC_FORMULA_ID, SCIENTIFIC_FORMULA_VERSION } from '../../lib/calculations/scientific';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'scientific-calculator',
+  calculatorName: 'Safe Scientific & Algebraic Calculator',
+  formulaId: SCIENTIFIC_FORMULA_ID,
+  formulaVersion: SCIENTIFIC_FORMULA_VERSION,
+  methodology:
+    'Evaluates algebraic and trigonometric expressions using a sandboxed mathematical grammar enforcing strict PEMDAS operator precedence without eval() vulnerabilities.',
+  riskTier: 'T0',
+  sources: [
+    {
+      title: 'ISO 80000-2: Quantities and Units — Part 2: Mathematics',
+      authority: 'International Organization for Standardization (ISO)',
+      url: 'https://www.iso.org/standard/64973.html',
+    },
+  ],
+  assumptions: [
+    'Trigonometric functions default to degree mode unless explicitly toggled to radians.',
+  ],
+  limitations: [
+    'Trigonometric values near singular asymptotes (e.g. tan 90°) evaluate to undefined/overflow.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against IEEE 754 Floating-Point & Algebraic Standards',
+};
+---
+
+<BaseLayout
+  title="Scientific Calculator: Free Online Advanced Math & Trigonometry"
+  description="Free online scientific calculator with trigonometric functions (sin, cos, tan), square roots, exponents, logarithms, and parenthetical algebra."
+  breadcrumbs={[
+    { label: 'Math', href: '/math/percentage-calculator' },
+    { label: 'Scientific Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/scientific-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8 text-center max-w-xl mx-auto">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Math & Advanced Science</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Scientific Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Perform advanced mathematical calculations with trigonometric functions, logarithms, powers, roots, and parenthetical expressions.
+      </p>
+    </div>
+
+    <section aria-label="Scientific Calculator Keypad">
+      <ScientificIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

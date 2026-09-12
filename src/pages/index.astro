@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CALCULATOR_REGISTRY } from '../lib/calculations/registry';
+
+const categories = [
+  { id: 'finance', name: 'Finance & Money', icon: '💰', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'finance').length} Tools` },
+  { id: 'health', name: 'Health & Fitness', icon: '❤️', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'health').length} Tools` },
+  { id: 'math', name: 'Math & Algebra', icon: '➗', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'math').length} Tools` },
+  { id: 'construction', name: 'Construction & Materials', icon: '🏗️', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'construction').length} Tools` },
+  { id: 'converters', name: 'Conversions & Units', icon: '⇄', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'converters').length} Tools` },
+  { id: 'everyday', name: 'Everyday & Calendar', icon: '📅', count: `${CALCULATOR_REGISTRY.filter(c => c.category === 'everyday').length} Tools` },
+];
+---
+
+<BaseLayout
+  title="CalcWise: Fast, Verifiable, and Transparent Calculations"
+  description="CalcWise is the decision-first calculation platform with inspectable Calculation Passports, step-by-step mathematical traces, and zero-JS performance."
+  canonicalUrl="https://calcwise.com/"
+>
+  <!-- Hero Section -->
+  <div class="text-center max-w-3xl mx-auto pt-4 pb-10">
+    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-surface border border-brand-primary/20 text-brand-primary mb-4 shadow-2xs">
+      <span>✨ 50 Verified High-Precision Calculators Active</span>
+    </div>
+    <h1 class="text-4xl sm:text-5xl font-black text-brand-dark tracking-tight leading-tight">
+      Calculate with <span class="text-brand-primary">Precision</span>. Decide with <span class="text-brand-accent">Confidence</span>.
+    </h1>
+    <p class="text-base sm:text-lg text-brand-muted mt-4 leading-relaxed">
+      No black box math. CalcWise pairs high-performance calculation engines with inspectable formulas, step-by-step traces, and verified Calculation Passports.
+    </p>
+
+    <!-- Quick Live Search -->
+    <div class="mt-8 max-w-xl mx-auto relative">
+      <div class="relative">
+        <input
+          type="text"
+          id="tool-search"
+          placeholder="Search 50 calculators (e.g. loan, bmi, percentage, paint, age, 401k)..."
+          class="w-full pl-12 pr-4 py-3.5 bg-white border border-brand-border rounded-xl shadow-sm text-sm text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition"
+        />
+        <span class="absolute left-4 top-3.5 text-gray-400 text-base">🔍</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-3 text-xs text-brand-muted">
+        <span>Quick Picks:</span>
+        <a href="/finance/emi-calculator" class="hover:text-brand-primary font-medium">EMI Loan</a>
+        <span>•</span>
+        <a href="/health/bmi-calculator" class="hover:text-brand-primary font-medium">BMI</a>
+        <span>•</span>
+        <a href="/finance/compound-interest-calculator" class="hover:text-brand-primary font-medium">Compound Interest</a>
+        <span>•</span>
+        <a href="/construction/concrete-calculator" class="hover:text-brand-primary font-medium">Concrete</a>
+        <span>•</span>
+        <a href="/everyday/age-calculator" class="hover:text-brand-primary font-medium">Age</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Browse Hubs -->
+  <section class="mt-4 mb-12" aria-labelledby="categories-heading">
+    <h2 id="categories-heading" class="text-xl font-bold text-brand-dark tracking-tight mb-4">
+      Explore Categories
+    </h2>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {categories.map((cat) => (
+        <a
+          href={`/${cat.id}`}
+          class="bg-white rounded-xl border border-brand-border p-4 text-center hover:border-brand-primary hover:shadow-2xs transition group"
+        >
+          <div class="text-2xl mb-1.5">{cat.icon}</div>
+          <div class="font-bold text-xs text-brand-dark group-hover:text-brand-primary transition">{cat.name}</div>
+          <div class="text-[10px] text-brand-muted mt-0.5">{cat.count}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Complete 20-Calculator Catalog Grouped by Category -->
+  <section class="space-y-12" aria-labelledby="all-tools-heading">
+    <div class="border-b border-gray-200 pb-3 flex justify-between items-baseline">
+      <h2 id="all-tools-heading" class="text-2xl font-black text-brand-dark tracking-tight">
+        All 20 Alpha Calculators
+      </h2>
+      <span class="text-xs font-semibold text-brand-primary">100% Tested with Golden Datasets</span>
+    </div>
+
+    {categories.map((cat) => {
+      const tools = CALCULATOR_REGISTRY.filter(t => t.category === cat.id);
+      if (tools.length === 0) return null;
+      return (
+        <div id={`category-${cat.id}`} class="scroll-mt-20">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">{cat.icon}</span>
+              <h3 class="text-lg font-bold text-brand-dark">{cat.name}</h3>
+              <span class="text-xs text-brand-muted font-normal">({tools.length} calculators)</span>
+            </div>
+            <a
+              href={`/${cat.id}`}
+              class="text-xs font-semibold text-brand-primary hover:text-brand-accent transition inline-flex items-center space-x-1 self-start sm:self-auto"
+            >
+              <span>Explore {cat.name} Hub</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {tools.map((tool) => (
+              <a
+                href={tool.route}
+                class="bg-white rounded-xl border border-brand-border p-5 shadow-2xs hover:shadow-md hover:border-brand-primary/40 transition flex flex-col justify-between group"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-2.5">
+                    <span class="text-xl p-1.5 bg-brand-surface rounded-lg">{tool.icon}</span>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-surface text-brand-primary border border-gray-200">
+                      {tool.archetype}
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-brand-dark group-hover:text-brand-primary transition">
+                    {tool.name}
+                  </h4>
+                  <p class="text-xs text-brand-muted mt-1.5 leading-relaxed">
+                    {tool.description}
+                  </p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span class="font-medium text-brand-primary group-hover:underline inline-flex items-center">
+                    Open Tool <span class="ml-1 transition-transform group-hover:translate-x-0.5">→</span>
+                  </span>
+                  <span class="text-gray-400 text-[10px] font-mono">Tier {tool.riskTier}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </section>
+
+  <!-- The CalcWise Trust Advantage -->
+  <section class="mt-16 bg-white rounded-2xl border border-brand-border p-8 shadow-sm">
+    <div class="max-w-2xl">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">The CalcWise Standard</span>
+      <h2 class="text-2xl font-black text-brand-dark mt-1">Why CalcWise is Built Differently</h2>
+      <p class="text-xs sm:text-sm text-brand-muted mt-2 leading-relaxed">
+        Most web calculators operate as black boxes, hiding formulas and rounding unpredictably. CalcWise operates on five non-negotiable principles:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+      <div class="p-4 bg-brand-surface rounded-xl border border-gray-200">
+        <div class="w-8 h-8 rounded-lg bg-brand-primary text-white flex items-center justify-center font-bold text-sm mb-3">1</div>
+        <h3 class="font-bold text-sm text-brand-dark">Calculation Passport</h3>
+        <p class="text-xs text-brand-muted mt-1 leading-relaxed">Every calculator displays its formula version, authoritative sources, assumptions, and last audited date.</p>
+      </div>
+
+      <div class="p-4 bg-brand-surface rounded-xl border border-gray-200">
+        <div class="w-8 h-8 rounded-lg bg-brand-primary text-white flex items-center justify-center font-bold text-sm mb-3">2</div>
+        <h3 class="font-bold text-sm text-brand-dark">Show Your Work</h3>
+        <p class="text-xs text-brand-muted mt-1 leading-relaxed">Inspect step-by-step mathematical proofs showing every substitution, conversion, and rounding operation.</p>
+      </div>
+
+      <div class="p-4 bg-brand-surface rounded-xl border border-gray-200">
+        <div class="w-8 h-8 rounded-lg bg-brand-primary text-white flex items-center justify-center font-bold text-sm mb-3">3</div>
+        <h3 class="font-bold text-sm text-brand-dark">Zero-JS Performance</h3>
+        <p class="text-xs text-brand-muted mt-1 leading-relaxed">Built with Astro islands for instant page loads, strict &le;75KB JavaScript budgets, and 100% WCAG 2.2 AA accessibility.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live instant search script -->
+  <script is:inline define:vars={{ registry: CALCULATOR_REGISTRY }}>
+    const searchInput = document.getElementById('tool-search');
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const q = searchInput.value.toLowerCase().trim();
+          if (!q) return;
+          const match = registry.find(t => 
+            t.name.toLowerCase().includes(q) || 
+            t.slug.toLowerCase().includes(q) || 
+            t.keywords.some(k => k.includes(q))
+          );
+          if (match) {
+            window.location.href = match.route;
+          }
+        }
+      });
+    }
+  </script>
+</BaseLayout>

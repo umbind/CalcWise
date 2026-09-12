@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import TimeDurationIsland from '../../features/calculators/everyday/TimeDurationIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { TIME_DURATION_FORMULA_ID, TIME_DURATION_FORMULA_VERSION } from '../../lib/calculations/time_duration';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'time-duration-calculator',
+  calculatorName: 'Time Duration, Date Difference & Workdays Calculator',
+  formulaId: TIME_DURATION_FORMULA_ID,
+  formulaVersion: TIME_DURATION_FORMULA_VERSION,
+  methodology:
+    'Computes exact chronological time delta in milliseconds, converts into Gregorian calendar components (years, months, days, hours, minutes), and partitions elapsed calendar intervals into business working days (Monday-Friday) and weekend days.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'ISO 8601 Representation of Dates and Times',
+      authority: 'International Organization for Standardization (ISO)',
+      url: 'https://www.iso.org/iso-8601-date-and-time-format.html',
+    },
+    {
+      title: 'Astronomical and Civil Time Standards',
+      authority: 'National Institute of Standards and Technology (NIST Time)',
+      url: 'https://www.nist.gov/pml/time-and-frequency-division',
+    },
+  ],
+  assumptions: [
+    'Uses standard UTC time normalization to avoid regional daylight saving time distortion.',
+    'Business days encompass standard Monday through Friday cycles, excluding regional statutory bank holidays.',
+  ],
+  limitations: [
+    'Leap seconds are omitted in civil millisecond timestamps according to POSIX standards.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Chronometric Standards',
+  disclaimer:
+    'This calculator is designed for project planning, contractual deadline tracking, and time management with verified temporal precision.',
+};
+---
+
+<BaseLayout
+  title="Time Duration Calculator: Days, Hours & Business Days"
+  description="Calculate the exact time difference between two dates and times in years, months, days, hours, and business working days with verified precision."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/everyday' },
+    { label: 'Time Duration Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/time-duration-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Dates & Project Timelines</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Time Duration Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the exact duration between two dates and times, broken down into calendar units, total hours, and business working days.
+        </p>
+      </div>
+      <CalculatorActions toolName="Time Duration" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Time Duration Calculator Widget">
+      <TimeDurationIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Calendar vs. Elapsed Time</h2>
+        <p class="text-brand-muted mb-4">
+          Measuring duration across calendar months requires handling varying month lengths (28, 30, or 31 days) and leap years. Converting timestamps to total elapsed hours and minutes provides an unambiguous SI metric alongside conventional Gregorian calendar units.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Total Hours = (End Timestamp - Start Timestamp) / 3,600,000 ms</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="time-duration-calculator" category="everyday" />
+    </article>
+  </div>
+</BaseLayout>

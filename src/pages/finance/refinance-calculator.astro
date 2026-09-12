@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import RefinanceIsland from '../../features/calculators/finance/RefinanceIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { REFINANCE_FORMULA_ID, REFINANCE_FORMULA_VERSION } from '../../lib/calculations/refinance';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'refinance-calculator',
+  calculatorName: 'Mortgage & Loan Refinance Calculator',
+  formulaId: REFINANCE_FORMULA_ID,
+  formulaVersion: REFINANCE_FORMULA_VERSION,
+  methodology:
+    'Compares current loan repayment schedules against alternative refinance loan options, evaluating monthly payment differences, closing cost break-even recovery horizons, and cumulative lifetime interest savings.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'A Consumer Guide to Mortgage Refinancing',
+      authority: 'Federal Reserve Board',
+      url: 'https://www.federalreserve.gov/pubs/refinancings/',
+    },
+    {
+      title: 'Should I Refinance My Mortgage?',
+      authority: 'Consumer Financial Protection Bureau (CFPB)',
+      url: 'https://www.consumerfinance.gov/ask-cfpb/should-i-refinance-my-mortgage-en-154/',
+    },
+  ],
+  assumptions: [
+    'Interest rates remain constant over the duration of both loan scenarios.',
+    'Excludes changes in property taxes, homeowner insurance, or future interest tax deductibility.',
+  ],
+  limitations: [
+    'Prepayment penalties on existing mortgages are not automatically modeled.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This refinance calculator is for informational comparison purposes only and does not constitute loan commitment or financial advisory.',
+};
+---
+
+<BaseLayout
+  title="Loan Refinance Calculator: Monthly Savings & Break-Even Horizon"
+  description="Compare your current loan against a new refinance rate and term. Calculate monthly payment changes, closing cost break-even points, and lifetime interest savings."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'Refinance Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/refinance-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Mortgages & Loans</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Loan Refinance Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Determine if refinancing your mortgage or loan makes financial sense by analyzing monthly payment deltas, closing cost recovery time, and lifetime net savings.
+        </p>
+      </div>
+      <CalculatorActions toolName="Refinance" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Refinance Calculator Widget">
+      <RefinanceIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding the Refinance Break-Even Point</h2>
+        <p class="text-brand-muted mb-4">
+          Refinancing almost always incurs upfront closing costs (appraisal, title insurance, loan origination). The break-even point is the number of months required for your monthly payment savings to equal the closing costs:
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Break-Even (Months) = Total Closing Costs ÷ Monthly Payment Savings</code>
+        </div>
+        <p class="text-xs text-brand-muted mt-2">
+          If you plan to sell or move before reaching the break-even month, refinancing may result in a net loss despite a lower monthly payment.
+        </p>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="refinance-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

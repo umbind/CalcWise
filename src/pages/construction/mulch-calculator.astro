@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import MulchIsland from '../../features/calculators/construction/MulchIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { MULCH_FORMULA_ID, MULCH_FORMULA_VERSION } from '../../lib/calculations/mulch';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'mulch-calculator',
+  calculatorName: 'Mulch, Topsoil & Compost Volume Calculator',
+  formulaId: MULCH_FORMULA_ID,
+  formulaVersion: MULCH_FORMULA_VERSION,
+  methodology:
+    'Computes volumetric requirements in cubic feet and cubic yards: Volume (cu yd) = (Length ft × Width ft × (Depth in ÷ 12)) ÷ 27, and evaluates required bag packages for retail 1.5, 2.0, and 3.0 cu ft formats.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Landscaping Mulch and Soil Preparation Recommendations',
+      authority: 'National Gardening Association (NGA)',
+      url: 'https://garden.org/',
+    },
+    {
+      title: 'Mulch and Topsoil Coverage Calculations',
+      authority: 'Penn State Extension Agricultural Sciences',
+      url: 'https://extension.psu.edu/',
+    },
+  ],
+  assumptions: [
+    'Material is spread evenly across the planar bed area at the designated depth.',
+    '1 cubic yard covers approximately 108 square feet at a 3-inch depth, or 162 square feet at a 2-inch depth.',
+  ],
+  limitations: [
+    'Organic materials experience slight compaction (10% to 15%) after settling and initial watering.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Horticultural Standards',
+  disclaimer:
+    'This calculator is for volumetric estimation. Bulk delivery minimums and bag sizes vary by regional garden center and soil provider.',
+};
+---
+
+<BaseLayout
+  title="Mulch Calculator: Cubic Yards, Feet & Bags Needed"
+  description="Calculate how much mulch, topsoil, or compost you need in cubic yards, cubic feet, and 2 cu ft retail bags with verified precision."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Mulch Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/mulch-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Landscaping & Gardening</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Mulch & Topsoil Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the exact bulk cubic yards or retail bags of mulch, soil, or gravel needed for your garden beds and landscaping projects.
+        </p>
+      </div>
+      <CalculatorActions toolName="Mulch & Soil" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Mulch and Soil Calculator Widget">
+      <MulchIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Bulk Cubic Yards vs. Bagged Mulch</h2>
+        <p class="text-brand-muted mb-4">
+          One cubic yard equals 27 cubic feet. A single cubic yard covers 108 square feet at 3 inches of depth. For projects requiring more than 2 cubic yards (27 bags of 2 cu ft each), ordering bulk delivery from a landscape supplier is usually significantly more economical than retail bagged mulch.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Cubic Yards = (Length ft × Width ft × Depth ft) ÷ 27 ; Bags (2 cu ft) = Ceiling(Cubic Feet / 2)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="mulch-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

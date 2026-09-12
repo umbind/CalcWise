@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import MacroIsland from '../../features/calculators/health/MacroIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { MACRO_FORMULA_ID, MACRO_FORMULA_VERSION } from '../../lib/calculations/macro';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'macro-calculator',
+  calculatorName: 'Macronutrient Split & Gram Target Calculator',
+  formulaId: MACRO_FORMULA_ID,
+  formulaVersion: MACRO_FORMULA_VERSION,
+  methodology:
+    'Distributes daily total caloric energy across protein (4 kcal/g), carbohydrates (4 kcal/g), and dietary lipids (9 kcal/g) using Atwater physiological energy standards based on fitness goals.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Dietary Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids',
+      authority: 'National Academy of Medicine (NAM / Institute of Medicine)',
+      url: 'https://nap.nationalacademies.org/catalog/10490/',
+    },
+    {
+      title: 'International Society of Sports Nutrition Position Stand: Diets and Body Composition',
+      authority: 'Journal of the International Society of Sports Nutrition (JISSN)',
+      url: 'https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0174-y',
+    },
+  ],
+  assumptions: [
+    'Applies standard 4-4-9 Atwater physiological fuel values.',
+    'Cutting splits emphasize higher protein preservation during caloric deficit.',
+    'Bulking splits prioritize carbohydrate availability for glycogen replenishment.',
+  ],
+  limitations: [
+    'Does not account for individual metabolic differences, glycemic index of specific foods, or dietary fiber fermentation energy values.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Nutritional Standards',
+  disclaimer:
+    'This calculator is for informational athletic and dietary planning purposes only. Individuals with kidney conditions or metabolic disorders should consult a registered dietitian or physician before embarking on high-protein or restrictive macronutrient protocols.',
+};
+---
+
+<BaseLayout
+  title="Macro Calculator: Daily Protein, Carbs & Fat Targets"
+  description="Calculate your ideal daily macronutrient split in grams and calories for fat loss, muscle building, maintenance, or keto with verified nutritional precision."
+  breadcrumbs={[
+    { label: 'Health', href: '/health' },
+    { label: 'Macro Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/macro-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Nutrition & Body Composition</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Macronutrient Split Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Convert your target daily calorie intake into precise gram targets for protein, carbohydrates, and healthy fats tailored to your goal.
+        </p>
+      </div>
+      <CalculatorActions toolName="Macro Split" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Macronutrient Split Calculator Widget">
+      <MacroIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding the 4-4-9 Atwater System</h2>
+        <p class="text-brand-muted mb-4">
+          Every calorie consumed comes from one of three primary macronutrients. Protein and carbohydrates each yield approximately 4 kilocalories per gram, while dietary fats are more energy-dense, yielding 9 kilocalories per gram. Adjusting this distribution alters satiety, training performance, and metabolic partitioning.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Total Calories = (Protein Grams × 4) + (Carb Grams × 4) + (Fat Grams × 9)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="macro-calculator" category="health" />
+    </article>
+  </div>
+</BaseLayout>

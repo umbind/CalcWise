@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import InflationIsland from '../../features/calculators/finance/InflationIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { INFLATION_FORMULA_ID, INFLATION_FORMULA_VERSION } from '../../lib/calculations/inflation';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'inflation-calculator',
+  calculatorName: 'Inflation & Purchasing Power Calculator',
+  formulaId: INFLATION_FORMULA_ID,
+  formulaVersion: INFLATION_FORMULA_VERSION,
+  methodology:
+    'Applies standard compound growth compounding models to quantify price level increases, future equivalent living costs, and real purchasing power decay over multi-year horizons.',
+  riskTier: 'T2',
+  sources: [
+    {
+      title: 'Consumer Price Index (CPI) Concepts and Methodology',
+      authority: 'U.S. Bureau of Labor Statistics (BLS)',
+      url: 'https://www.bls.gov/cpi/questions-and-answers.htm',
+    },
+    {
+      title: 'Inflation Measurement and Economic Indicators',
+      authority: 'Federal Reserve Bank of St. Louis (FRED)',
+      url: 'https://fred.stlouisfed.org/categories/9',
+    },
+  ],
+  assumptions: [
+    'Annual inflation rate is modeled as a constant geometric compound growth rate per year.',
+    'Assumes purchasing baskets reflect general consumer price trends.',
+  ],
+  limitations: [
+    'Historical inflation fluctuates each month; specific commodity or regional price trends (such as housing or healthcare) may differ from broad CPI averages.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Financial Standards',
+  disclaimer:
+    'This calculator is for educational and projection purposes only. Official historical price indices and current consumer price trends are tracked by the U.S. Bureau of Labor Statistics.',
+};
+---
+
+<BaseLayout
+  title="Inflation Calculator: Future Value & Purchasing Power"
+  description="Calculate how inflation affects future costs, purchasing power erosion, and cumulative price increases with verified compound precision."
+  breadcrumbs={[
+    { label: 'Finance', href: '/finance' },
+    { label: 'Inflation Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/finance/inflation-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Economic Impact & Wealth</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Inflation Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Discover how inflation impacts future living expenses and how much purchasing power uninvested cash loses over time.
+        </p>
+      </div>
+      <CalculatorActions toolName="Inflation" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Inflation Calculator Widget">
+      <InflationIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding the Silent Cost of Inflation</h2>
+        <p class="text-brand-muted mb-4">
+          Inflation represents the rate at which the general level of prices for goods and services rises, eroding central currency purchasing power. Even a modest 3% annual inflation rate halves the purchasing power of cash in approximately 24 years according to the Rule of 72.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Future Cost = Present Cost × (1 + Inflation Rate)^Years</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="inflation-calculator" category="finance" />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import DiscountIsland from '../../features/calculators/everyday/DiscountIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { DISCOUNT_FORMULA_ID, DISCOUNT_FORMULA_VERSION } from '../../lib/calculations/discount';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'discount-calculator',
+  calculatorName: 'Discount, Coupon & Sales Tax Checkout Calculator',
+  formulaId: DISCOUNT_FORMULA_ID,
+  formulaVersion: DISCOUNT_FORMULA_VERSION,
+  methodology:
+    'Evaluates primary promotional markdown percentages, stacked additional coupon discounts, dollar savings, and jurisdiction sales tax to compute the final net consumer checkout price.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Consumer Price and Retail Discount Guidelines',
+      authority: 'Federal Trade Commission (FTC)',
+      url: 'https://consumer.ftc.gov/',
+    },
+    {
+      title: 'Sales Tax Calculation Standards and Point-of-Sale Rules',
+      authority: 'National Conference of State Legislatures (NCSL)',
+      url: 'https://www.ncsl.org/',
+    },
+  ],
+  assumptions: [
+    'Stacked discounts are applied sequentially (multiplicatively) rather than summed additively, matching standard retail POS terminal algorithms.',
+    'Sales tax is applied to the discounted subtotal.',
+  ],
+  limitations: [
+    'Local municipal tax rates vary by zip code, product category exemptions (e.g. unprepared groceries, apparel in certain states), and shipping origin.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Consumer Standards',
+  disclaimer:
+    'This calculator is for personal budgeting and shopping reference. Final purchase totals are determined by the retailer’s electronic register system.',
+};
+---
+
+<BaseLayout
+  title="Discount Calculator: Sale Price, Extra Coupons & Sales Tax"
+  description="Calculate your final checkout price after discounts, stacked coupon codes, and local sales tax with verified retail decimal precision."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/everyday' },
+    { label: 'Discount Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/discount-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Shopping & Personal Budget</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Discount & Sales Tax Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the final price of any sale item, stack extra coupon discounts, and factor in sales tax to know your exact register total.
+        </p>
+      </div>
+      <CalculatorActions toolName="Discount & Tax" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Discount and Sales Tax Calculator Widget">
+      <DiscountIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">How Stacked Discounts Work at Checkout</h2>
+        <p class="text-brand-muted mb-4">
+          When an item has a 20% sale and you have an additional 10% coupon, the register does <em>not</em> take 30% off the original price. Instead, it takes 20% off first, and then takes 10% off the remaining balance. Thus, a \$100 item becomes \$80, and then \$72 (a true effective discount of 28%).
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Discounted = Original × (1 - Discount₁) × (1 - Discount₂) ; Total = Discounted × (1 + Tax%)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="discount-calculator" category="everyday" />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import FuelCostIsland from '../../features/calculators/everyday/FuelCostIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { FUEL_COST_FORMULA_ID, FUEL_COST_FORMULA_VERSION } from '../../lib/calculations/fuel_cost';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'fuel-cost-calculator',
+  calculatorName: 'Fuel Cost & Road Trip Mileage Expense Calculator',
+  formulaId: FUEL_COST_FORMULA_ID,
+  formulaVersion: FUEL_COST_FORMULA_VERSION,
+  methodology:
+    'Evaluates automotive thermal fuel consumption (Miles ÷ MPG in imperial or (Km ÷ 100) × L/100km in metric), applies local retail fuel pricing per gallon or liter, and computes total road trip expense and per-distance marginal operating costs.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Fuel Economy Guides and Testing Procedures',
+      authority: 'U.S. Department of Energy & EPA',
+      url: 'https://www.fueleconomy.gov/',
+    },
+    {
+      title: 'Gasoline and Diesel Fuel Price Indexes',
+      authority: 'U.S. Energy Information Administration (EIA)',
+      url: 'https://www.eia.gov/petroleum/gasdiesel/',
+    },
+  ],
+  assumptions: [
+    'Vehicle fuel efficiency (MPG or L/100km) remains consistent across the highway/city driving cycle.',
+    'Fuel prices remain constant throughout the duration of the trip.',
+  ],
+  limitations: [
+    'Excludes turnpike tolls, vehicle depreciation, tire wear, or air conditioning thermal load penalties.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Automotive Standards',
+  disclaimer:
+    'This calculator is for road trip budgeting and fuel cost estimation. Actual fuel consumption varies with vehicle payload, traffic conditions, and driving behavior.',
+};
+---
+
+<BaseLayout
+  title="Fuel Cost Calculator: Trip Mileage, Gas Price & MPG"
+  description="Calculate how much gas your road trip will cost, total gallons or liters consumed, and cost per mile with verified automotive fuel efficiency precision."
+  breadcrumbs={[
+    { label: 'Everyday', href: '/everyday' },
+    { label: 'Fuel Cost Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/everyday/fuel-cost-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Automotive & Road Trips</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Fuel Cost Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate the total fuel expense, gallons or liters required, and cost per mile for any commute or cross-country road trip.
+        </p>
+      </div>
+      <CalculatorActions toolName="Fuel Cost" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Fuel Cost Calculator Widget">
+      <FuelCostIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Understanding Fuel Cost per Mile</h2>
+        <p class="text-brand-muted mb-4">
+          Knowing your vehicle's cost per mile helps in splitting trip expenses with passengers and estimating business vehicle mileage deductions. Dividing current gas price by fuel economy yields your direct fuel operating cost per mile traveled.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>Fuel Cost = (Distance ÷ MPG) × Gas Price ; Cost per Mile = Gas Price ÷ MPG</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="fuel-cost-calculator" category="everyday" />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import SquareFootageIsland from '../../features/calculators/construction/SquareFootageIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { SQUARE_FOOTAGE_FORMULA_ID, SQUARE_FOOTAGE_FORMULA_VERSION } from '../../lib/calculations/square_footage';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'square-footage-calculator',
+  calculatorName: 'Square Footage & Multi-Room Area Calculator',
+  formulaId: SQUARE_FOOTAGE_FORMULA_ID,
+  formulaVersion: SQUARE_FOOTAGE_FORMULA_VERSION,
+  methodology:
+    'Computes total surface area across single or multi-room configurations (Length × Width), converting dimensions into square feet, square yards, and square meters with optional material cost extensions.',
+  riskTier: 'T0',
+  sources: [
+    {
+      title: 'Standard Method for Measuring Floor Area (ANSI/BOMA Z65.1)',
+      authority: 'Building Owners and Managers Association (BOMA) International',
+      url: 'https://www.boma.org/',
+    },
+  ],
+  assumptions: [
+    'Assumes rectangular or square room geometries.',
+    '1 square yard = 9 square feet. 1 square meter = 10.7639 square feet.',
+  ],
+  limitations: [
+    'Irregular polygons, arches, or triangular nooks require triangulation modeling.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against ANSI/BOMA Architectural Standards',
+};
+---
+
+<BaseLayout
+  title="Square Footage Calculator: Calculate Room Area (Sq Ft, Sq Yd, M²)"
+  description="Free square footage calculator to measure room areas, flooring coverage, and total project material costs across single or multiple rooms."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction/concrete-calculator' },
+    { label: 'Square Footage Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/square-footage-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Construction & Flooring</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Square Footage Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Measure the square footage of any room or multi-room project, convert to square yards or meters, and estimate total flooring or landscaping costs.
+      </p>
+    </div>
+
+    <section aria-label="Square Footage Calculator Widget">
+      <SquareFootageIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

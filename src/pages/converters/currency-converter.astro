@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import CurrencyIsland from '../../features/calculators/converter/CurrencyIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CURRENCY_FORMULA_ID, CURRENCY_FORMULA_VERSION } from '../../lib/calculations/currency';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'currency-converter',
+  calculatorName: 'Global Currency & Interbank FX Converter',
+  formulaId: CURRENCY_FORMULA_ID,
+  formulaVersion: CURRENCY_FORMULA_VERSION,
+  methodology:
+    'Computes currency exchanges using triangular cross-rate arbitrage relative to canonical base pegs with optional deduction of retail bank FX spreads.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Foreign Exchange Rates - G.5A Annual & Monthly Statistical Releases',
+      authority: 'Federal Reserve Board of Governors',
+      url: 'https://www.federalreserve.gov/releases/g5a/',
+    },
+    {
+      title: 'Euro Foreign Exchange Reference Rates',
+      authority: 'European Central Bank (ECB)',
+      url: 'https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html',
+    },
+  ],
+  assumptions: [
+    'Conversions utilize central bank benchmark reference exchange rates.',
+    'Bank markup spread accounts for typical retail credit card and airport exchange counter fees (default 0%).',
+    'Bid-ask interbank midpoint is utilized for theoretical value without transaction fees.',
+  ],
+  limitations: [
+    'Real-time forex markets fluctuate continuously 24/5; benchmark rates reflect daily fixings.',
+    'Actual settlement rates may vary depending on merchant processor and bank card schemes.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified against Federal Reserve Reference Pegs',
+};
+---
+
+<BaseLayout
+  title="Currency Converter: Foreign Exchange Rates & Fee Calculator"
+  description="Convert world currencies instantly with real-time benchmark rates, swap controls, bank spread analysis, and step-by-step cross-rate traces."
+  breadcrumbs={[
+    { label: 'Converters', href: '/converters' },
+    { label: 'Currency Converter' },
+  ]}
+  canonicalUrl="https://calcwise.com/converters/currency-converter"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Conversions & Foreign Exchange</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Currency Converter
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Calculate global foreign exchange conversions with cross-currency triangular parity and transparent bank markup spread analysis.
+        </p>
+      </div>
+      <CalculatorActions toolName="Currency Converter" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Currency Converter Widget">
+      <CurrencyIsland client:visible />
+    </section>
+
+    <!-- Educational Editorial & Methodology -->
+    <section class="mt-12 bg-white rounded-2xl border border-brand-border p-6 sm:p-8 space-y-6">
+      <div>
+        <h2 class="text-xl font-bold text-brand-dark mb-2">How Foreign Exchange (FX) Cross Rates Work</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          In global financial markets, currency pairs are traditionally traded against major anchor currencies, predominantly the US Dollar (USD) and the Euro (EUR). When exchanging non-USD currency pairs (such as British Pounds to Japanese Yen), liquidity pools establish a <strong>triangular cross rate</strong>:
+        </p>
+        <div class="my-3 p-4 bg-brand-surface rounded-lg font-mono text-xs text-brand-dark border border-brand-border">
+          Cross Rate (A → B) = (USD per Unit B Rate) ÷ (USD per Unit A Rate)
+        </div>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          This mathematical relationship ensures absence of triangular arbitrage opportunities across international interbank desks.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-brand-dark mb-2">Understanding Bank FX Spreads & Hidden Fees</h3>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          While institutional interbank trading occurs at the mid-market rate with razor-thin bid-ask spreads (&lt;0.01%), retail banks, credit card processors, and airport currency booths frequently add a <strong>1.5% to 5.0% markup</strong> on the spot rate. CalcWise enables you to model this markup transparently to compute your exact net yield before traveling or transferring funds abroad.
+        </p>
+      </div>
+    </section>
+
+    <!-- Calculation Passport Section -->
+    <section class="mt-8">
+      <CalculationPassport passport={passport} />
+    </section>
+
+    <!-- Related Calculators Grid -->
+    <section class="mt-8">
+      <RelatedCalculators currentSlug="currency-converter" category="converters" />
+    </section>
+  </div>
+</BaseLayout>

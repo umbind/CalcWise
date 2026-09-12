@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import ConverterIsland from '../../features/calculators/converter/ConverterIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CONVERTER_FORMULA_ID, CONVERTER_FORMULA_VERSION } from '../../lib/calculations/converter';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'unit-converter',
+  calculatorName: 'Canonical Multi-Quantity Unit Converter',
+  formulaId: CONVERTER_FORMULA_ID,
+  formulaVersion: CONVERTER_FORMULA_VERSION,
+  methodology:
+    'Transforms measurements across international metric (SI), imperial, and US customary units through a centralized canonical base unit ontology, preserving precision and round-trip invariance.',
+  riskTier: 'T0',
+  sources: [
+    {
+      title: 'The International System of Units (SI Brochure, 9th Edition)',
+      authority: 'Bureau International des Poids et Mesures (BIPM)',
+      url: 'https://www.bipm.org/en/publications/si-brochure',
+    },
+    {
+      title: 'NIST Handbook 44: Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices',
+      authority: 'National Institute of Standards and Technology',
+      url: 'https://www.nist.gov/pml/weights-and-measures/publications/nist-handbooks/handbook-44',
+    },
+  ],
+  assumptions: [
+    'Conversions to and from SI units utilize exact legal definition factors (e.g. 1 inch = 0.0254 m exactly).',
+    'Temperature utilizes standard thermodynamic affine offsets (e.g. 0°C = 273.15 K).',
+    'Digital data uses binary 1024 base prefixes (IEC standards).',
+  ],
+  limitations: [
+    'Does not convert between different physical dimensions (e.g. mass to volume without density specified).',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against BIPM SI Standards',
+};
+---
+
+<BaseLayout
+  title="Universal Unit Converter: Length, Weight, Temp, Volume & Data"
+  description="Free, accurate all-in-one unit converter with instant bidirectional conversion, swap controls, and exact SI conversion factors."
+  breadcrumbs={[
+    { label: 'Converters', href: '/converters' },
+    { label: 'Unit Converter' },
+  ]}
+  canonicalUrl="https://calcwise.com/converters/unit-converter"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Conversions & Measurements</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Universal Unit Converter
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Convert between metric and imperial units across length, mass, temperature, area, volume, speed, and digital data storage with canonical precision.
+        </p>
+      </div>
+      <CalculatorActions toolName="Unit Converter" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Unit Converter Widget">
+      <ConverterIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">The Canonical Unit Conversion Graph</h2>
+        <p class="text-brand-muted mb-4">
+          Rather than relying on thousands of isolated pairwise conversion equations, CalcWise routes every conversion through its canonical International System of Units (SI) base unit (such as the meter for length or kilogram for mass).
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 text-xs font-mono text-brand-dark">
+          <code>[Input Value] × [Factor to SI Base] ÷ [Target SI Factor] = [Exact Output]</code>
+        </div>
+        <p class="text-xs text-brand-muted mt-2">
+          This eliminates floating-point accumulation drift and guarantees mathematical round-trip symmetry.
+        </p>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="unit-converter" category="converters" />
+    </article>
+  </div>
+</BaseLayout>

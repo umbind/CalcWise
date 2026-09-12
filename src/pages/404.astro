@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CATEGORY_LIST, CALCULATOR_REGISTRY } from '../lib/calculations/registry';
+
+const flagshipCalculators = [
+  CALCULATOR_REGISTRY.find((c) => c.id === 'emi-calculator'),
+  CALCULATOR_REGISTRY.find((c) => c.id === 'percentage-calculator'),
+  CALCULATOR_REGISTRY.find((c) => c.id === 'bmi-calculator'),
+  CALCULATOR_REGISTRY.find((c) => c.id === 'concrete-calculator'),
+  CALCULATOR_REGISTRY.find((c) => c.id === 'auto-loan-calculator'),
+  CALCULATOR_REGISTRY.find((c) => c.id === 'unit-converter'),
+].filter(Boolean);
+---
+
+<BaseLayout
+  title="Page Not Found (404) | CalcWise"
+  description="The calculation page you are looking for could not be found. Explore our 50 verified calculators across finance, health, math, construction, and conversions."
+  canonicalUrl="https://calcwise.com/404"
+>
+  <div class="max-w-4xl mx-auto py-12 px-4 text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-rose-50 rounded-full text-3xl font-extrabold text-rose-500 mb-6 border border-rose-100 shadow-sm">
+      404
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+      Calculation Not Found
+    </h1>
+
+    <p class="text-base sm:text-lg text-brand-muted max-w-xl mx-auto mt-3">
+      The formula or URL you requested could not be resolved. It may have been relocated or entered incorrectly.
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/"
+        class="inline-flex items-center px-6 py-3 bg-brand-primary text-white font-bold rounded-xl shadow-sm hover:bg-brand-accent transition"
+      >
+        ← Return to Discovery Hub
+      </a>
+      <a
+        href="/finance"
+        class="inline-flex items-center px-6 py-3 bg-white text-brand-dark border border-brand-border font-semibold rounded-xl shadow-2xs hover:bg-brand-surface transition"
+      >
+        Browse Category Hubs
+      </a>
+    </div>
+
+    <!-- Category Hubs Navigation Grid -->
+    <div class="mt-16 text-left">
+      <h2 class="text-lg font-bold text-brand-dark mb-4 text-center">
+        Explore CalcWise by Category
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {CATEGORY_LIST.map((cat) => (
+          <a
+            href={cat.route}
+            class="group p-5 bg-white rounded-xl border border-brand-border hover:border-brand-primary/40 hover:shadow-sm transition flex items-start space-x-3"
+          >
+            <span class="text-2xl group-hover:scale-110 transition transform">{cat.icon}</span>
+            <div>
+              <div class="font-bold text-sm text-brand-dark group-hover:text-brand-primary transition">
+                {cat.name}
+              </div>
+              <p class="text-xs text-brand-muted mt-1 line-clamp-2">
+                {cat.tagline}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Flagship Calculators -->
+    <div class="mt-14 text-left">
+      <h2 class="text-lg font-bold text-brand-dark mb-4 text-center">
+        Popular Precision Calculators
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {flagshipCalculators.map((calc) => (
+          <a
+            href={calc!.route}
+            class="p-4 bg-brand-surface rounded-xl border border-brand-border hover:bg-white hover:border-brand-primary transition block text-center"
+          >
+            <span class="text-xl block mb-1">{calc!.icon}</span>
+            <span class="text-xs font-bold text-brand-dark block">{calc!.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

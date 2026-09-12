@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import ExponentIsland from '../../features/calculators/math/ExponentIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { EXPONENT_FORMULA_ID, EXPONENT_FORMULA_VERSION } from '../../lib/calculations/exponent';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'exponent-calculator',
+  calculatorName: 'Exponentiation, Power & Scientific Notation Calculator',
+  formulaId: EXPONENT_FORMULA_ID,
+  formulaVersion: EXPONENT_FORMULA_VERSION,
+  methodology:
+    'Evaluates base b raised to power x (bˣ = exp(x × ln(b))) with full support for negative reciprocals (b⁻ˣ = 1 / bˣ), fractional roots, zero power identity (b⁰ = 1), and scientific engineering notation.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Elementary Functions: Exponential and Logarithmic Powers',
+      authority: 'National Institute of Standards and Technology (NIST DLMF)',
+      url: 'https://dlmf.nist.gov/4',
+    },
+    {
+      title: 'Rules of Exponents and Radicals',
+      authority: 'OpenStax College Algebra',
+      url: 'https://openstax.org/details/books/college-algebra',
+    },
+  ],
+  assumptions: [
+    'Base 0 cannot be raised to a negative exponent (division by zero).',
+    'Negative bases with fractional exponents produce complex solutions which are outside the scope of real arithmetic.',
+  ],
+  limitations: [
+    'Numbers exceeding ~1.79 × 10³⁰⁸ overflow standard double-precision IEEE 754 floating-point limit.',
+  ],
+  lastReviewed: '2026-09-12',
+  reviewerStatus: 'Verified by CalcWise Mathematical Standards',
+  disclaimer:
+    'This calculator is designed for academic, scientific, and physical calculations with verified exponential laws and precision.',
+};
+---
+
+<BaseLayout
+  title="Exponent Calculator: Powers, Negative & Fractional Bases"
+  description="Calculate exponents and powers bˣ with negative exponents, fractional powers, roots, scientific notation, and step-by-step mathematical rules."
+  breadcrumbs={[
+    { label: 'Math', href: '/math' },
+    { label: 'Exponent Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/math/exponent-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Algebra & Power Laws</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Exponent Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Raise any base to positive, negative, or fractional powers with scientific notation and power law derivations.
+        </p>
+      </div>
+      <CalculatorActions toolName="Exponent" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Exponent Calculator Widget">
+      <ExponentIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Key Laws of Exponents</h2>
+        <p class="text-brand-muted mb-4">
+          Exponentiation represents repeated multiplication. When an exponent is negative, the expression inverts to its reciprocal (b⁻ˣ = 1 / bˣ). When an exponent is fractional (b^(1/n)), it represents the n-th radical root of the base.
+        </p>
+        <div class="bg-brand-surface p-4 rounded-lg border border-gray-200 font-mono text-xs text-brand-primary">
+          <code>b⁰ = 1 ;  b⁻ˣ = 1 / bˣ ;  b^(m/n) = ⁿ√(bᵐ)</code>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="exponent-calculator" category="math" />
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+import CalculatorActions from '../../components/CalculatorActions';
+import ConcreteIsland from '../../features/calculators/concrete/ConcreteIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { CONCRETE_FORMULA_ID, CONCRETE_FORMULA_VERSION } from '../../lib/calculations/concrete';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'concrete-calculator',
+  calculatorName: 'Concrete Volume & Bag Calculator',
+  formulaId: CONCRETE_FORMULA_ID,
+  formulaVersion: CONCRETE_FORMULA_VERSION,
+  methodology:
+    'Calculates volumetric concrete displacement across rectangular slabs and cylindrical columns, converting dimensions to standard cubic yards and cubic meters, and applying customizable waste margins.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Guide to Cast-in-Place Concrete Construction (ACI 301)',
+      authority: 'American Concrete Institute (ACI)',
+      url: 'https://www.concrete.org/',
+    },
+    {
+      title: 'Standard Practice for Estimating Concrete Quantities',
+      authority: 'National Ready Mixed Concrete Association (NRMCA)',
+      url: 'https://www.nrmca.org/',
+    },
+  ],
+  assumptions: [
+    '1 cubic yard = 27 cubic feet.',
+    'Standard 80 lb pre-mix bag yields approximately 0.60 cu ft of mixed concrete.',
+    'Standard 60 lb pre-mix bag yields approximately 0.45 cu ft.',
+    'Assumes standard dry concrete density of 140 lbs/cu ft.',
+  ],
+  limitations: [
+    'Actual bag yields vary slightly based on water addition and compaction.',
+    'For major structural load-bearing foundations, verify design with a licensed structural engineer.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified by CalcWise Construction Engineering Standards',
+};
+---
+
+<BaseLayout
+  title="Concrete Calculator: Calculate Yards, Bags & Cubic Meters Needed"
+  description="Estimate how many cubic yards, cubic meters, and 60lb/80lb bags of concrete you need for slabs, patios, footings, and cylindrical columns."
+  breadcrumbs={[
+    { label: 'Construction', href: '/construction' },
+    { label: 'Concrete Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/construction/concrete-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Area -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Construction & Materials</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+          Concrete Volume & Bag Calculator
+        </h1>
+        <p class="text-base text-brand-muted mt-2">
+          Find out exactly how much concrete to order in cubic yards or how many pre-mixed bags to purchase, with built-in waste factor safety margins.
+        </p>
+      </div>
+      <CalculatorActions toolName="Concrete Volume" client:idle />
+    </div>
+
+    <!-- Functional Tool (Above the Fold) -->
+    <section aria-label="Concrete Calculator Widget">
+      <ConcreteIsland client:visible />
+    </section>
+
+    <!-- Explanatory Knowledge Layer -->
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <!-- Thickness Reference -->
+      <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm">
+        <h2 class="text-lg font-bold text-brand-dark mb-3">Recommended Concrete Slab Thicknesses</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="p-3 bg-brand-surface rounded-lg border border-gray-200">
+            <strong class="block text-brand-dark font-bold text-sm mb-1">4 Inches (10 cm)</strong>
+            <p class="text-brand-muted">Standard for residential sidewalks, walkways, sheds, and pedestrian patios.</p>
+          </div>
+          <div class="p-3 bg-brand-surface rounded-lg border border-gray-200">
+            <strong class="block text-brand-dark font-bold text-sm mb-1">5 to 6 Inches (13–15 cm)</strong>
+            <p class="text-brand-muted">Recommended for standard residential driveways supporting light trucks and SUVs.</p>
+          </div>
+          <div class="p-3 bg-brand-surface rounded-lg border border-gray-200">
+            <strong class="block text-brand-dark font-bold text-sm mb-1">8+ Inches (20+ cm)</strong>
+            <p class="text-brand-muted">Used for heavy commercial vehicles, RV pads, or heavy industrial machinery.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculation Passport -->
+      <CalculationPassport passport={passport} />
+
+      <!-- Related Calculators -->
+      <RelatedCalculators currentSlug="concrete-calculator" category="construction" />
+    </article>
+  </div>
+</BaseLayout>

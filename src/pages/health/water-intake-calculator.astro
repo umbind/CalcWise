@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalculationPassport from '../../components/CalculationPassport.astro';
+import WaterIsland from '../../features/calculators/health/WaterIsland';
+import type { CalculationPassportData } from '../../lib/calculations/types';
+import { WATER_FORMULA_ID, WATER_FORMULA_VERSION } from '../../lib/calculations/water';
+
+const passport: CalculationPassportData = {
+  calculatorId: 'water-intake-calculator',
+  calculatorName: 'Daily Water Intake & Hydration Calculator',
+  formulaId: WATER_FORMULA_ID,
+  formulaVersion: WATER_FORMULA_VERSION,
+  methodology:
+    'Applies physiological fluid turnover standards of approximately 35 ml per kilogram of body weight, incorporating dynamic adjustments for physical exercise sweat losses and ambient climate thermal load.',
+  riskTier: 'T1',
+  sources: [
+    {
+      title: 'Dietary Reference Intakes for Water, Potassium, Sodium, Chloride, and Sulfate',
+      authority: 'National Academies of Sciences, Engineering, and Medicine',
+      url: 'https://www.nationalacademies.org/',
+    },
+    {
+      title: 'Water and Healthier Drinks: Hydration Guidance',
+      authority: 'Centers for Disease Control and Prevention (CDC)',
+      url: 'https://www.cdc.gov/healthy-weight-growth/water-and-healthier-drinks/',
+    },
+  ],
+  assumptions: [
+    'Applies to healthy adults without diagnosed renal, cardiac, or hepatic fluid restrictions.',
+    'Total fluid volume incorporates water from plain beverages and moisture in foods.',
+  ],
+  limitations: [
+    'Individuals with kidney conditions or congestive heart failure must follow explicit physician fluid restrictions.',
+  ],
+  lastReviewed: '2026-09-10',
+  reviewerStatus: 'Verified against Clinical Hydration Guidelines',
+};
+---
+
+<BaseLayout
+  title="Water Intake Calculator: How Much Water Should You Drink Daily?"
+  description="Calculate your recommended daily water intake in liters, cups, and ounces based on your weight, daily exercise duration, and climate."
+  breadcrumbs={[
+    { label: 'Health', href: '/health/bmi-calculator' },
+    { label: 'Water Intake Calculator' },
+  ]}
+  canonicalUrl="https://calcwise.com/health/water-intake-calculator"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">Health & Hydration</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+        Daily Water Intake Calculator
+      </h1>
+      <p class="text-base text-brand-muted mt-2">
+        Find out exactly how much water and fluids you need every day based on your body weight, workout habits, and climate.
+      </p>
+    </div>
+
+    <section aria-label="Water Intake Calculator Widget">
+      <WaterIsland client:visible />
+    </section>
+
+    <article class="mt-12 space-y-8 text-sm text-brand-dark leading-relaxed">
+      <CalculationPassport passport={passport} />
+    </article>
+  </div>
+</BaseLayout>

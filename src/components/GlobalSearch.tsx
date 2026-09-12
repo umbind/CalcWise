@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { CALCULATOR_REGISTRY, type CalculatorMetadata } from '../lib/calculations/registry';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { CALCULATOR_REGISTRY } from '../lib/calculations/registry';
 
 interface GlobalSearchProps {
   className?: string;

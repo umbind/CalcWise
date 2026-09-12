@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SUPPORTED_LANGUAGES, type LanguageOption } from '../lib/i18n/translations';
 import { triggerPageTranslation } from '../lib/i18n/translator';
 import { getCurrency, setGlobalCurrency } from '../lib/i18n/currencies';

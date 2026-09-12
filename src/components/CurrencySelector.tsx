@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SUPPORTED_CURRENCIES, type CurrencyOption, setGlobalCurrency, useCurrency } from '../lib/i18n/currencies';
 
 interface CurrencySelectorProps {

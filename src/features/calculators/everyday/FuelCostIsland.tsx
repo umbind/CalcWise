@@ -1,7 +1,9 @@
 import { useState, useId } from 'react';
 import { calculateFuelCost } from '../../../lib/calculations/fuel_cost';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function FuelCostIsland() {
+  const { symbol: currency } = useCurrency('$');
   const [distance, setDistance] = useState<string>('300');
   const [distanceUnit, setDistanceUnit] = useState<'miles' | 'km'>('miles');
   const [fuelEfficiencyMpg, setFuelEfficiencyMpg] = useState<string>('30');
@@ -21,6 +23,7 @@ export default function FuelCostIsland() {
     fuelEfficiencyL100km: distanceUnit === 'km' ? fuelEfficiencyL100km : undefined,
     fuelPricePerUnit,
     isRoundTrip,
+    currencySymbol: currency,
   });
 
   return (
@@ -104,15 +107,16 @@ export default function FuelCostIsland() {
             </div>
             <div>
               <label htmlFor={priceId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Gas Price (${distanceUnit === 'miles' ? '/gal' : '/L'})
+                Gas Price (<span translate="no" className="notranslate">{currency}</span>{distanceUnit === 'miles' ? '/gal' : '/L'})
               </label>
               <input
                 id={priceId}
                 type="number"
                 step="0.05"
+                translate="no"
                 value={fuelPricePerUnit}
                 onChange={(e) => setFuelPricePerUnit(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -125,22 +129,22 @@ export default function FuelCostIsland() {
               <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-1">
                 Estimated Fuel Expense ({outcome.value.totalDistance} {distanceUnit})
               </div>
-              <div className="text-4xl font-extrabold text-brand-primary">
+              <div translate="no" className="notranslate text-4xl font-extrabold text-brand-primary">
                 {outcome.value.formattedTotalCost}
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
-                Cost per {distanceUnit === 'miles' ? 'mile' : 'km'}: <strong className="text-brand-dark font-semibold">{outcome.value.formattedCostPerUnit}</strong>
+                Cost per {distanceUnit === 'miles' ? 'mile' : 'km'}: <strong translate="no" className="notranslate text-brand-dark font-semibold">{outcome.value.formattedCostPerUnit}</strong>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Fuel Consumed</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.formattedFuelVolume}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.formattedFuelVolume}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Total Distance Traveled</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.totalDistance} {distanceUnit}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.totalDistance} {distanceUnit}</strong>
                 </div>
               </div>
             </div>
@@ -167,9 +171,9 @@ export default function FuelCostIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

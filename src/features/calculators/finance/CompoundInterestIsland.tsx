@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateCompoundInterest, type CompoundingFrequency } from '../../../lib/calculations/compound_interest';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function CompoundInterestIsland() {
   const [initialPrincipal, setInitialPrincipal] = useState<string>('10000');
@@ -9,6 +10,7 @@ export default function CompoundInterestIsland() {
   const [frequency, setFrequency] = useState<CompoundingFrequency>('monthly');
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const principalId = useId();
   const rateId = useId();
@@ -21,6 +23,7 @@ export default function CompoundInterestIsland() {
     years,
     monthlyContribution,
     compoundingFrequency: frequency,
+    currencySymbol: currency,
   });
 
   return (
@@ -30,7 +33,7 @@ export default function CompoundInterestIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={principalId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Initial Investment Principal ($)
+              Initial Investment Principal (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={principalId}
@@ -39,13 +42,14 @@ export default function CompoundInterestIsland() {
               step="500"
               value={initialPrincipal}
               onChange={(e) => setInitialPrincipal(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
           <div>
             <label htmlFor={pmtId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Monthly Contribution ($)
+              Monthly Contribution (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={pmtId}
@@ -54,7 +58,8 @@ export default function CompoundInterestIsland() {
               step="50"
               value={monthlyContribution}
               onChange={(e) => setMonthlyContribution(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -70,7 +75,8 @@ export default function CompoundInterestIsland() {
                 step="0.1"
                 value={annualRate}
                 onChange={(e) => setAnnualRate(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -84,7 +90,8 @@ export default function CompoundInterestIsland() {
                 max="50"
                 value={years}
                 onChange={(e) => setYears(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -115,21 +122,21 @@ export default function CompoundInterestIsland() {
                 Estimated Future Balance
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedFutureValue}
+                <span translate="no" className="notranslate">{outcome.value.formattedFutureValue}</span>
               </div>
 
               <div className="grid grid-cols-3 gap-3 mt-6 pt-5 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted font-medium">Starting Principal</span>
-                  <span className="text-sm font-bold text-brand-dark">{outcome.value.formattedTotalPrincipal}</span>
+                  <span translate="no" className="notranslate text-sm font-bold text-brand-dark">{outcome.value.formattedTotalPrincipal}</span>
                 </div>
                 <div>
                   <span className="block text-brand-muted font-medium">Total Additions</span>
-                  <span className="text-sm font-bold text-brand-dark">{outcome.value.formattedTotalContributions}</span>
+                  <span translate="no" className="notranslate text-sm font-bold text-brand-dark">{outcome.value.formattedTotalContributions}</span>
                 </div>
                 <div>
                   <span className="block text-brand-muted font-medium">Total Interest</span>
-                  <span className="text-sm font-bold text-emerald-700">{outcome.value.formattedTotalInterest}</span>
+                  <span translate="no" className="notranslate text-sm font-bold text-emerald-700">{outcome.value.formattedTotalInterest}</span>
                 </div>
               </div>
             </div>
@@ -173,10 +180,10 @@ export default function CompoundInterestIsland() {
             <tbody className="divide-y divide-gray-100">
               {outcome.value.growthSchedule.map((row) => (
                 <tr key={row.year} className="hover:bg-brand-surface/60">
-                  <td className="py-1.5 px-3 font-medium text-brand-muted">{row.year}</td>
-                  <td className="py-1.5 px-3">${row.annualDeposits.toLocaleString()}</td>
-                  <td className="py-1.5 px-3 text-emerald-700">{row.formattedInterestEarned}</td>
-                  <td className="py-1.5 px-3 font-bold text-brand-dark">{row.formattedEndingBalance}</td>
+                  <td translate="no" className="notranslate py-1.5 px-3 font-medium text-brand-muted">{row.year}</td>
+                  <td translate="no" className="notranslate py-1.5 px-3">{currency}{row.annualDeposits.toLocaleString()}</td>
+                  <td translate="no" className="notranslate py-1.5 px-3 text-emerald-700">{row.formattedInterestEarned}</td>
+                  <td translate="no" className="notranslate py-1.5 px-3 font-bold text-brand-dark">{row.formattedEndingBalance}</td>
                 </tr>
               ))}
             </tbody>
@@ -190,7 +197,7 @@ export default function CompoundInterestIsland() {
           {outcome.trace.map((s) => (
             <div key={s.stepNumber} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
               <span className="font-medium text-brand-dark">{s.label}</span>
-              <span className="font-mono text-brand-primary font-bold">{s.result}</span>
+              <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{s.result}</span>
             </div>
           ))}
         </div>

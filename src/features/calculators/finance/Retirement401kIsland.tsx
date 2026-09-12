@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculate401k } from '../../../lib/calculations/retirement_401k';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function Retirement401kIsland() {
   const [currentAge, setCurrentAge] = useState<string>('30');
@@ -12,6 +13,7 @@ export default function Retirement401kIsland() {
   const [employerMatchCapPct, setEmployerMatchCapPct] = useState<string>('6');
   const [annualReturnRate, setAnnualReturnRate] = useState<string>('7.0');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const curAgeId = useId();
   const retAgeId = useId();
@@ -33,6 +35,7 @@ export default function Retirement401kIsland() {
     employerMatchPct,
     employerMatchCapPct,
     annualReturnRate,
+    currencySymbol: currency,
   });
 
   return (
@@ -52,7 +55,8 @@ export default function Retirement401kIsland() {
                 max="90"
                 value={currentAge}
                 onChange={(e) => setCurrentAge(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -66,7 +70,8 @@ export default function Retirement401kIsland() {
                 max="100"
                 value={retirementAge}
                 onChange={(e) => setRetirementAge(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -74,7 +79,7 @@ export default function Retirement401kIsland() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor={salaryId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Annual Salary ($)
+                Annual Salary (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={salaryId}
@@ -82,12 +87,13 @@ export default function Retirement401kIsland() {
                 step="1000"
                 value={annualSalary}
                 onChange={(e) => setAnnualSalary(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
               <label htmlFor={balanceId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Current 401(k) ($)
+                Current 401(k) (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={balanceId}
@@ -95,7 +101,8 @@ export default function Retirement401kIsland() {
                 step="1000"
                 value={currentBalance}
                 onChange={(e) => setCurrentBalance(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -113,7 +120,8 @@ export default function Retirement401kIsland() {
                 max="100"
                 value={employeeContributionPct}
                 onChange={(e) => setEmployeeContributionPct(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -126,7 +134,8 @@ export default function Retirement401kIsland() {
                 step="0.5"
                 value={salaryGrowthRate}
                 onChange={(e) => setSalaryGrowthRate(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -142,7 +151,8 @@ export default function Retirement401kIsland() {
                 step="5"
                 value={employerMatchPct}
                 onChange={(e) => setEmployerMatchPct(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -155,7 +165,8 @@ export default function Retirement401kIsland() {
                 step="1"
                 value={employerMatchCapPct}
                 onChange={(e) => setEmployerMatchCapPct(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -170,7 +181,8 @@ export default function Retirement401kIsland() {
               step="0.5"
               value={annualReturnRate}
               onChange={(e) => setAnnualReturnRate(e.target.value)}
-              className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
         </div>
@@ -180,28 +192,28 @@ export default function Retirement401kIsland() {
           {outcome.status === 'success' && outcome.value ? (
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-1">
-                Projected Balance at Age {retirementAge} ({outcome.value.yearsToRetirement} Years)
+                Projected Balance at Age {retirementAge} (<span translate="no" className="notranslate">{outcome.value.yearsToRetirement}</span> Years)
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedTotalBalance}
+                <span translate="no" className="notranslate">{outcome.value.formattedTotalBalance}</span>
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
-                Est. Sustainable Income (4% Rule): <strong className="text-brand-dark">{outcome.value.formattedMonthlyIncome}</strong> / month
+                Est. Sustainable Income (4% Rule): <strong translate="no" className="notranslate text-brand-dark">{outcome.value.formattedMonthlyIncome}</strong> / month
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Your Contributions</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedEmployeeContributions}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedEmployeeContributions}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Employer Match</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedEmployerContributions}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedEmployerContributions}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Investment Growth</span>
-                  <strong className="block text-emerald-700 text-sm mt-0.5">{outcome.value.formattedInvestmentGrowth}</strong>
+                  <strong translate="no" className="notranslate block text-emerald-700 text-sm mt-0.5">{outcome.value.formattedInvestmentGrowth}</strong>
                 </div>
               </div>
             </div>
@@ -228,9 +240,9 @@ export default function Retirement401kIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

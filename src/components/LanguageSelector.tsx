@@ -1,23 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { SUPPORTED_LANGUAGES, type LanguageOption } from '../lib/i18n/translations';
 import { triggerPageTranslation } from '../lib/i18n/translator';
-import { getCurrency, setGlobalCurrency } from '../lib/i18n/currencies';
 
 interface LanguageSelectorProps {
   className?: string;
 }
-
-const LANGUAGE_DEFAULT_CURRENCY: Record<string, string> = {
-  hi: '₹',
-  es: '€',
-  fr: '€',
-  de: '€',
-  pt: '€',
-  ja: '¥',
-  zh: '¥',
-  ar: '﷼',
-  en: '$',
-};
 
 export default function LanguageSelector({ className = '' }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,12 +38,6 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
     document.documentElement.lang = lang.code;
     document.documentElement.dir = lang.dir || 'ltr';
 
-    // Auto-sync currency if user hasn't explicitly locked one
-    const defaultCurrSymbol = LANGUAGE_DEFAULT_CURRENCY[lang.code];
-    if (defaultCurrSymbol) {
-      setGlobalCurrency(getCurrency(defaultCurrSymbol));
-    }
-
     // Trigger full-page content translation
     triggerPageTranslation(lang.code);
 
@@ -77,8 +58,9 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
       {/* Trigger Button */}
       <button
         type="button"
+        translate="no"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition duration-150 shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-primary"
+        className="notranslate inline-flex items-center space-x-1.5 px-2.5 py-1.5 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition duration-150 shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-primary shrink-0"
         aria-label="Select language"
         aria-expanded={isOpen}
       >
@@ -106,8 +88,9 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
               <button
                 key={lang.code}
                 type="button"
+                translate="no"
                 onClick={() => handleSelect(lang)}
-                className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition ${
+                className={`notranslate w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition ${
                   isSelected
                     ? 'bg-blue-50 text-brand-primary font-bold'
                     : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'

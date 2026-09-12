@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateCreditCardPayoff } from '../../../lib/calculations/credit_card_payoff';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function CreditCardPayoffIsland() {
   const [currentBalance, setCurrentBalance] = useState<string>('5000');
@@ -8,6 +9,7 @@ export default function CreditCardPayoffIsland() {
   const [monthlyPayment, setMonthlyPayment] = useState<string>('200');
   const [targetMonths, setTargetMonths] = useState<string>('24');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const balanceId = useId();
   const rateId = useId();
@@ -20,6 +22,7 @@ export default function CreditCardPayoffIsland() {
     payoffStrategy,
     monthlyPayment,
     targetMonths,
+    currencySymbol: currency,
   });
 
   return (
@@ -29,7 +32,7 @@ export default function CreditCardPayoffIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={balanceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Current Credit Card Balance ($)
+              Current Credit Card Balance (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={balanceId}
@@ -37,7 +40,8 @@ export default function CreditCardPayoffIsland() {
               step="50"
               value={currentBalance}
               onChange={(e) => setCurrentBalance(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -51,7 +55,8 @@ export default function CreditCardPayoffIsland() {
               step="0.1"
               value={interestRate}
               onChange={(e) => setInterestRate(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -86,7 +91,7 @@ export default function CreditCardPayoffIsland() {
           {payoffStrategy === 'fixed_payment' ? (
             <div>
               <label htmlFor={paymentId} className="block text-sm font-semibold text-brand-dark mb-1">
-                Monthly Payment Amount ($)
+                Monthly Payment Amount (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={paymentId}
@@ -94,7 +99,8 @@ export default function CreditCardPayoffIsland() {
                 step="25"
                 value={monthlyPayment}
                 onChange={(e) => setMonthlyPayment(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           ) : (
@@ -110,7 +116,8 @@ export default function CreditCardPayoffIsland() {
                 max="360"
                 value={targetMonths}
                 onChange={(e) => setTargetMonths(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           )}
@@ -124,23 +131,25 @@ export default function CreditCardPayoffIsland() {
                 {payoffStrategy === 'fixed_payment' ? 'Estimated Time to Debt Free' : 'Required Monthly Payment'}
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {payoffStrategy === 'fixed_payment'
-                  ? outcome.value.formattedTimeToPayoff
-                  : outcome.value.formattedMonthlyPayment}
+                <span translate="no" className="notranslate">
+                  {payoffStrategy === 'fixed_payment'
+                    ? outcome.value.formattedTimeToPayoff
+                    : outcome.value.formattedMonthlyPayment}
+                </span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Total Interest</span>
-                  <strong className="block text-rose-600 text-sm mt-0.5">{outcome.value.formattedTotalInterest}</strong>
+                  <strong translate="no" className="notranslate block text-rose-600 text-sm mt-0.5">{outcome.value.formattedTotalInterest}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Total Cost</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalPayment}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalPayment}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Monthly Installment</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedMonthlyPayment}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedMonthlyPayment}</strong>
                 </div>
               </div>
             </div>
@@ -169,9 +178,9 @@ export default function CreditCardPayoffIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

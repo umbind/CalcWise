@@ -1,11 +1,13 @@
 import { useState, useId } from 'react';
 import { calculateInflation } from '../../../lib/calculations/inflation';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function InflationIsland() {
   const [initialAmount, setInitialAmount] = useState<string>('1000');
   const [annualInflationRate, setAnnualInflationRate] = useState<string>('3.0');
   const [years, setYears] = useState<string>('10');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const amountId = useId();
   const rateId = useId();
@@ -15,6 +17,7 @@ export default function InflationIsland() {
     initialAmount,
     annualInflationRate,
     years,
+    currencySymbol: currency,
   });
 
   return (
@@ -24,7 +27,7 @@ export default function InflationIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={amountId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Initial Amount ($)
+              Initial Amount (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={amountId}
@@ -32,7 +35,8 @@ export default function InflationIsland() {
               step="50"
               value={initialAmount}
               onChange={(e) => setInitialAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -46,7 +50,8 @@ export default function InflationIsland() {
               step="0.1"
               value={annualInflationRate}
               onChange={(e) => setAnnualInflationRate(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -62,7 +67,8 @@ export default function InflationIsland() {
               max="100"
               value={years}
               onChange={(e) => setYears(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
         </div>
@@ -75,21 +81,21 @@ export default function InflationIsland() {
                 Future Cost for Same Goods in {years} Years
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedFutureCost}
+                <span translate="no" className="notranslate">{outcome.value.formattedFutureCost}</span>
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
-                Cumulative Inflation: <strong className="text-brand-dark">{outcome.value.formattedCumulativeInflation}</strong>
+                Cumulative Inflation: <strong translate="no" className="notranslate text-brand-dark">{outcome.value.formattedCumulativeInflation}</strong>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
-                  <span className="block text-brand-muted">Future Value of ${initialAmount}</span>
-                  <strong className="block text-rose-600 text-base mt-0.5">{outcome.value.formattedFuturePurchasingPower}</strong>
+                  <span className="block text-brand-muted">Future Value of <span translate="no" className="notranslate">{currency}{initialAmount}</span></span>
+                  <strong translate="no" className="notranslate block text-rose-600 text-base mt-0.5">{outcome.value.formattedFuturePurchasingPower}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Purchasing Power Erosion</span>
-                  <strong className="block text-rose-600 text-base mt-0.5">{outcome.value.formattedPurchasingPowerLoss}</strong>
+                  <strong translate="no" className="notranslate block text-rose-600 text-base mt-0.5">{outcome.value.formattedPurchasingPowerLoss}</strong>
                 </div>
               </div>
             </div>
@@ -116,9 +122,9 @@ export default function InflationIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

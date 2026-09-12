@@ -1,7 +1,9 @@
 import { useState, useId } from 'react';
 import { calculateFlooring } from '../../../lib/calculations/flooring';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function FlooringIsland() {
+  const { symbol: currency } = useCurrency('$');
   const [roomLength, setRoomLength] = useState<string>('15');
   const [roomWidth, setRoomWidth] = useState<string>('20');
   const [unit, setUnit] = useState<'feet' | 'meters'>('feet');
@@ -23,6 +25,7 @@ export default function FlooringIsland() {
     wastePercentage,
     boxCoverageSqFt,
     pricePerSqUnit,
+    currencySymbol: currency,
   });
 
   return (
@@ -117,15 +120,16 @@ export default function FlooringIsland() {
 
           <div>
             <label htmlFor={priceId} className="block text-xs font-semibold text-brand-dark mb-1">
-              Material Price / {unit === 'meters' ? 'm²' : 'sq ft'} ($)
+              Material Price / {unit === 'meters' ? 'm²' : 'sq ft'} (<span translate="no" className="notranslate">{currency}</span>)
             </label>
             <input
               id={priceId}
               type="number"
               step="0.25"
+              translate="no"
               value={pricePerSqUnit}
               onChange={(e) => setPricePerSqUnit(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
         </div>
@@ -137,27 +141,27 @@ export default function FlooringIsland() {
               <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-1">
                 Total Material to Order
               </div>
-              <div className="text-4xl font-extrabold text-brand-primary">
+              <div translate="no" className="notranslate text-4xl font-extrabold text-brand-primary">
                 {outcome.value.formattedBoxes}
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
                 Total Area with {wastePercentage}% Waste:{' '}
-                <strong className="text-brand-dark font-semibold">{outcome.value.formattedTotalArea}</strong>
+                <strong translate="no" className="notranslate text-brand-dark font-semibold">{outcome.value.formattedTotalArea}</strong>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Net Room Footprint</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedRawArea}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedRawArea}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Cut & Scrap Waste</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">+{outcome.value.wasteArea} {outcome.value.unit === 'meters' ? 'm²' : 'sq ft'}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">+{outcome.value.wasteArea} {outcome.value.unit === 'meters' ? 'm²' : 'sq ft'}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Estimated Material Cost</span>
-                  <strong className="block text-emerald-700 text-sm mt-0.5">{outcome.value.formattedCost}</strong>
+                  <strong translate="no" className="notranslate block text-emerald-700 text-sm mt-0.5">{outcome.value.formattedCost}</strong>
                 </div>
               </div>
             </div>
@@ -184,9 +188,9 @@ export default function FlooringIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

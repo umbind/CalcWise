@@ -36,7 +36,7 @@ export default function MortgageIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={priceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Home Purchase Price ({currency})
+              Home Purchase Price (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={priceId}
@@ -44,17 +44,18 @@ export default function MortgageIsland() {
               step="5000"
               value={homePrice}
               onChange={(e) => setHomePrice(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
           <div>
             <div className="flex justify-between items-center mb-1">
               <label htmlFor={downId} className="block text-sm font-semibold text-brand-dark">
-                Down Payment ({currency})
+                Down Payment (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
               </label>
               {outcome.value && (
-                <span className="text-xs font-bold text-brand-primary">
+                <span translate="no" className="notranslate text-xs font-bold text-brand-primary">
                   {outcome.value.downPaymentPercentage}% down
                 </span>
               )}
@@ -65,7 +66,8 @@ export default function MortgageIsland() {
               step="1000"
               value={downPayment}
               onChange={(e) => setDownPayment(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -80,7 +82,8 @@ export default function MortgageIsland() {
                 step="0.1"
                 value={interestRate}
                 onChange={(e) => setInterestRate(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -107,30 +110,33 @@ export default function MortgageIsland() {
             </span>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">Tax ({currency}/yr)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">Tax (<span translate="no" className="notranslate">{currency}</span>/yr)</label>
                 <input
                   type="number"
                   value={propertyTax}
                   onChange={(e) => setPropertyTax(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
+                  translate="no"
+                  className="notranslate w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">Ins. ({currency}/yr)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">Ins. (<span translate="no" className="notranslate">{currency}</span>/yr)</label>
                 <input
                   type="number"
                   value={homeInsurance}
                   onChange={(e) => setHomeInsurance(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
+                  translate="no"
+                  className="notranslate w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-brand-muted mb-1">HOA ({currency}/mo)</label>
+                <label className="block text-xs font-medium text-brand-muted mb-1">HOA (<span translate="no" className="notranslate">{currency}</span>/mo)</label>
                 <input
                   type="number"
                   value={hoa}
                   onChange={(e) => setHoa(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
+                  translate="no"
+                  className="notranslate w-full px-2.5 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
                 />
               </div>
             </div>
@@ -145,7 +151,7 @@ export default function MortgageIsland() {
                 Total Monthly Payment (PITI + Fees)
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedTotalMonthly}
+                <span translate="no" className="notranslate">{outcome.value.formattedTotalMonthly}</span>
                 <span className="text-sm font-normal text-brand-muted ml-1">/ month</span>
               </div>
 
@@ -153,26 +159,26 @@ export default function MortgageIsland() {
               <div className="mt-6 pt-5 border-t border-gray-200 space-y-2 text-xs">
                 <div className="flex justify-between py-1 border-b border-gray-100">
                   <span className="text-brand-dark font-medium">Principal & Interest (P&I)</span>
-                  <span className="font-bold text-brand-dark">{outcome.value.formattedPrincipalInterest}</span>
+                  <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedPrincipalInterest}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-100">
                   <span className="text-brand-dark font-medium">Property Taxes</span>
-                  <span>{outcome.value.formattedPropertyTax} / mo</span>
+                  <span><span translate="no" className="notranslate">{outcome.value.formattedPropertyTax}</span> / mo</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-100">
                   <span className="text-brand-dark font-medium">Homeowners Insurance</span>
-                  <span>{outcome.value.formattedHomeInsurance} / mo</span>
+                  <span><span translate="no" className="notranslate">{outcome.value.formattedHomeInsurance}</span> / mo</span>
                 </div>
                 {outcome.value.monthlyPmi > 0 && (
                   <div className="flex justify-between py-1 border-b border-gray-100 text-amber-700 font-semibold">
                     <span>Private Mortgage Insurance (PMI)</span>
-                    <span>{outcome.value.formattedPmi} / mo</span>
+                    <span><span translate="no" className="notranslate">{outcome.value.formattedPmi}</span> / mo</span>
                   </div>
                 )}
               </div>
 
               <div className="mt-6 text-xs text-brand-muted">
-                <strong>Financed Loan Amount:</strong> {outcome.value.formattedLoanAmount} | <strong>Total Interest over Life:</strong> {outcome.value.formattedTotalInterest}
+                <strong>Financed Loan Amount:</strong> <span translate="no" className="notranslate">{outcome.value.formattedLoanAmount}</span> | <strong>Total Interest over Life:</strong> <span translate="no" className="notranslate">{outcome.value.formattedTotalInterest}</span>
               </div>
             </div>
           ) : (
@@ -193,7 +199,7 @@ export default function MortgageIsland() {
                 {outcome.trace.map((s) => (
                   <div key={s.stepNumber} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
                     <span className="text-brand-dark font-medium">{s.label}</span>
-                    <span className="font-mono text-brand-primary font-bold">{s.result}</span>
+                    <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{s.result}</span>
                   </div>
                 ))}
               </div>

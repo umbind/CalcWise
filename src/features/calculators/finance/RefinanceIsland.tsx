@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateRefinance } from '../../../lib/calculations/refinance';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function RefinanceIsland() {
   const [currentBalance, setCurrentBalance] = useState<string>('250000');
@@ -10,6 +11,7 @@ export default function RefinanceIsland() {
   const [closingCosts, setClosingCosts] = useState<string>('3500');
   const [rollCosts, setRollCosts] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const balId = useId();
   const curPayId = useId();
@@ -26,6 +28,7 @@ export default function RefinanceIsland() {
     newLoanTermMonths,
     closingCosts,
     rollCostsIntoLoan: rollCosts,
+    currencySymbol: currency,
   });
 
   return (
@@ -38,7 +41,7 @@ export default function RefinanceIsland() {
             <div className="space-y-3">
               <div>
                 <label htmlFor={balId} className="block text-xs font-semibold text-brand-dark mb-1">
-                  Remaining Principal ($)
+                  Remaining Principal (<span translate="no" className="notranslate font-semibold">{currency}</span>)
                 </label>
                 <input
                   id={balId}
@@ -46,14 +49,15 @@ export default function RefinanceIsland() {
                   step="5000"
                   value={currentBalance}
                   onChange={(e) => setCurrentBalance(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                  translate="no"
+                  className="notranslate w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label htmlFor={curPayId} className="block text-xs font-semibold text-brand-dark mb-1">
-                    Current Payment ($/mo)
+                    Current Payment (<span translate="no" className="notranslate font-semibold">{currency}</span>/mo)
                   </label>
                   <input
                     id={curPayId}
@@ -61,7 +65,8 @@ export default function RefinanceIsland() {
                     step="50"
                     value={currentMonthlyPayment}
                     onChange={(e) => setCurrentMonthlyPayment(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                    translate="no"
+                    className="notranslate w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                 </div>
                 <div>
@@ -74,7 +79,8 @@ export default function RefinanceIsland() {
                     step="12"
                     value={currentRemainingMonths}
                     onChange={(e) => setCurrentRemainingMonths(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                    translate="no"
+                    className="notranslate w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                 </div>
               </div>
@@ -95,7 +101,8 @@ export default function RefinanceIsland() {
                     step="0.1"
                     value={newInterestRate}
                     onChange={(e) => setNewInterestRate(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                    translate="no"
+                    className="notranslate w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                 </div>
                 <div>
@@ -118,7 +125,7 @@ export default function RefinanceIsland() {
 
               <div>
                 <label htmlFor={closeId} className="block text-xs font-semibold text-brand-dark mb-1">
-                  Estimated Closing Costs ($)
+                  Estimated Closing Costs (<span translate="no" className="notranslate font-semibold">{currency}</span>)
                 </label>
                 <input
                   id={closeId}
@@ -126,7 +133,8 @@ export default function RefinanceIsland() {
                   step="250"
                   value={closingCosts}
                   onChange={(e) => setClosingCosts(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                  translate="no"
+                  className="notranslate w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                 />
               </div>
 
@@ -151,7 +159,7 @@ export default function RefinanceIsland() {
                 New Monthly Payment
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedNewMonthlyPayment}
+                <span translate="no" className="notranslate">{outcome.value.formattedNewMonthlyPayment}</span>
                 <span className="text-sm font-normal text-brand-muted ml-1">/ month</span>
               </div>
 
@@ -159,17 +167,25 @@ export default function RefinanceIsland() {
                 <div>
                   <span className="block text-brand-muted">Monthly Difference</span>
                   <strong className={`block text-sm mt-0.5 ${outcome.value.monthlySavings >= 0 ? 'text-emerald-700' : 'text-amber-800'}`}>
-                    {outcome.value.monthlySavings >= 0 ? `Save ${outcome.value.formattedMonthlySavings}/mo` : `Pay $${Math.abs(outcome.value.monthlySavings)}/mo more`}
+                    {outcome.value.monthlySavings >= 0 ? (
+                      <>Save <span translate="no" className="notranslate">{outcome.value.formattedMonthlySavings}</span>/mo</>
+                    ) : (
+                      <>Pay <span translate="no" className="notranslate">{currency}{Math.abs(outcome.value.monthlySavings).toLocaleString()}</span>/mo more</>
+                    )}
                   </strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Break-Even Horizon</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedBreakEven}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedBreakEven}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Lifetime Net Delta</span>
                   <strong className={`block text-sm mt-0.5 ${outcome.value.lifetimeSavings >= 0 ? 'text-emerald-700' : 'text-amber-800'}`}>
-                    {outcome.value.lifetimeSavings >= 0 ? `Save ${outcome.value.formattedLifetimeSavings}` : `Cost $${Math.abs(outcome.value.lifetimeSavings)} more`}
+                    {outcome.value.lifetimeSavings >= 0 ? (
+                      <>Save <span translate="no" className="notranslate">{outcome.value.formattedLifetimeSavings}</span></>
+                    ) : (
+                      <>Cost <span translate="no" className="notranslate">{currency}{Math.abs(outcome.value.lifetimeSavings).toLocaleString()}</span> more</>
+                    )}
                   </strong>
                 </div>
               </div>
@@ -197,9 +213,9 @@ export default function RefinanceIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

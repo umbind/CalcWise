@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateCd } from '../../../lib/calculations/cd';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function CdIsland() {
   const [initialDeposit, setInitialDeposit] = useState<string>('10000');
@@ -7,6 +8,7 @@ export default function CdIsland() {
   const [termMonths, setTermMonths] = useState<string>('12');
   const [compoundFrequency, setCompoundFrequency] = useState<'daily' | 'monthly' | 'annually'>('monthly');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const depositId = useId();
   const rateId = useId();
@@ -18,6 +20,7 @@ export default function CdIsland() {
     interestRate,
     termMonths,
     compoundFrequency,
+    currencySymbol: currency,
   });
 
   return (
@@ -27,7 +30,7 @@ export default function CdIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={depositId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Initial CD Deposit ($)
+              Initial CD Deposit (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={depositId}
@@ -35,7 +38,8 @@ export default function CdIsland() {
               step="500"
               value={initialDeposit}
               onChange={(e) => setInitialDeposit(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -50,7 +54,8 @@ export default function CdIsland() {
                 step="0.05"
                 value={interestRate}
                 onChange={(e) => setInterestRate(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -99,17 +104,17 @@ export default function CdIsland() {
                 Balance at Maturity ({termMonths} Months)
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedEndBalance}
+                <span translate="no" className="notranslate">{outcome.value.formattedEndBalance}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Total Interest Earned</span>
-                  <strong className="block text-emerald-700 text-base mt-0.5">{outcome.value.formattedTotalInterest}</strong>
+                  <strong translate="no" className="notranslate block text-emerald-700 text-base mt-0.5">{outcome.value.formattedTotalInterest}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Effective APY</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.formattedEffectiveApy}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.formattedEffectiveApy}</strong>
                 </div>
               </div>
             </div>
@@ -136,9 +141,9 @@ export default function CdIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

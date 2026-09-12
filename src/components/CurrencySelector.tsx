@@ -32,7 +32,8 @@ export default function CurrencySelector({ className = '' }: CurrencySelectorPro
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition duration-150 shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-primary"
+        translate="no"
+        className="notranslate inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition duration-150 shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-primary"
         aria-label="Select currency"
         aria-expanded={isOpen}
       >
@@ -61,7 +62,8 @@ export default function CurrencySelector({ className = '' }: CurrencySelectorPro
                 key={curr.code}
                 type="button"
                 onClick={() => handleSelect(curr)}
-                className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition ${
+                translate="no"
+                className={`notranslate w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition ${
                   isSelected
                     ? 'bg-blue-50 text-brand-primary font-bold'
                     : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'

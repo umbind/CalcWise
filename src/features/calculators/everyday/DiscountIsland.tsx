@@ -30,7 +30,7 @@ export default function DiscountIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={priceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Original Retail Price ({currency})
+              Original Retail Price (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={priceId}
@@ -38,7 +38,8 @@ export default function DiscountIsland() {
               step="0.5"
               value={originalPrice}
               onChange={(e) => setOriginalPrice(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -55,7 +56,8 @@ export default function DiscountIsland() {
                 max="100"
                 value={discountPercentage}
                 onChange={(e) => setDiscountPercentage(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -71,7 +73,8 @@ export default function DiscountIsland() {
                 placeholder="Optional"
                 value={additionalDiscountPercentage}
                 onChange={(e) => setAdditionalDiscountPercentage(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -88,7 +91,8 @@ export default function DiscountIsland() {
               max="25"
               value={salesTaxRate}
               onChange={(e) => setSalesTaxRate(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
         </div>
@@ -101,26 +105,26 @@ export default function DiscountIsland() {
                 Final Out-of-Pocket Price
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedFinalPrice}
+                <span translate="no" className="notranslate">{outcome.value.formattedFinalPrice}</span>
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
-                You Save: <strong className="text-emerald-700 font-semibold">{outcome.value.formattedTotalSavings}</strong>
-                {' '}({outcome.value.effectiveSavingsPct}% total discount)
+                You Save: <strong translate="no" className="notranslate text-emerald-700 font-semibold">{outcome.value.formattedTotalSavings}</strong>
+                {' '}(<span translate="no" className="notranslate">{outcome.value.effectiveSavingsPct}%</span> total discount)
               </div>
 
               <div className="grid grid-cols-3 gap-2 mt-6 pt-6 border-t border-gray-200 text-xs text-center">
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Price After Discount</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedPriceAfterDiscount}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedPriceAfterDiscount}</strong>
                 </div>
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Total Discount</span>
-                  <strong className="block text-emerald-700 text-sm mt-0.5">-{outcome.value.formattedDiscountAmount}</strong>
+                  <strong translate="no" className="notranslate block text-emerald-700 text-sm mt-0.5">-{outcome.value.formattedDiscountAmount}</strong>
                 </div>
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Sales Tax</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">+{outcome.value.formattedSalesTax}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">+{outcome.value.formattedSalesTax}</strong>
                 </div>
               </div>
             </div>
@@ -147,9 +151,9 @@ export default function DiscountIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

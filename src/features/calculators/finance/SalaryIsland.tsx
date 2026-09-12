@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateSalary, type SalaryFrequency } from '../../../lib/calculations/salary';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function SalaryIsland() {
   const [amount, setAmount] = useState<string>('30');
@@ -7,6 +8,7 @@ export default function SalaryIsland() {
   const [hoursPerWeek, setHoursPerWeek] = useState<string>('40');
   const [weeksPerYear, setWeeksPerYear] = useState<string>('52');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const amountId = useId();
   const freqId = useId();
@@ -17,6 +19,7 @@ export default function SalaryIsland() {
     frequency,
     hoursPerWeek,
     weeksPerYear,
+    currencySymbol: currency,
   });
 
   return (
@@ -25,7 +28,7 @@ export default function SalaryIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={amountId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Salary / Wage Amount ($)
+              Salary / Wage Amount (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={amountId}
@@ -34,7 +37,8 @@ export default function SalaryIsland() {
               step="any"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -70,7 +74,8 @@ export default function SalaryIsland() {
                 max="80"
                 value={hoursPerWeek}
                 onChange={(e) => setHoursPerWeek(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
               />
             </div>
             <div>
@@ -83,7 +88,8 @@ export default function SalaryIsland() {
                 max="52"
                 value={weeksPerYear}
                 onChange={(e) => setWeeksPerYear(e.target.value)}
-                className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
+                translate="no"
+                className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
               />
             </div>
           </div>
@@ -97,7 +103,7 @@ export default function SalaryIsland() {
                 Annual Equivalent Salary
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedAnnual}
+                <span translate="no" className="notranslate">{outcome.value.formattedAnnual}</span>
                 <span className="text-sm font-normal text-brand-muted ml-1">/ year</span>
               </div>
 
@@ -109,27 +115,27 @@ export default function SalaryIsland() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-center text-xs">
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Hourly</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedHourly}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedHourly}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Weekly</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedWeekly}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedWeekly}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Bi-Weekly</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedBiWeekly}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedBiWeekly}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Semi-Monthly</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedSemiMonthly}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedSemiMonthly}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Monthly</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedMonthly}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedMonthly}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                     <span className="block text-brand-muted text-[11px]">Daily (8h)</span>
-                    <span className="font-bold text-brand-dark">{outcome.value.formattedDaily}</span>
+                    <span translate="no" className="notranslate font-bold text-brand-dark">{outcome.value.formattedDaily}</span>
                   </div>
                 </div>
               </div>
@@ -152,7 +158,7 @@ export default function SalaryIsland() {
                 {outcome.trace.map((s) => (
                   <div key={s.stepNumber} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
                     <span className="text-brand-dark font-medium">{s.label}</span>
-                    <span className="font-mono text-brand-primary font-bold">{s.result}</span>
+                    <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{s.result}</span>
                   </div>
                 ))}
               </div>

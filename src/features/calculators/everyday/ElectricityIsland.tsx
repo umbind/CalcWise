@@ -1,7 +1,9 @@
 import { useState, useId } from 'react';
 import { calculateElectricity } from '../../../lib/calculations/electricity';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function ElectricityIsland() {
+  const { symbol: currency } = useCurrency('$');
   const [wattage, setWattage] = useState<string>('1500');
   const [hoursPerDay, setHoursPerDay] = useState<string>('8');
   const [costPerKwh, setCostPerKwh] = useState<string>('0.16');
@@ -15,6 +17,7 @@ export default function ElectricityIsland() {
     wattage,
     hoursPerDay,
     costPerKwh,
+    currencySymbol: currency,
   });
 
   const setPreset = (w: string, h: string) => {
@@ -93,15 +96,16 @@ export default function ElectricityIsland() {
             </div>
             <div>
               <label htmlFor={costId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Electricity Rate ($/kWh)
+                Electricity Rate (<span translate="no" className="notranslate">{currency}</span>/kWh)
               </label>
               <input
                 id={costId}
                 type="number"
                 step="0.01"
+                translate="no"
                 value={costPerKwh}
                 onChange={(e) => setCostPerKwh(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -114,30 +118,30 @@ export default function ElectricityIsland() {
               <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-1">
                 Estimated Monthly Electricity Cost
               </div>
-              <div className="text-4xl font-extrabold text-brand-primary">
+              <div translate="no" className="notranslate text-4xl font-extrabold text-brand-primary">
                 {outcome.value.formattedMonthlyCost}
                 <span className="text-base font-normal text-brand-muted ml-2">/ month</span>
               </div>
 
               <div className="mt-2 text-sm text-brand-muted">
-                Annual Cost: <strong className="text-brand-dark font-semibold">{outcome.value.formattedAnnualCost}</strong>
-                {' '}({outcome.value.formattedAnnualKwh} per year)
+                Annual Cost: <strong translate="no" className="notranslate text-brand-dark font-semibold">{outcome.value.formattedAnnualCost}</strong>
+                {' '}(<span translate="no" className="notranslate">{outcome.value.formattedAnnualKwh}</span> per year)
               </div>
 
               <div className="grid grid-cols-3 gap-2 mt-6 pt-6 border-t border-gray-200 text-xs text-center">
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Daily Cost</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.formattedDailyCost}</strong>
-                  <span className="text-[10px] text-gray-500">{outcome.value.dailyKwh} kWh / day</span>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.formattedDailyCost}</strong>
+                  <span translate="no" className="notranslate text-[10px] text-gray-500">{outcome.value.dailyKwh} kWh / day</span>
                 </div>
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Monthly Energy</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.monthlyKwh}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.monthlyKwh}</strong>
                   <span className="text-[10px] text-gray-500">kWh / mo</span>
                 </div>
                 <div className="bg-white p-2.5 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px] font-semibold">Annual Energy</span>
-                  <strong className="block text-brand-dark text-base mt-0.5">{outcome.value.annualKwh}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-base mt-0.5">{outcome.value.annualKwh}</strong>
                   <span className="text-[10px] text-gray-500">kWh / yr</span>
                 </div>
               </div>
@@ -165,9 +169,9 @@ export default function ElectricityIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

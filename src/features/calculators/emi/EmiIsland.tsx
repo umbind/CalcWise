@@ -36,10 +36,10 @@ export default function EmiIsland() {
         <div className="lg:col-span-5 space-y-5">
           <div>
             <label htmlFor={principalId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Loan Principal Amount ({currency})
+              Loan Principal Amount (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-3 text-brand-muted font-bold text-sm">{currency}</span>
+              <span translate="no" className="notranslate absolute left-3.5 top-3 text-brand-muted font-bold text-sm">{currency}</span>
               <input
                 id={principalId}
                 type="number"
@@ -47,7 +47,8 @@ export default function EmiIsland() {
                 step="1000"
                 value={principal}
                 onChange={(e) => setPrincipal(e.target.value)}
-                className="w-full pl-8 pr-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full pl-8 pr-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div className="flex gap-2 mt-2">
@@ -56,7 +57,8 @@ export default function EmiIsland() {
                   key={amt}
                   type="button"
                   onClick={() => setPrincipal(amt)}
-                  className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-brand-muted rounded transition"
+                  translate="no"
+                  className="notranslate px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-brand-muted rounded transition"
                 >
                   {currency}{parseInt(amt).toLocaleString()}
                 </button>
@@ -76,7 +78,8 @@ export default function EmiIsland() {
               step="0.1"
               value={annualRate}
               onChange={(e) => setAnnualRate(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -85,7 +88,7 @@ export default function EmiIsland() {
               <label htmlFor={tenureId} className="block text-sm font-semibold text-brand-dark">
                 Loan Tenure (Years)
               </label>
-              <span className="text-xs text-brand-muted font-mono">{tenureMonths} Months</span>
+              <span translate="no" className="notranslate text-xs text-brand-muted font-mono">{tenureMonths} Months</span>
             </div>
             <input
               id={tenureId}
@@ -95,7 +98,8 @@ export default function EmiIsland() {
               step="1"
               value={tenureYears}
               onChange={(e) => setTenureYears(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
             <div className="flex gap-2 mt-2">
               {['5', '10', '15', '20', '30'].map((yr) => (
@@ -103,7 +107,8 @@ export default function EmiIsland() {
                   key={yr}
                   type="button"
                   onClick={() => setTenureYears(yr)}
-                  className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-brand-muted rounded transition"
+                  translate="no"
+                  className="notranslate px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-brand-muted rounded transition"
                 >
                   {yr} yrs
                 </button>
@@ -120,26 +125,26 @@ export default function EmiIsland() {
                 Estimated Monthly Payment (EMI)
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedMonthlyPayment}
+                <span translate="no" className="notranslate">{outcome.value.formattedMonthlyPayment}</span>
                 <span className="text-sm font-normal text-brand-muted ml-1">/ month</span>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200">
                 <div>
                   <span className="block text-xs text-brand-muted font-medium">Total Interest Paid</span>
-                  <span className="text-lg font-bold text-brand-dark">{outcome.value.formattedTotalInterest}</span>
+                  <span translate="no" className="notranslate text-lg font-bold text-brand-dark">{outcome.value.formattedTotalInterest}</span>
                 </div>
                 <div>
                   <span className="block text-xs text-brand-muted font-medium">Total Repayment (P + I)</span>
-                  <span className="text-lg font-bold text-brand-dark">{outcome.value.formattedTotalRepayment}</span>
+                  <span translate="no" className="notranslate text-lg font-bold text-brand-dark">{outcome.value.formattedTotalRepayment}</span>
                 </div>
               </div>
 
               {/* Principal vs Interest Ratio Bar */}
               <div className="mt-6">
                 <div className="flex justify-between text-xs text-brand-muted mb-1">
-                  <span>Principal: {principalPct}%</span>
-                  <span>Interest: {interestPct}%</span>
+                  <span>Principal: <span translate="no" className="notranslate font-semibold">{principalPct}%</span></span>
+                  <span>Interest: <span translate="no" className="notranslate font-semibold">{interestPct}%</span></span>
                 </div>
                 <div className="w-full h-3 bg-amber-500 rounded-full overflow-hidden flex" aria-hidden="true">
                   <div className="bg-brand-primary h-full" style={{ width: `${principalPct}%` }}></div>
@@ -193,11 +198,11 @@ export default function EmiIsland() {
               <tbody className="divide-y divide-gray-100">
                 {outcome.value.schedule.slice(0, 12).map((row) => (
                   <tr key={row.month} className="hover:bg-brand-surface/50">
-                    <td className="py-2 px-3 font-medium text-brand-muted">{row.month}</td>
-                    <td className="py-2 px-3 font-semibold text-brand-dark">{row.formattedPayment}</td>
-                    <td className="py-2 px-3 text-emerald-700">{row.formattedPrincipalPaid}</td>
-                    <td className="py-2 px-3 text-amber-700">{row.formattedInterestPaid}</td>
-                    <td className="py-2 px-3 font-mono">{row.formattedRemainingBalance}</td>
+                    <td translate="no" className="notranslate py-2 px-3 font-medium text-brand-muted">{row.month}</td>
+                    <td translate="no" className="notranslate py-2 px-3 font-semibold text-brand-dark">{row.formattedPayment}</td>
+                    <td translate="no" className="notranslate py-2 px-3 text-emerald-700">{row.formattedPrincipalPaid}</td>
+                    <td translate="no" className="notranslate py-2 px-3 text-amber-700">{row.formattedInterestPaid}</td>
+                    <td translate="no" className="notranslate py-2 px-3 font-mono">{row.formattedRemainingBalance}</td>
                   </tr>
                 ))}
               </tbody>
@@ -213,7 +218,7 @@ export default function EmiIsland() {
           {outcome.trace.map((step) => (
             <div key={step.stepNumber} className="flex flex-col sm:flex-row sm:justify-between border-b border-gray-200 pb-1.5 last:border-0">
               <span className="font-medium text-brand-dark">Step {step.stepNumber}: {step.label}</span>
-              <span className="font-mono text-brand-primary font-bold">{step.expression} = {step.result}</span>
+              <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{step.expression} = {step.result}</span>
             </div>
           ))}
         </div>

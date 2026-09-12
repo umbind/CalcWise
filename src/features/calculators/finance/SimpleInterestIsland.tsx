@@ -1,11 +1,13 @@
 import { useState, useId } from 'react';
 import { calculateSimpleInterest } from '../../../lib/calculations/simple_interest';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function SimpleInterestIsland() {
   const [principal, setPrincipal] = useState<string>('5000');
   const [rate, setRate] = useState<string>('5');
   const [time, setTime] = useState<string>('3');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const principalId = useId();
   const rateId = useId();
@@ -15,6 +17,7 @@ export default function SimpleInterestIsland() {
     principal,
     annualRate: rate,
     timeYears: time,
+    currencySymbol: currency,
   });
 
   return (
@@ -23,7 +26,7 @@ export default function SimpleInterestIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={principalId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Principal Amount ($)
+              Principal Amount (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={principalId}
@@ -32,7 +35,8 @@ export default function SimpleInterestIsland() {
               step="100"
               value={principal}
               onChange={(e) => setPrincipal(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -47,7 +51,8 @@ export default function SimpleInterestIsland() {
               step="0.1"
               value={rate}
               onChange={(e) => setRate(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -62,7 +67,8 @@ export default function SimpleInterestIsland() {
               step="0.5"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
         </div>
@@ -74,12 +80,12 @@ export default function SimpleInterestIsland() {
                 Total Interest Earned
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedInterest}
+                <span translate="no" className="notranslate">{outcome.value.formattedInterest}</span>
               </div>
 
               <div className="mt-6 pt-5 border-t border-gray-200">
                 <span className="block text-xs font-medium text-brand-muted">Total Repayment (P + I)</span>
-                <span className="text-2xl font-bold text-brand-dark">{outcome.value.formattedTotal}</span>
+                <span translate="no" className="notranslate text-2xl font-bold text-brand-dark">{outcome.value.formattedTotal}</span>
               </div>
             </div>
           ) : (
@@ -100,7 +106,7 @@ export default function SimpleInterestIsland() {
                 {outcome.trace.map((s) => (
                   <div key={s.stepNumber} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
                     <span className="text-brand-dark font-medium">{s.label}</span>
-                    <span className="font-mono text-brand-primary font-bold">{s.result}</span>
+                    <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{s.result}</span>
                   </div>
                 ))}
               </div>

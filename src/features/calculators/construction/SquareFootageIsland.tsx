@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { calculateSquareFootage, type RoomDimension } from '../../../lib/calculations/square_footage';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function SquareFootageIsland() {
+  const { symbol: currency } = useCurrency('$');
   const [rooms, setRooms] = useState<RoomDimension[]>([
     { length: 12, width: 14, label: 'Living Room' },
     { length: 10, width: 12, label: 'Bedroom' },
@@ -30,6 +32,7 @@ export default function SquareFootageIsland() {
   const outcome = calculateSquareFootage({
     rooms,
     pricePerSqFt: pricePerSqFt || undefined,
+    currencySymbol: currency,
   });
 
   return (
@@ -100,15 +103,16 @@ export default function SquareFootageIsland() {
           {/* Optional Material Cost */}
           <div className="pt-3 border-t border-gray-100">
             <label className="block text-xs font-semibold text-brand-dark mb-1">
-              Optional Material / Flooring Cost ($ per sq ft)
+              Optional Material / Flooring Cost (<span translate="no" className="notranslate">{currency}</span> per sq ft)
             </label>
             <input
               type="number"
               step="0.25"
+              translate="no"
               value={pricePerSqFt}
               onChange={(e) => setPricePerSqFt(e.target.value)}
               placeholder="e.g. 4.50"
-              className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs"
+              className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs"
             />
           </div>
         </div>
@@ -139,7 +143,7 @@ export default function SquareFootageIsland() {
               {outcome.value.formattedCost && (
                 <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs flex justify-between items-center">
                   <span className="font-semibold text-emerald-900">Estimated Total Material Cost:</span>
-                  <span className="font-extrabold text-base text-emerald-800">{outcome.value.formattedCost}</span>
+                  <span translate="no" className="notranslate font-extrabold text-base text-emerald-800">{outcome.value.formattedCost}</span>
                 </div>
               )}
             </div>

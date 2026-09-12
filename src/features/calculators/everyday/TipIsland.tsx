@@ -27,10 +27,10 @@ export default function TipIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={billId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Bill Amount ({currency})
+              Bill Amount (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-2.5 text-brand-muted font-bold text-sm">{currency}</span>
+              <span translate="no" className="notranslate absolute left-3.5 top-2.5 text-brand-muted font-bold text-sm">{currency}</span>
               <input
                 id={billId}
                 type="number"
@@ -38,7 +38,8 @@ export default function TipIsland() {
                 step="0.01"
                 value={bill}
                 onChange={(e) => setBill(e.target.value)}
-                className="w-full pl-8 pr-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
+                translate="no"
+                className="notranslate w-full pl-8 pr-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium"
               />
             </div>
           </div>
@@ -53,7 +54,8 @@ export default function TipIsland() {
                   key={pct}
                   type="button"
                   onClick={() => setTipPct(pct)}
-                  className={`py-1.5 text-xs font-bold rounded-lg border transition ${
+                  translate="no"
+                  className={`notranslate py-1.5 text-xs font-bold rounded-lg border transition ${
                     tipPct === pct
                       ? 'bg-brand-primary text-white border-brand-primary shadow-2xs'
                       : 'bg-brand-surface text-brand-muted border-gray-200 hover:bg-gray-100'
@@ -70,7 +72,8 @@ export default function TipIsland() {
               value={tipPct}
               onChange={(e) => setTipPct(e.target.value)}
               placeholder="Custom %"
-              className="w-full px-3 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
+              translate="no"
+              className="notranslate w-full px-3 py-1.5 bg-brand-surface border border-gray-300 rounded-lg text-xs"
             />
           </div>
 
@@ -93,7 +96,8 @@ export default function TipIsland() {
                 max="50"
                 value={people}
                 onChange={(e) => setPeople(e.target.value)}
-                className="flex-1 text-center py-1.5 bg-brand-surface border border-gray-300 rounded-lg font-bold text-sm"
+                translate="no"
+                className="notranslate flex-1 text-center py-1.5 bg-brand-surface border border-gray-300 rounded-lg font-bold text-sm"
               />
               <button
                 type="button"
@@ -126,12 +130,14 @@ export default function TipIsland() {
                 {outcome.value.numberOfPeople > 1 ? 'Total Per Person' : 'Total Payment'}
               </div>
               <div className="text-4xl sm:text-5xl font-extrabold text-brand-primary">
-                {outcome.value.numberOfPeople > 1 ? outcome.value.formattedTotalPerPerson : outcome.value.formattedTotal}
+                <span translate="no" className="notranslate">
+                  {outcome.value.numberOfPeople > 1 ? outcome.value.formattedTotalPerPerson : outcome.value.formattedTotal}
+                </span>
               </div>
 
               {outcome.value.numberOfPeople > 1 && (
                 <p className="text-xs text-brand-muted mt-1">
-                  Includes {outcome.value.formattedTipPerPerson} tip per person.
+                  Includes <span translate="no" className="notranslate font-semibold">{outcome.value.formattedTipPerPerson}</span> tip per person.
                 </p>
               )}
 
@@ -139,11 +145,11 @@ export default function TipIsland() {
               <div className="grid grid-cols-2 gap-3 mt-6 pt-5 border-t border-gray-200 text-xs">
                 <div className="bg-white p-3 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px]">Total Tip ({tipPct}%)</span>
-                  <span className="text-base font-bold text-emerald-700">{outcome.value.formattedTip}</span>
+                  <span translate="no" className="notranslate text-base font-bold text-emerald-700">{outcome.value.formattedTip}</span>
                 </div>
                 <div className="bg-white p-3 rounded-lg border border-gray-200">
                   <span className="block text-brand-muted text-[11px]">Total Bill (with Tip)</span>
-                  <span className="text-base font-bold text-brand-dark">{outcome.value.formattedTotal}</span>
+                  <span translate="no" className="notranslate text-base font-bold text-brand-dark">{outcome.value.formattedTotal}</span>
                 </div>
               </div>
             </div>
@@ -165,7 +171,7 @@ export default function TipIsland() {
                 {outcome.trace.map((s) => (
                   <div key={s.stepNumber} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
                     <span className="text-brand-dark font-medium">{s.label}</span>
-                    <span className="font-mono text-brand-primary font-bold">{s.result}</span>
+                    <span translate="no" className="notranslate font-mono text-brand-primary font-bold">{s.result}</span>
                   </div>
                 ))}
               </div>

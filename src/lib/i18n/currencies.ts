@@ -52,6 +52,10 @@ export function useCurrency(defaultSymbol = '$'): {
 } {
   const [curr, setCurr] = useState<CurrencyOption>(() => {
     if (typeof window !== 'undefined') {
+      const savedCode = localStorage.getItem('calcwise_currency_code');
+      if (savedCode) {
+        return getCurrency(savedCode);
+      }
       const savedSymbol = localStorage.getItem('calcwise_currency_symbol');
       if (savedSymbol) {
         return getCurrency(savedSymbol);
@@ -64,9 +68,11 @@ export function useCurrency(defaultSymbol = '$'): {
     if (typeof window === 'undefined') return;
 
     // Check localStorage on mount
+    const savedCode = localStorage.getItem('calcwise_currency_code');
     const savedSymbol = localStorage.getItem('calcwise_currency_symbol');
-    if (savedSymbol && savedSymbol !== curr.symbol) {
-      setCurr(getCurrency(savedSymbol));
+    const saved = savedCode ? getCurrency(savedCode) : (savedSymbol ? getCurrency(savedSymbol) : null);
+    if (saved && saved.code !== curr.code) {
+      setCurr(saved);
     }
 
     const handler = (e: Event) => {
@@ -76,9 +82,22 @@ export function useCurrency(defaultSymbol = '$'): {
       }
     };
 
+    const storageHandler = (e: StorageEvent) => {
+      if (e.key === 'calcwise_currency_code' || e.key === 'calcwise_currency_symbol') {
+        const code = localStorage.getItem('calcwise_currency_code');
+        const sym = localStorage.getItem('calcwise_currency_symbol');
+        const found = code ? getCurrency(code) : (sym ? getCurrency(sym) : null);
+        if (found) setCurr(found);
+      }
+    };
+
     window.addEventListener('calcwise_currency_changed', handler);
-    return () => window.removeEventListener('calcwise_currency_changed', handler);
-  }, [curr.symbol]);
+    window.addEventListener('storage', storageHandler);
+    return () => {
+      window.removeEventListener('calcwise_currency_changed', handler);
+      window.removeEventListener('storage', storageHandler);
+    };
+  }, []);
 
   return {
     symbol: curr.symbol,

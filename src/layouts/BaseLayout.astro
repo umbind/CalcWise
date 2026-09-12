@@ -165,6 +165,35 @@ if (currentPath.startsWith('/finance')) {
     <meta name="twitter:title" content={`${title} | CalcWise`} />
     <meta name="twitter:description" content={description} />
 
+    <!-- Google Translate DOM Reconciliation Guard for React Islands -->
+    <script is:inline>
+      (function() {
+        if (typeof Node === 'function' && Node.prototype) {
+          const origRemove = Node.prototype.removeChild;
+          Node.prototype.removeChild = function(child) {
+            if (child.parentNode !== this) {
+              if (typeof console !== 'undefined' && console.warn) {
+                console.warn('DOM Guard: Avoided removeChild parent mismatch caused by Google Translate.', child, this);
+              }
+              return child;
+            }
+            return origRemove.apply(this, arguments);
+          };
+
+          const origInsert = Node.prototype.insertBefore;
+          Node.prototype.insertBefore = function(newNode, referenceNode) {
+            if (referenceNode && referenceNode.parentNode !== this) {
+              if (typeof console !== 'undefined' && console.warn) {
+                console.warn('DOM Guard: Avoided insertBefore parent mismatch caused by Google Translate.', referenceNode, this);
+              }
+              return newNode;
+            }
+            return origInsert.apply(this, arguments);
+          };
+        }
+      })();
+    </script>
+
     <!-- Print Stylesheet -->
     <style is:inline>
       @media print {

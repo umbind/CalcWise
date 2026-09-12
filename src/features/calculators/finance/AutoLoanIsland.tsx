@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateAutoLoan } from '../../../lib/calculations/auto_loan';
+import { useCurrency } from '../../../lib/i18n/currencies';
 
 export default function AutoLoanIsland() {
   const [vehiclePrice, setVehiclePrice] = useState<string>('35000');
@@ -10,6 +11,7 @@ export default function AutoLoanIsland() {
   const [loanTermMonths, setLoanTermMonths] = useState<string>('60');
   const [interestRate, setInterestRate] = useState<string>('5.0');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+  const { symbol: currency } = useCurrency('$');
 
   const priceId = useId();
   const taxId = useId();
@@ -27,6 +29,7 @@ export default function AutoLoanIsland() {
     tradeInOwed,
     loanTermMonths,
     interestRate,
+    currencySymbol: currency,
   });
 
   return (
@@ -36,7 +39,7 @@ export default function AutoLoanIsland() {
         <div className="lg:col-span-5 space-y-4">
           <div>
             <label htmlFor={priceId} className="block text-sm font-semibold text-brand-dark mb-1">
-              Vehicle Price ($)
+              Vehicle Price (<span translate="no" className="notranslate font-bold text-brand-primary">{currency}</span>)
             </label>
             <input
               id={priceId}
@@ -44,14 +47,15 @@ export default function AutoLoanIsland() {
               step="500"
               value={vehiclePrice}
               onChange={(e) => setVehiclePrice(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor={downId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Down Payment ($)
+                Down Payment (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={downId}
@@ -59,7 +63,8 @@ export default function AutoLoanIsland() {
                 step="250"
                 value={downPayment}
                 onChange={(e) => setDownPayment(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -72,7 +77,8 @@ export default function AutoLoanIsland() {
                 step="0.1"
                 value={salesTaxRate}
                 onChange={(e) => setSalesTaxRate(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -80,7 +86,7 @@ export default function AutoLoanIsland() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor={tradeValId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Trade-in Value ($)
+                Trade-in Value (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={tradeValId}
@@ -88,12 +94,13 @@ export default function AutoLoanIsland() {
                 step="500"
                 value={tradeInValue}
                 onChange={(e) => setTradeInValue(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
               <label htmlFor={tradeDebtId} className="block text-xs font-semibold text-brand-dark mb-1">
-                Amount Owed on Trade ($)
+                Amount Owed on Trade (<span translate="no" className="notranslate font-semibold">{currency}</span>)
               </label>
               <input
                 id={tradeDebtId}
@@ -101,7 +108,8 @@ export default function AutoLoanIsland() {
                 step="250"
                 value={tradeInOwed}
                 onChange={(e) => setTradeInOwed(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
           </div>
@@ -117,7 +125,8 @@ export default function AutoLoanIsland() {
                 step="0.1"
                 value={interestRate}
                 onChange={(e) => setInterestRate(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               />
             </div>
             <div>
@@ -148,26 +157,26 @@ export default function AutoLoanIsland() {
                 Estimated Monthly Auto Payment
               </div>
               <div className="text-4xl font-extrabold text-brand-primary">
-                {outcome.value.formattedMonthlyPayment}
+                <span translate="no" className="notranslate">{outcome.value.formattedMonthlyPayment}</span>
                 <span className="text-sm font-normal text-brand-muted ml-1">/ month</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-gray-200 text-xs">
                 <div>
                   <span className="block text-brand-muted">Amount Financed</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalFinanced}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalFinanced}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Total Interest</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalInterest}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalInterest}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Total Sales Tax</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalSalesTax}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalSalesTax}</strong>
                 </div>
                 <div>
                   <span className="block text-brand-muted">Total Overall Cost</span>
-                  <strong className="block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalCostOfVehicle}</strong>
+                  <strong translate="no" className="notranslate block text-brand-dark text-sm mt-0.5">{outcome.value.formattedTotalCostOfVehicle}</strong>
                 </div>
               </div>
             </div>
@@ -194,9 +203,9 @@ export default function AutoLoanIsland() {
                     <div key={step.stepNumber} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                       <div className="flex justify-between items-baseline font-mono text-[11px]">
                         <span className="font-semibold text-brand-dark">{step.stepNumber}. {step.label}</span>
-                        <span className="text-brand-primary font-bold">{step.result}</span>
+                        <span translate="no" className="notranslate text-brand-primary font-bold">{step.result}</span>
                       </div>
-                      <div className="font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
+                      <div translate="no" className="notranslate font-mono text-gray-500 text-[10px] mt-0.5">{step.expression}</div>
                     </div>
                   ))}
                 </div>

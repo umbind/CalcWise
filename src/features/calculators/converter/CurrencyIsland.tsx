@@ -43,7 +43,8 @@ export default function CurrencyIsland() {
               min="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2.5 bg-brand-surface border border-gray-300 rounded-lg text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
           </div>
 
@@ -56,7 +57,8 @@ export default function CurrencyIsland() {
                 id={fromId}
                 value={fromCurrency}
                 onChange={(e) => setFromCurrency(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               >
                 {currencies.map((c) => (
                   <option key={c} value={c}>
@@ -85,7 +87,8 @@ export default function CurrencyIsland() {
                 id={toId}
                 value={toCurrency}
                 onChange={(e) => setToCurrency(e.target.value)}
-                className="w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+                translate="no"
+                className="notranslate w-full px-3 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
               >
                 {currencies.map((c) => (
                   <option key={c} value={c}>
@@ -108,7 +111,8 @@ export default function CurrencyIsland() {
               max="20"
               value={bankSpreadFeePct}
               onChange={(e) => setBankSpreadFeePct(e.target.value)}
-              className="w-full px-4 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
+              translate="no"
+              className="notranslate w-full px-4 py-2 bg-brand-surface border border-gray-300 rounded-lg text-xs text-brand-dark font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition"
             />
             <p className="text-[11px] text-gray-500 mt-1">
               Set 0% for mid-market interbank rate, or 2–4% for typical credit cards and retail bureaus.
@@ -125,9 +129,9 @@ export default function CurrencyIsland() {
                   Net Amount Received
                 </span>
                 <div className="text-3xl sm:text-4xl font-extrabold text-brand-dark">
-                  {outcome.value.formattedNetReceived}
+                  <span translate="no" className="notranslate">{outcome.value.formattedNetReceived}</span>
                 </div>
-                <div className="text-sm text-gray-600 mt-1 font-medium">
+                <div translate="no" className="notranslate text-sm text-gray-600 mt-1 font-medium">
                   {outcome.value.formattedExchangeRate}
                 </div>
               </div>
@@ -135,17 +139,17 @@ export default function CurrencyIsland() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="bg-white p-3 rounded-lg border border-brand-border">
                   <span className="text-[11px] text-gray-500 block uppercase font-medium">Interbank Total</span>
-                  <span className="text-sm font-bold text-brand-dark">{outcome.value.formattedConverted}</span>
+                  <span translate="no" className="notranslate text-sm font-bold text-brand-dark">{outcome.value.formattedConverted}</span>
                 </div>
                 <div className="bg-white p-3 rounded-lg border border-brand-border">
                   <span className="text-[11px] text-gray-500 block uppercase font-medium">Spread / Fee</span>
-                  <span className="text-sm font-bold text-rose-600">
-                    {outcome.value.spreadFeeAmount > 0 ? `-${outcome.value.spreadFeeAmount} ${outcome.value.toCurrency}` : 'None ($0)'}
+                  <span translate="no" className="notranslate text-sm font-bold text-rose-600">
+                    {outcome.value.spreadFeeAmount > 0 ? `-${outcome.value.spreadFeeAmount} ${outcome.value.toCurrency}` : 'None (0)'}
                   </span>
                 </div>
                 <div className="bg-white p-3 rounded-lg border border-brand-border">
                   <span className="text-[11px] text-gray-500 block uppercase font-medium">Inverse Rate</span>
-                  <span className="text-xs font-bold text-brand-dark">{outcome.value.formattedInverseRate}</span>
+                  <span translate="no" className="notranslate text-xs font-bold text-brand-dark">{outcome.value.formattedInverseRate}</span>
                 </div>
               </div>
 
@@ -164,7 +168,7 @@ export default function CurrencyIsland() {
                     {outcome.trace.map((step) => (
                       <div key={step.stepNumber} className="border-l-2 border-brand-primary pl-3 py-1">
                         <span className="font-bold text-gray-700">Step {step.stepNumber}: {step.label}</span>
-                        <div className="font-mono text-gray-600">{step.expression} = {step.result}</div>
+                        <div translate="no" className="notranslate font-mono text-gray-600">{step.expression} = {step.result}</div>
                         <div className="text-[11px] text-gray-500">{step.explanation}</div>
                       </div>
                     ))}

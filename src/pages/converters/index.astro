@@ -54,66 +54,69 @@ const collectionSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
 
-  <div class="max-w-5xl mx-auto space-y-12">
+  <div class="max-w-5xl mx-auto space-y-6">
     <!-- Category Hero Header -->
-    <header class="text-center sm:text-left border-b border-gray-200 pb-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-        <div class="flex items-center space-x-3 justify-center sm:justify-start">
-          <span class="text-4xl p-2.5 bg-white border border-brand-border rounded-2xl shadow-2xs">
+    <header class="border-b border-gray-100 pb-3 mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-8 h-8 rounded-lg bg-white border border-brand-border flex items-center justify-center text-base shadow-2xs shrink-0">
             {category.icon}
           </span>
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
-              Category Hub
-            </span>
-            <h1 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
+            <div class="flex items-center space-x-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+                Category Hub
+              </span>
+              <span class="text-gray-300">•</span>
+              <span class="inline-flex items-center text-[10px] font-semibold text-emerald-700">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
+                6 Unit Families Active
+              </span>
+            </div>
+            <h1 class="text-base sm:text-lg font-bold text-brand-dark tracking-tight leading-tight">
               {category.name}
             </h1>
           </div>
         </div>
 
-        <div class="flex items-center space-x-2 self-center sm:self-auto">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
-            6 Unit Families Active
-          </span>
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
+        <div class="flex items-center space-x-2 self-start sm:self-auto">
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-800 border border-blue-200">
             Tier T0 Exact SI
           </span>
         </div>
       </div>
 
-      <p class="text-base text-brand-muted leading-relaxed max-w-3xl">
+      <p class="text-xs text-brand-muted mt-1.5 max-w-2xl leading-normal">
         {category.description}
       </p>
     </header>
 
     <!-- Primary Tool Callout -->
-    <section class="bg-white border-2 border-brand-primary/20 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-      <div class="space-y-2 max-w-xl">
-        <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-surface text-brand-primary border border-brand-primary/20">
-          <span>★ Featured Flagship Tool</span>
+    <section class="bg-white border border-brand-primary/30 rounded-xl p-4 sm:p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="space-y-1 max-w-xl">
+        <div class="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-surface text-brand-primary border border-brand-primary/20">
+          <span>★ Featured Tool</span>
         </div>
-        <h2 class="text-2xl font-black text-brand-dark tracking-tight">
+        <h2 class="text-base sm:text-lg font-bold text-brand-dark tracking-tight leading-tight">
           Universal Unit Converter
         </h2>
-        <p class="text-xs text-brand-muted leading-relaxed">
-          Switch between Metric, Imperial, and US Customary systems instantly with exact mathematical factors, swap functionality, and step-by-step conversion explanations.
+        <p class="text-xs text-brand-muted">
+          Switch between Metric, Imperial, and US Customary systems instantly with exact SI conversion factors.
         </p>
       </div>
 
       <a
         href="/converters/unit-converter"
-        class="inline-flex items-center justify-center px-6 py-3.5 bg-brand-primary text-white font-bold text-sm rounded-xl hover:bg-brand-accent transition shadow-sm hover:shadow self-start sm:self-center"
+        class="inline-flex items-center justify-center px-4 py-2 bg-brand-primary text-white font-bold text-xs rounded-lg hover:bg-brand-accent transition shadow-2xs self-start sm:self-center shrink-0"
       >
         <span>Open Unit Converter</span>
-        <span class="ml-2">→</span>
+        <span class="ml-1.5">→</span>
       </a>
     </section>
 
     <!-- Unit Families Grid -->
     <section aria-labelledby="unit-families-heading">
-      <h2 id="unit-families-heading" class="text-xl font-bold text-brand-dark tracking-tight mb-4">
+      <h2 id="unit-families-heading" class="text-sm font-bold text-brand-dark tracking-tight mb-3">
         Supported Measurement Quantities
       </h2>
 

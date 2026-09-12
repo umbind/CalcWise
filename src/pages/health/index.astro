@@ -45,52 +45,55 @@ const collectionSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
 
-  <div class="max-w-5xl mx-auto space-y-12">
+  <div class="max-w-5xl mx-auto space-y-6">
     <!-- Category Hero Header -->
-    <header class="text-center sm:text-left border-b border-gray-200 pb-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-        <div class="flex items-center space-x-3 justify-center sm:justify-start">
-          <span class="text-4xl p-2.5 bg-white border border-brand-border rounded-2xl shadow-2xs">
+    <header class="border-b border-gray-100 pb-3 mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-8 h-8 rounded-lg bg-white border border-brand-border flex items-center justify-center text-base shadow-2xs shrink-0">
             {category.icon}
           </span>
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-primary">
-              Category Hub
-            </span>
-            <h1 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
+            <div class="flex items-center space-x-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+                Category Hub
+              </span>
+              <span class="text-gray-300">•</span>
+              <span class="inline-flex items-center text-[10px] font-semibold text-emerald-700">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
+                {calculators.length} Clinical Tools
+              </span>
+            </div>
+            <h1 class="text-base sm:text-lg font-bold text-brand-dark tracking-tight leading-tight">
               {category.name}
             </h1>
           </div>
         </div>
 
-        <div class="flex items-center space-x-2 self-center sm:self-auto">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
-            {calculators.length} Clinical Screening Tools
-          </span>
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">
+        <div class="flex items-center space-x-2 self-start sm:self-auto">
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
             Tier T2 Risk Governed
           </span>
         </div>
       </div>
 
-      <p class="text-base text-brand-muted leading-relaxed max-w-3xl">
+      <p class="text-xs text-brand-muted mt-1.5 max-w-2xl leading-normal">
         {category.description}
       </p>
 
       <!-- Risk Disclaimer Notice -->
-      <div class="mt-4 p-3.5 bg-amber-50/60 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start space-x-2.5">
-        <span class="text-base">⚠️</span>
+      <div class="mt-2.5 p-2 bg-amber-50/70 border border-amber-200 rounded-lg text-[11px] text-amber-900 flex items-center space-x-2">
+        <span class="text-sm">⚠️</span>
         <div>
-          <strong class="font-bold">Informational Screening Notice:</strong> Health and metabolic tools on CalcWise provide estimates based on general adult population literature. They are not intended as diagnostic tools or medical prescriptions. Consult a licensed medical professional for personal clinical advice.
+          <strong class="font-bold">Informational Screening:</strong> Health tools provide estimates from population literature and do not replace professional medical advice.
         </div>
       </div>
     </header>
 
     <!-- Calculator Grid -->
     <section aria-labelledby="tools-list-heading">
-      <div class="flex justify-between items-baseline mb-6">
-        <h2 id="tools-list-heading" class="text-xl font-bold text-brand-dark tracking-tight">
+      <div class="flex justify-between items-baseline mb-3">
+        <h2 id="tools-list-heading" class="text-sm font-bold text-brand-dark tracking-tight">
           Metabolic & Wellness Calculators
         </h2>
         <span class="text-xs text-brand-muted font-medium">WHO & Mifflin-St Jeor Standards</span>

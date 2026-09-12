@@ -1,4 +1,4 @@
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect, useId, type FormEvent } from 'react';
 import { trackEvent } from '../lib/analytics/events';
 
 interface FeedbackModalProps {
@@ -31,7 +31,7 @@ export default function FeedbackModal({ isOpen, onClose, toolName }: FeedbackMod
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!description.trim()) return;
 

@@ -25,11 +25,11 @@ const collectionSchema = {
   '@type': 'CollectionPage',
   name: `${category.name} - CalcWise`,
   description: category.description,
-  url: `https://calcwise.com${category.route}/`,
+  url: `https://calcwise.webcalcapps.workers.dev${category.route}/`,
   hasPart: calculators.map((calc) => ({
     '@type': 'WebApplication',
     name: calc.name,
-    url: `https://calcwise.com${calc.route}/`,
+    url: `https://calcwise.webcalcapps.workers.dev${calc.route}/`,
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'All',
   })),
@@ -40,7 +40,7 @@ const collectionSchema = {
   title={`${category.name}: Loan, Mortgage & Compounding Tools`}
   description={category.description}
   breadcrumbs={[{ label: category.shortName }]}
-  canonicalUrl={`https://calcwise.com${category.route}/`}
+  canonicalUrl={`https://calcwise.webcalcapps.workers.dev${category.route}/`}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />

@@ -55,38 +55,30 @@ const collectionSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
 
   <div class="max-w-5xl mx-auto space-y-6">
-    <!-- Category Hero Header -->
-    <header class="border-b border-gray-100 pb-3 mb-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-        <div class="flex items-center space-x-2.5">
-          <span class="w-8 h-8 rounded-lg bg-white border border-brand-border flex items-center justify-center text-base shadow-2xs shrink-0">
-            {category.icon}
-          </span>
-          <div>
-            <div class="flex items-center space-x-2">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
-                Category Hub
-              </span>
-              <span class="text-gray-300">•</span>
-              <span class="inline-flex items-center text-[10px] font-semibold text-emerald-700">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
-                6 Unit Families Active
-              </span>
-            </div>
-            <h1 class="text-base sm:text-lg font-bold text-brand-dark tracking-tight leading-tight">
-              {category.name}
-            </h1>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2 self-start sm:self-auto">
-          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-800 border border-blue-200">
-            Tier T0 Exact SI
-          </span>
-        </div>
+    <!-- Category Hero Header (Centered & Balanced) -->
+    <header class="text-center max-w-2xl mx-auto border-b border-gray-100 pb-4 mb-4">
+      <div class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-brand-border text-xl shadow-2xs mb-2">
+        {category.icon}
       </div>
 
-      <p class="text-xs text-brand-muted mt-1.5 max-w-2xl leading-normal">
+      <div class="flex items-center justify-center flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider mb-1.5">
+        <span class="text-brand-primary">Category Hub</span>
+        <span class="text-gray-300">•</span>
+        <span class="inline-flex items-center text-emerald-700 font-semibold normal-case">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
+          6 Unit Families Active
+        </span>
+        <span class="text-gray-300">•</span>
+        <span class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 normal-case font-medium">
+          Tier T0 Exact SI
+        </span>
+      </div>
+
+      <h1 class="text-xl sm:text-2xl font-bold text-brand-dark tracking-tight leading-snug">
+        {category.name}
+      </h1>
+
+      <p class="text-xs text-brand-muted mt-1.5 max-w-xl mx-auto leading-relaxed">
         {category.description}
       </p>
     </header>

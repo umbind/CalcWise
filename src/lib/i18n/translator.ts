@@ -21,7 +21,7 @@ export function triggerPageTranslation(langCode: string, onDone?: () => void) {
       const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
       if (select) {
         select.value = '';
-        select.dispatchEvent(new Event('change'));
+        select.dispatchEvent(new Event('change', { bubbles: true }));
         if (onDone) onDone();
         return;
       }
@@ -30,13 +30,12 @@ export function triggerPageTranslation(langCode: string, onDone?: () => void) {
       return;
     }
 
-    // Set cookie for target language
+    // Set cookie for target language (both standard path and host)
     const cookieVal = '/en/' + targetCode;
     document.cookie = 'googtrans=' + cookieVal + '; path=/;';
-    document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + host + ';';
-    if (rootDomain) {
-      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=.' + rootDomain + ';';
-    }
+    try {
+      document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + host + ';';
+    } catch (e) {}
 
     // Smooth polling for Google combo dropdown to translate in-place without reloading
     let attempts = 0;
@@ -44,15 +43,15 @@ export function triggerPageTranslation(langCode: string, onDone?: () => void) {
       const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
       if (select) {
         select.value = targetCode;
-        select.dispatchEvent(new Event('change'));
+        select.dispatchEvent(new Event('change', { bubbles: true }));
         if (onDone) onDone();
         return;
       }
       attempts++;
-      if (attempts < 12) {
+      if (attempts < 8) {
         setTimeout(checkCombo, 100);
       } else {
-        // Fallback: reload with cookie if widget failed to mount within 1.2s
+        // Fallback: reload with cookie if widget failed to mount within 800ms
         window.location.reload();
       }
     };

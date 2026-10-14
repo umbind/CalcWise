@@ -97,11 +97,11 @@ const categoryCardStyles: Record<string, { bg: string; border: string; iconBg: s
       <!-- Colorful Category-Coded Quick Picks -->
       <div class="flex flex-wrap items-center justify-center gap-1.5 mt-2.5 text-[11px]">
         <span class="text-gray-400 font-medium">Trending:</span>
-        <a href="/finance/emi-calculator" class="px-2 py-0.5 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200/70 font-medium transition">💰 EMI Loan</a>
-        <a href="/health/bmi-calculator" class="px-2 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/70 font-medium transition">❤️ BMI</a>
-        <a href="/finance/compound-interest-calculator" class="px-2 py-0.5 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200/70 font-medium transition">📈 Compound Interest</a>
-        <a href="/construction/concrete-calculator" class="px-2 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/70 font-medium transition">🏗️ Concrete</a>
-        <a href="/everyday/age-calculator" class="px-2 py-0.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/70 font-medium transition">📅 Age</a>
+        <a href="/finance/emi-calculator/" class="px-2 py-0.5 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200/70 font-medium transition">💰 EMI Loan</a>
+        <a href="/health/bmi-calculator/" class="px-2 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/70 font-medium transition">❤️ BMI</a>
+        <a href="/finance/compound-interest-calculator/" class="px-2 py-0.5 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200/70 font-medium transition">📈 Compound Interest</a>
+        <a href="/construction/concrete-calculator/" class="px-2 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/70 font-medium transition">🏗️ Concrete</a>
+        <a href="/everyday/age-calculator/" class="px-2 py-0.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/70 font-medium transition">📅 Age</a>
       </div>
     </div>
 
@@ -120,7 +120,7 @@ const categoryCardStyles: Record<string, { bg: string; border: string; iconBg: s
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {categories.map((cat) => (
         <a
-          href={`/${cat.id}`}
+          href={`/${cat.id}/`}
           class="bg-white rounded-xl border border-brand-border p-4 text-center hover:border-brand-primary hover:shadow-2xs transition group"
         >
           <div class="text-2xl mb-1.5">{cat.icon}</div>
@@ -131,11 +131,11 @@ const categoryCardStyles: Record<string, { bg: string; border: string; iconBg: s
     </div>
   </section>
 
-  <!-- Complete 20-Calculator Catalog Grouped by Category -->
+  <!-- Complete 50-Calculator Catalog Grouped by Category -->
   <section class="space-y-12" aria-labelledby="all-tools-heading">
     <div class="border-b border-gray-200 pb-3 flex justify-between items-baseline">
       <h2 id="all-tools-heading" class="text-2xl font-black text-brand-dark tracking-tight">
-        All 20 Alpha Calculators
+        All 50 Verified Calculators
       </h2>
       <span class="text-xs font-semibold text-brand-primary">100% Tested with Golden Datasets</span>
     </div>
@@ -152,13 +152,14 @@ const categoryCardStyles: Record<string, { bg: string; border: string; iconBg: s
               <span class="text-xs text-brand-muted font-normal">({tools.length} calculators)</span>
             </div>
             <a
-              href={`/${cat.id}`}
+              href={`/${cat.id}/`}
               class="text-xs font-semibold text-brand-primary hover:text-brand-accent transition inline-flex items-center space-x-1 self-start sm:self-auto"
             >
               <span>Explore {cat.name} Hub</span>
               <span>→</span>
             </a>
           </div>
+
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {tools.map((tool) => {

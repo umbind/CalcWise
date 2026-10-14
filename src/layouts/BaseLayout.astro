@@ -9,12 +9,24 @@ interface Props {
   description: string;
   breadcrumbs?: Array<{ label: string; href?: string }>;
   canonicalUrl?: string;
+  noIndex?: boolean;
 }
 
-const { title, description, breadcrumbs = [], canonicalUrl } = Astro.props;
+const { title, description, breadcrumbs = [], canonicalUrl, noIndex = false } = Astro.props;
 
 const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const currentPath = Astro.url.pathname;
+
+// Canonical URL Normalization: Ensure canonicalUrl strictly matches directory trailing slash
+let normalizedCanonical = canonicalUrl;
+if (!normalizedCanonical) {
+  const rawPath = Astro.url.pathname || '/';
+  const cleanPath = rawPath.endsWith('/') ? rawPath : `${rawPath}/`;
+  normalizedCanonical = `https://calcwise.webcalcapps.workers.dev${cleanPath}`;
+} else if (!normalizedCanonical.endsWith('/')) {
+  normalizedCanonical = `${normalizedCanonical}/`;
+}
+
 
 const navCategories = [
   {
@@ -145,7 +157,17 @@ if (currentPath.startsWith('/finance')) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | CalcWise</title>
     <meta name="description" content={description} />
-    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    
+    <!-- Canonical & Robots Indexation Directives -->
+    <link rel="canonical" href={normalizedCanonical} />
+    <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
+    <meta name="googlebot" content={noIndex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
+
+    <!-- Search Engine Ownership Verification Directives -->
+    <meta name="google-site-verification" content="google581ff31379c4facf" />
+    <meta name="google-site-verification" content="581ff31379c4facf" />
+    <meta name="msvalidate.01" content="4BD5130439ADB7D9308CF197C3E78193" />
+
     <meta name="theme-color" content="#0B4F8A" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -164,12 +186,70 @@ if (currentPath.startsWith('/finance')) {
     <meta property="og:type" content="website" />
     <meta property="og:title" content={`${title} | CalcWise`} />
     <meta property="og:description" content={description} />
-    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:url" content={normalizedCanonical} />
 
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={`${title} | CalcWise`} />
     <meta name="twitter:description" content={description} />
+
+    <!-- Structured Data (JSON-LD) for Search Engines -->
+    {breadcrumbs.length > 0 && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://calcwise.webcalcapps.workers.dev/'
+          },
+          ...breadcrumbs.map((crumb, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 2,
+            name: crumb.label,
+            item: crumb.href
+              ? `https://calcwise.webcalcapps.workers.dev${crumb.href.endsWith('/') ? crumb.href : `${crumb.href}/`}`
+              : normalizedCanonical
+          }))
+        ]
+      })} />
+    )}
+
+    {isHomePage && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'CalcWise',
+        url: 'https://calcwise.webcalcapps.workers.dev/',
+        description: description,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: 'https://calcwise.webcalcapps.workers.dev/?q={search_term_string}',
+          'query-input': 'required name=search_term_string'
+        }
+      })} />
+    )}
+
+    {!isHomePage && !currentPath.match(/^\/(finance|health|math|construction|everyday|converters)\/?$/) && currentPath !== '/404' && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: title,
+        description: description,
+        url: normalizedCanonical,
+        applicationCategory: 'UtilityApplication',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD'
+        }
+      })} />
+    )}
+
 
     <!-- Google Translate DOM Reconciliation Guard for React Islands -->
     <script is:inline>
@@ -416,12 +496,12 @@ if (currentPath.startsWith('/finance')) {
             <span class="text-xl font-bold tracking-tight text-brand-primary">CalcWise</span>
           </a>
           <nav class="hidden lg:flex items-center space-x-1" aria-label="Main Navigation">
-            <a href="/finance" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Finance</a>
-            <a href="/health" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Health</a>
-            <a href="/math" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Math</a>
-            <a href="/construction" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Construction</a>
-            <a href="/everyday" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Everyday</a>
-            <a href="/converters" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Converters</a>
+            <a href="/finance/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Finance</a>
+            <a href="/health/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Health</a>
+            <a href="/math/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Math</a>
+            <a href="/construction/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Construction</a>
+            <a href="/everyday/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Everyday</a>
+            <a href="/converters/" class="px-2 py-1 text-xs font-semibold text-brand-muted hover:text-brand-primary rounded-md hover:bg-brand-surface transition">Converters</a>
           </nav>
         </div>
 
@@ -443,12 +523,12 @@ if (currentPath.startsWith('/finance')) {
       </div>
       <!-- Mobile Sub-Navigation Bar -->
       <div class="md:hidden flex overflow-x-auto px-4 py-2 border-t border-gray-100 bg-white gap-3 text-xs font-semibold text-brand-muted no-scrollbar">
-        <a href="/finance" class="whitespace-nowrap hover:text-brand-primary">Finance</a>
-        <a href="/health" class="whitespace-nowrap hover:text-brand-primary">Health</a>
-        <a href="/math" class="whitespace-nowrap hover:text-brand-primary">Math</a>
-        <a href="/construction" class="whitespace-nowrap hover:text-brand-primary">Construction</a>
-        <a href="/everyday" class="whitespace-nowrap hover:text-brand-primary">Everyday</a>
-        <a href="/converters" class="whitespace-nowrap hover:text-brand-primary">Converters</a>
+        <a href="/finance/" class="whitespace-nowrap hover:text-brand-primary">Finance</a>
+        <a href="/health/" class="whitespace-nowrap hover:text-brand-primary">Health</a>
+        <a href="/math/" class="whitespace-nowrap hover:text-brand-primary">Math</a>
+        <a href="/construction/" class="whitespace-nowrap hover:text-brand-primary">Construction</a>
+        <a href="/everyday/" class="whitespace-nowrap hover:text-brand-primary">Everyday</a>
+        <a href="/converters/" class="whitespace-nowrap hover:text-brand-primary">Converters</a>
       </div>
     </header>
 
@@ -461,7 +541,7 @@ if (currentPath.startsWith('/finance')) {
             <>
               <span class="text-gray-300">/</span>
               {crumb.href ? (
-                <a href={crumb.href} class="hover:text-brand-primary">{crumb.label}</a>
+                <a href={crumb.href.endsWith('/') ? crumb.href : `${crumb.href}/`} class="hover:text-brand-primary">{crumb.label}</a>
               ) : (
                 <span class="font-medium text-brand-dark" aria-current="page">{crumb.label}</span>
               )}
@@ -502,7 +582,7 @@ if (currentPath.startsWith('/finance')) {
               const isActive = currentPath.startsWith(`/${cat.id}`);
               return (
                 <a
-                  href={`/${cat.id}`}
+                  href={`/${cat.id}/`}
                   title={cat.fullName}
                   class={`group flex items-center justify-between px-2.5 py-1.5 rounded-lg border transition-all duration-150 shrink-0 sm:shrink hover:-translate-y-0.5 ${
                     isActive ? cat.activeClass : cat.normalClass
@@ -555,12 +635,12 @@ if (currentPath.startsWith('/finance')) {
           <div>
             <div class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">Categories</div>
             <ul class="space-y-2 text-xs">
-              <li><a href="/finance" class="hover:text-brand-primary">Personal Finance & Loans</a></li>
-              <li><a href="/health" class="hover:text-brand-primary">Health & Metabolic Screening</a></li>
-              <li><a href="/math" class="hover:text-brand-primary">Math, Algebra & Statistics</a></li>
-              <li><a href="/construction" class="hover:text-brand-primary">Construction & Materials</a></li>
-              <li><a href="/everyday" class="hover:text-brand-primary">Everyday & Calendar Utilities</a></li>
-              <li><a href="/converters" class="hover:text-brand-primary">Measurement & Unit Converters</a></li>
+              <li><a href="/finance/" class="hover:text-brand-primary">Personal Finance & Loans</a></li>
+              <li><a href="/health/" class="hover:text-brand-primary">Health & Metabolic Screening</a></li>
+              <li><a href="/math/" class="hover:text-brand-primary">Math, Algebra & Statistics</a></li>
+              <li><a href="/construction/" class="hover:text-brand-primary">Construction & Materials</a></li>
+              <li><a href="/everyday/" class="hover:text-brand-primary">Everyday & Calendar Utilities</a></li>
+              <li><a href="/converters/" class="hover:text-brand-primary">Measurement & Unit Converters</a></li>
             </ul>
           </div>
 
@@ -568,11 +648,11 @@ if (currentPath.startsWith('/finance')) {
           <div>
             <div class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">Finance & Health</div>
             <ul class="space-y-2 text-xs">
-              <li><a href="/finance/emi-calculator" class="hover:text-brand-primary">EMI / Loan Payment Calculator</a></li>
-              <li><a href="/finance/compound-interest-calculator" class="hover:text-brand-primary">Compound Interest Calculator</a></li>
-              <li><a href="/finance/mortgage-calculator" class="hover:text-brand-primary">Mortgage Payment Calculator</a></li>
-              <li><a href="/health/bmi-calculator" class="hover:text-brand-primary">Adult BMI Calculator</a></li>
-              <li><a href="/health/calorie-calculator" class="hover:text-brand-primary">Calorie & TDEE Calculator</a></li>
+              <li><a href="/finance/emi-calculator/" class="hover:text-brand-primary">EMI / Loan Payment Calculator</a></li>
+              <li><a href="/finance/compound-interest-calculator/" class="hover:text-brand-primary">Compound Interest Calculator</a></li>
+              <li><a href="/finance/mortgage-calculator/" class="hover:text-brand-primary">Mortgage Payment Calculator</a></li>
+              <li><a href="/health/bmi-calculator/" class="hover:text-brand-primary">Adult BMI Calculator</a></li>
+              <li><a href="/health/calorie-calculator/" class="hover:text-brand-primary">Calorie & TDEE Calculator</a></li>
             </ul>
           </div>
 
@@ -580,11 +660,11 @@ if (currentPath.startsWith('/finance')) {
           <div>
             <div class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">Math & Materials</div>
             <ul class="space-y-2 text-xs">
-              <li><a href="/math/percentage-calculator" class="hover:text-brand-primary">Percentage Calculator</a></li>
-              <li><a href="/math/scientific-calculator" class="hover:text-brand-primary">Scientific Calculator</a></li>
-              <li><a href="/construction/concrete-calculator" class="hover:text-brand-primary">Concrete Volume Calculator</a></li>
-              <li><a href="/everyday/age-calculator" class="hover:text-brand-primary">Chronological Age Calculator</a></li>
-              <li><a href="/converters/unit-converter" class="hover:text-brand-primary">Universal Unit Converter</a></li>
+              <li><a href="/math/percentage-calculator/" class="hover:text-brand-primary">Percentage Calculator</a></li>
+              <li><a href="/math/scientific-calculator/" class="hover:text-brand-primary">Scientific Calculator</a></li>
+              <li><a href="/construction/concrete-calculator/" class="hover:text-brand-primary">Concrete Volume Calculator</a></li>
+              <li><a href="/everyday/age-calculator/" class="hover:text-brand-primary">Chronological Age Calculator</a></li>
+              <li><a href="/converters/unit-converter/" class="hover:text-brand-primary">Universal Unit Converter</a></li>
             </ul>
           </div>
         </div>
@@ -595,14 +675,15 @@ if (currentPath.startsWith('/finance')) {
           </div>
           <div class="flex space-x-6 text-brand-muted">
             <a href="/" class="hover:text-brand-primary">Discovery Hub</a>
-            <a href="/finance" class="hover:text-brand-primary">Finance</a>
-            <a href="/health" class="hover:text-brand-primary">Health</a>
-            <a href="/math" class="hover:text-brand-primary">Math</a>
-            <a href="/construction" class="hover:text-brand-primary">Construction</a>
-            <a href="/everyday" class="hover:text-brand-primary">Everyday</a>
-            <a href="/converters" class="hover:text-brand-primary">Converters</a>
+            <a href="/finance/" class="hover:text-brand-primary">Finance</a>
+            <a href="/health/" class="hover:text-brand-primary">Health</a>
+            <a href="/math/" class="hover:text-brand-primary">Math</a>
+            <a href="/construction/" class="hover:text-brand-primary">Construction</a>
+            <a href="/everyday/" class="hover:text-brand-primary">Everyday</a>
+            <a href="/converters/" class="hover:text-brand-primary">Converters</a>
+          </div>
         </div>
-      </div>
+
     </footer>
 
     <!-- Multi-Language Sync & Full-Page Translation Engine -->

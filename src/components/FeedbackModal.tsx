@@ -31,9 +31,10 @@ export default function FeedbackModal({ isOpen, onClose, toolName }: FeedbackMod
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!description.trim()) return;
+
 
     // Track analytics event
     trackEvent('feedback_submitted', {

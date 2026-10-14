@@ -2,3 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://calcwise.webcalcapps.workers.dev/sitemap.xml
+
+# AI Assistants & Answer Engine Discoverability (AEO/GEO)
+# LLMs: https://calcwise.webcalcapps.workers.dev/llms.txt
+

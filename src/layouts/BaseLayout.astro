@@ -187,11 +187,19 @@ if (currentPath.startsWith('/finance')) {
     <meta property="og:title" content={`${title} | CalcWise`} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={normalizedCanonical} />
+    <meta property="og:image" content="https://calcwise.webcalcapps.workers.dev/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://calcwise.webcalcapps.workers.dev/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:image:alt" content="CalcWise - Fast, Verifiable, and Deterministic Calculations" />
 
     <!-- Twitter Card Metadata -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${title} | CalcWise`} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://calcwise.webcalcapps.workers.dev/og-image.jpg" />
+    <meta name="twitter:image:alt" content="CalcWise - Fast, Verifiable, and Deterministic Calculations" />
 
     <!-- Structured Data (JSON-LD) for Search Engines -->
     {breadcrumbs.length > 0 && (
@@ -233,22 +241,55 @@ if (currentPath.startsWith('/finance')) {
     )}
 
     {!isHomePage && !currentPath.match(/^\/(finance|health|math|construction|everyday|converters)\/?$/) && currentPath !== '/404' && (
-      <script is:inline type="application/ld+json" set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: title,
-        description: description,
-        url: normalizedCanonical,
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'All',
-        browserRequirements: 'Requires JavaScript. Requires HTML5.',
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD'
-        }
-      })} />
+      <>
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          name: title,
+          description: description,
+          url: normalizedCanonical,
+          applicationCategory: 'UtilityApplication',
+          operatingSystem: 'All',
+          browserRequirements: 'Requires JavaScript. Requires HTML5.',
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD'
+          }
+        })} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: `How does the ${title} work?`,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: `${description} CalcWise executes calculations deterministically with arbitrary decimal precision to eliminate floating-point drift.`
+              }
+            },
+            {
+              '@type': 'Question',
+              name: `Is the ${title} free to use?`,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes, all calculators on CalcWise are 100% free, run directly in your browser with zero registration required, and adhere to strict privacy standards without storing personal data.'
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'How does CalcWise ensure mathematical accuracy?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'CalcWise utilizes decimal.js with 28 digits of internal precision, adheres to authoritative regulatory and statutory standards (such as CFPB, Regulation Z, WHO, ISO, and NIST), and provides transparent Calculation Passports with step-by-step mathematical traces.'
+              }
+            }
+          ]
+        })} />
+      </>
     )}
+
 
 
     <!-- Google Translate DOM Reconciliation Guard for React Islands -->
@@ -571,7 +612,7 @@ if (currentPath.startsWith('/finance')) {
       {!isHomePage && (
         <div class="no-print mb-5 -mt-2">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Categories</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-600">Categories</span>
             <a href="/" class="text-[11px] text-brand-primary hover:text-brand-primary-dark flex items-center gap-1 font-semibold transition">
               <span>View All 50 Tools</span>
               <span>→</span>
@@ -626,7 +667,7 @@ if (currentPath.startsWith('/finance')) {
             <p class="text-xs text-brand-muted leading-relaxed">
               Fast, deterministic calculations with inspectable Calculation Passports, step-by-step mathematical traces, and zero-JS performance.
             </p>
-            <div class="text-[11px] text-gray-400">
+            <div class="text-[11px] text-gray-600">
               Built on Astro Islands & Decimal Precision.
             </div>
           </div>
@@ -669,7 +710,7 @@ if (currentPath.startsWith('/finance')) {
           </div>
         </div>
 
-        <div class="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+        <div class="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
           <div>
             &copy; 2026 CalcWise. Pure mathematical decoupling & WCAG 2.2 AA compliant.
           </div>
@@ -689,7 +730,7 @@ if (currentPath.startsWith('/finance')) {
     <!-- Multi-Language Sync & Full-Page Translation Engine -->
     <div id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;visibility:hidden;"></div>
     <script is:inline>
-      function googleTranslateElementInit() {
+      window.googleTranslateElementInit = function() {
         if (window.google && window.google.translate) {
           new window.google.translate.TranslateElement({
             pageLanguage: 'en',
@@ -697,7 +738,8 @@ if (currentPath.startsWith('/finance')) {
             autoDisplay: false
           }, 'google_translate_element');
         }
-      }
+      };
+
 
       (function() {
         try {

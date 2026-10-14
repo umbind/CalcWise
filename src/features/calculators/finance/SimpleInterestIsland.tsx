@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateSimpleInterest } from '../../../lib/calculations/simple_interest';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function SimpleInterestIsland() {
   const [principal, setPrincipal] = useState<string>('5000');
@@ -8,6 +9,20 @@ export default function SimpleInterestIsland() {
   const [time, setTime] = useState<string>('3');
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    { p: principal, r: rate, t: time },
+    {
+      p: { default: '5000', aliases: ['principal'] },
+      r: { default: '5', aliases: ['rate'] },
+      t: { default: '3', aliases: ['time', 'years'] },
+    },
+    (loaded) => {
+      if (loaded.p) setPrincipal(loaded.p);
+      if (loaded.r) setRate(loaded.r);
+      if (loaded.t) setTime(loaded.t);
+    }
+  );
 
   const principalId = useId();
   const rateId = useId();

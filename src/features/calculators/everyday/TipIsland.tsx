@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateTip } from '../../../lib/calculations/tip';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function TipIsland() {
   const [bill, setBill] = useState<string>('75.00');
@@ -9,6 +10,27 @@ export default function TipIsland() {
   const [roundUp, setRoundUp] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      bill,
+      tip: tipPct,
+      people,
+      round: roundUp ? '1' : '0',
+    },
+    {
+      bill: { default: '75.00', aliases: ['amount'] },
+      tip: { default: '18', aliases: ['pct'] },
+      people: { default: '2', aliases: ['split'] },
+      round: { default: '0' },
+    },
+    (loaded) => {
+      if (loaded.bill) setBill(loaded.bill);
+      if (loaded.tip) setTipPct(loaded.tip);
+      if (loaded.people) setPeople(loaded.people);
+      if (loaded.round) setRoundUp(loaded.round === '1' || loaded.round === 'true');
+    }
+  );
 
   const billId = useId();
   const peopleId = useId();

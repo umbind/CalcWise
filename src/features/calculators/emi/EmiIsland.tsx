@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateEmi } from '../../../lib/calculations/emi';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function EmiIsland() {
   const [principal, setPrincipal] = useState<string>('250000');
@@ -9,6 +10,20 @@ export default function EmiIsland() {
   const { symbol: currency } = useCurrency('$');
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    { p: principal, r: annualRate, t: tenureYears },
+    {
+      p: { default: '250000', aliases: ['principal'] },
+      r: { default: '7.5', aliases: ['rate'] },
+      t: { default: '15', aliases: ['tenure'] },
+    },
+    (loaded) => {
+      if (loaded.p) setPrincipal(loaded.p);
+      if (loaded.r) setAnnualRate(loaded.r);
+      if (loaded.t) setTenureYears(loaded.t);
+    }
+  );
 
   const principalId = useId();
   const rateId = useId();

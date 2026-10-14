@@ -5,6 +5,7 @@ import {
   type ActivityLevel,
 } from '../../../lib/calculations/calorie';
 import type { BiologicalSex, BmrUnitSystem } from '../../../lib/calculations/bmr';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function CalorieIsland() {
   const [sex, setSex] = useState<BiologicalSex>('female');
@@ -17,6 +18,38 @@ export default function CalorieIsland() {
   const [heightInches, setHeightInches] = useState<string>('6');
   const [activity, setActivity] = useState<ActivityLevel>('moderate');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    unitSystem === 'metric'
+      ? { sex, unit: unitSystem, age, w: weightKg, h: heightCm, act: activity }
+      : { sex, unit: unitSystem, age, w: weightLbs, ft: heightFeet, in: heightInches, act: activity },
+    {
+      sex: { default: 'female' },
+      unit: { default: 'metric' },
+      age: { default: '30' },
+      w: { default: unitSystem === 'metric' ? '65' : '145', aliases: ['weight'] },
+      h: { default: '168', aliases: ['height', 'cm'] },
+      ft: { default: '5', aliases: ['feet'] },
+      in: { default: '6', aliases: ['inches'] },
+      act: { default: 'moderate', aliases: ['activity'] },
+    },
+    (loaded) => {
+      if (loaded.sex === 'male' || loaded.sex === 'female') setSex(loaded.sex);
+      if (loaded.unit === 'metric' || loaded.unit === 'imperial') setUnitSystem(loaded.unit);
+      if (loaded.age) setAge(loaded.age);
+      if (loaded.act && Object.keys(ACTIVITY_MULTIPLIERS).includes(loaded.act)) {
+        setActivity(loaded.act as ActivityLevel);
+      }
+      if (loaded.unit === 'imperial' || loaded.ft || loaded.in) {
+        if (loaded.w) setWeightLbs(loaded.w);
+        if (loaded.ft) setHeightFeet(loaded.ft);
+        if (loaded.in) setHeightInches(loaded.in);
+      } else {
+        if (loaded.w) setWeightKg(loaded.w);
+        if (loaded.h) setHeightCm(loaded.h);
+      }
+    }
+  );
 
   const ageId = useId();
   const actId = useId();

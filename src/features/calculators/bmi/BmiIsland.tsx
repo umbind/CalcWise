@@ -1,5 +1,6 @@
 import { useState, useId } from 'react';
 import { calculateBmi, type BmiUnitSystem } from '../../../lib/calculations/bmi';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function BmiIsland() {
   const [unitSystem, setUnitSystem] = useState<BmiUnitSystem>('metric');
@@ -12,6 +13,32 @@ export default function BmiIsland() {
   const [heightInches, setHeightInches] = useState<string>('9');
 
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    unitSystem === 'metric'
+      ? { unit: unitSystem, w: weightKg, h: heightCm }
+      : { unit: unitSystem, w: weightLbs, ft: heightFeet, in: heightInches },
+    {
+      unit: { default: 'metric' },
+      w: { default: unitSystem === 'metric' ? '70' : '155', aliases: ['weight'] },
+      h: { default: '175', aliases: ['height', 'cm'] },
+      ft: { default: '5', aliases: ['feet'] },
+      in: { default: '9', aliases: ['inches'] },
+    },
+    (loaded) => {
+      if (loaded.unit === 'metric' || loaded.unit === 'imperial') {
+        setUnitSystem(loaded.unit);
+      }
+      if (loaded.unit === 'imperial' || loaded.ft || loaded.in) {
+        if (loaded.w) setWeightLbs(loaded.w);
+        if (loaded.ft) setHeightFeet(loaded.ft);
+        if (loaded.in) setHeightInches(loaded.in);
+      } else {
+        if (loaded.w) setWeightKg(loaded.w);
+        if (loaded.h) setHeightCm(loaded.h);
+      }
+    }
+  );
 
   const weightId = useId();
   const heightId = useId();

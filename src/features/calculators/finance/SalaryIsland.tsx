@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateSalary, type SalaryFrequency } from '../../../lib/calculations/salary';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function SalaryIsland() {
   const [amount, setAmount] = useState<string>('30');
@@ -9,6 +10,29 @@ export default function SalaryIsland() {
   const [weeksPerYear, setWeeksPerYear] = useState<string>('52');
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      amt: amount,
+      freq: frequency,
+      hpw: hoursPerWeek,
+      wpy: weeksPerYear,
+    },
+    {
+      amt: { default: '30', aliases: ['amount', 'wage', 'salary'] },
+      freq: { default: 'hourly', aliases: ['frequency'] },
+      hpw: { default: '40', aliases: ['hours'] },
+      wpy: { default: '52', aliases: ['weeks'] },
+    },
+    (loaded) => {
+      if (loaded.amt) setAmount(loaded.amt);
+      if (loaded.freq && ['hourly', 'daily', 'weekly', 'biweekly', 'semimonthly', 'monthly', 'annually'].includes(loaded.freq)) {
+        setFrequency(loaded.freq as SalaryFrequency);
+      }
+      if (loaded.hpw) setHoursPerWeek(loaded.hpw);
+      if (loaded.wpy) setWeeksPerYear(loaded.wpy);
+    }
+  );
 
   const amountId = useId();
   const freqId = useId();

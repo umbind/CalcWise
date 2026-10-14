@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateDiscount } from '../../../lib/calculations/discount';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function DiscountIsland() {
   const [originalPrice, setOriginalPrice] = useState<string>('100');
@@ -9,6 +10,27 @@ export default function DiscountIsland() {
   const [salesTaxRate, setSalesTaxRate] = useState<string>('8');
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      price: originalPrice,
+      disc: discountPercentage,
+      disc2: additionalDiscountPercentage,
+      tax: salesTaxRate,
+    },
+    {
+      price: { default: '100', aliases: ['originalPrice'] },
+      disc: { default: '20', aliases: ['discount'] },
+      disc2: { default: '10', aliases: ['extra'] },
+      tax: { default: '8', aliases: ['salesTax'] },
+    },
+    (loaded) => {
+      if (loaded.price) setOriginalPrice(loaded.price);
+      if (loaded.disc) setDiscountPercentage(loaded.disc);
+      if (loaded.disc2) setAdditionalDiscountPercentage(loaded.disc2);
+      if (loaded.tax) setSalesTaxRate(loaded.tax);
+    }
+  );
 
   const priceId = useId();
   const d1Id = useId();

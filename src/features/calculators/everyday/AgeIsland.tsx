@@ -1,10 +1,23 @@
 import { useState, useId } from 'react';
 import { calculateAge } from '../../../lib/calculations/age';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function AgeIsland() {
   const [birthDate, setBirthDate] = useState<string>('1998-05-15');
   const [asOfDate, setAsOfDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    { dob: birthDate, asof: asOfDate },
+    {
+      dob: { default: '1998-05-15', aliases: ['birthDate', 'bday'] },
+      asof: { default: new Date().toISOString().split('T')[0], aliases: ['asOfDate', 'to'] },
+    },
+    (loaded) => {
+      if (loaded.dob) setBirthDate(loaded.dob);
+      if (loaded.asof) setAsOfDate(loaded.asof);
+    }
+  );
 
   const bdayId = useId();
   const asOfId = useId();

@@ -1,11 +1,28 @@
 import { useState, useId } from 'react';
 import { calculatePercentage, type PercentageMode } from '../../../lib/calculations/percentage';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function PercentageIsland() {
   const [mode, setMode] = useState<PercentageMode>('percent_of');
   const [valA, setValA] = useState<string>('20');
   const [valB, setValB] = useState<string>('150');
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    { mode, a: valA, b: valB },
+    {
+      mode: { default: 'percent_of' },
+      a: { default: '20', aliases: ['valA', 'x'] },
+      b: { default: '150', aliases: ['valB', 'y'] },
+    },
+    (loaded) => {
+      if (loaded.mode && ['percent_of', 'what_percent', 'percentage_change', 'percentage_increase', 'percentage_decrease'].includes(loaded.mode)) {
+        setMode(loaded.mode as PercentageMode);
+      }
+      if (loaded.a) setValA(loaded.a);
+      if (loaded.b) setValB(loaded.b);
+    }
+  );
 
   const inputAId = useId();
   const inputBId = useId();

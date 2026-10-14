@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateMortgage } from '../../../lib/calculations/mortgage';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function MortgageIsland() {
   const [homePrice, setHomePrice] = useState<string>('400000');
@@ -12,6 +13,36 @@ export default function MortgageIsland() {
   const [hoa, setHoa] = useState<string>('0');
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      price: homePrice,
+      down: downPayment,
+      term: termYears,
+      rate: interestRate,
+      tax: propertyTax,
+      ins: homeInsurance,
+      hoa,
+    },
+    {
+      price: { default: '400000', aliases: ['homePrice'] },
+      down: { default: '80000', aliases: ['downPayment'] },
+      term: { default: '30', aliases: ['years'] },
+      rate: { default: '6.5', aliases: ['interestRate'] },
+      tax: { default: '3600', aliases: ['propertyTax'] },
+      ins: { default: '1200', aliases: ['insurance'] },
+      hoa: { default: '0' },
+    },
+    (loaded) => {
+      if (loaded.price) setHomePrice(loaded.price);
+      if (loaded.down) setDownPayment(loaded.down);
+      if (loaded.term) setTermYears(loaded.term);
+      if (loaded.rate) setInterestRate(loaded.rate);
+      if (loaded.tax) setPropertyTax(loaded.tax);
+      if (loaded.ins) setHomeInsurance(loaded.ins);
+      if (loaded.hoa) setHoa(loaded.hoa);
+    }
+  );
 
   const priceId = useId();
   const downId = useId();

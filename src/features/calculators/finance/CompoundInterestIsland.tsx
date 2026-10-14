@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateCompoundInterest, type CompoundingFrequency } from '../../../lib/calculations/compound_interest';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function CompoundInterestIsland() {
   const [initialPrincipal, setInitialPrincipal] = useState<string>('10000');
@@ -11,6 +12,32 @@ export default function CompoundInterestIsland() {
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      p: initialPrincipal,
+      r: annualRate,
+      t: years,
+      pmt: monthlyContribution,
+      freq: frequency,
+    },
+    {
+      p: { default: '10000', aliases: ['principal'] },
+      r: { default: '7', aliases: ['rate'] },
+      t: { default: '10', aliases: ['years'] },
+      pmt: { default: '200', aliases: ['contribution'] },
+      freq: { default: 'monthly' },
+    },
+    (loaded) => {
+      if (loaded.p) setInitialPrincipal(loaded.p);
+      if (loaded.r) setAnnualRate(loaded.r);
+      if (loaded.t) setYears(loaded.t);
+      if (loaded.pmt) setMonthlyContribution(loaded.pmt);
+      if (loaded.freq && ['annually', 'semiannually', 'quarterly', 'monthly', 'daily'].includes(loaded.freq)) {
+        setFrequency(loaded.freq as CompoundingFrequency);
+      }
+    }
+  );
 
   const principalId = useId();
   const rateId = useId();

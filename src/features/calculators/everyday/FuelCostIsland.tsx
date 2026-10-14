@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateFuelCost } from '../../../lib/calculations/fuel_cost';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function FuelCostIsland() {
   const { symbol: currency } = useCurrency('$');
@@ -11,6 +12,33 @@ export default function FuelCostIsland() {
   const [fuelPricePerUnit, setFuelPricePerUnit] = useState<string>('3.50');
   const [isRoundTrip, setIsRoundTrip] = useState<boolean>(false);
   const [showTrace, setShowTrace] = useState<boolean>(false);
+
+  useUrlSync(
+    {
+      dist: distance,
+      unit: distanceUnit,
+      eff: distanceUnit === 'miles' ? fuelEfficiencyMpg : fuelEfficiencyL100km,
+      price: fuelPricePerUnit,
+      rt: isRoundTrip ? '1' : '0',
+    },
+    {
+      dist: { default: '300', aliases: ['distance'] },
+      unit: { default: 'miles' },
+      eff: { default: distanceUnit === 'miles' ? '30' : '7.8', aliases: ['mpg', 'efficiency'] },
+      price: { default: '3.50', aliases: ['fuelPrice'] },
+      rt: { default: '0', aliases: ['roundTrip'] },
+    },
+    (loaded) => {
+      if (loaded.dist) setDistance(loaded.dist);
+      if (loaded.unit === 'miles' || loaded.unit === 'km') setDistanceUnit(loaded.unit);
+      if (loaded.eff) {
+        if (distanceUnit === 'miles') setFuelEfficiencyMpg(loaded.eff);
+        else setFuelEfficiencyL100km(loaded.eff);
+      }
+      if (loaded.price) setFuelPricePerUnit(loaded.price);
+      if (loaded.rt) setIsRoundTrip(loaded.rt === '1' || loaded.rt === 'true');
+    }
+  );
 
   const distId = useId();
   const effId = useId();

@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { calculateAutoLoan } from '../../../lib/calculations/auto_loan';
 import { useCurrency } from '../../../lib/i18n/currencies';
+import { useUrlSync } from '../../../lib/hooks/useUrlSync';
 
 export default function AutoLoanIsland() {
   const [vehiclePrice, setVehiclePrice] = useState<string>('35000');
@@ -12,6 +13,36 @@ export default function AutoLoanIsland() {
   const [interestRate, setInterestRate] = useState<string>('5.0');
   const [showTrace, setShowTrace] = useState<boolean>(false);
   const { symbol: currency } = useCurrency('$');
+
+  useUrlSync(
+    {
+      price: vehiclePrice,
+      tax: salesTaxRate,
+      down: downPayment,
+      trade: tradeInValue,
+      owed: tradeInOwed,
+      term: loanTermMonths,
+      rate: interestRate,
+    },
+    {
+      price: { default: '35000', aliases: ['vehiclePrice'] },
+      tax: { default: '6' },
+      down: { default: '3500', aliases: ['downPayment'] },
+      trade: { default: '5000', aliases: ['tradeIn'] },
+      owed: { default: '0' },
+      term: { default: '60', aliases: ['months'] },
+      rate: { default: '5.0', aliases: ['interestRate'] },
+    },
+    (loaded) => {
+      if (loaded.price) setVehiclePrice(loaded.price);
+      if (loaded.tax) setSalesTaxRate(loaded.tax);
+      if (loaded.down) setDownPayment(loaded.down);
+      if (loaded.trade) setTradeInValue(loaded.trade);
+      if (loaded.owed) setTradeInOwed(loaded.owed);
+      if (loaded.term) setLoanTermMonths(loaded.term);
+      if (loaded.rate) setInterestRate(loaded.rate);
+    }
+  );
 
   const priceId = useId();
   const taxId = useId();
